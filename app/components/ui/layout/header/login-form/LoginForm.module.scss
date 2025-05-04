@@ -18,15 +18,18 @@
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   z-index: 50;
   animation: scaleIn 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem; /* Увеличьте это значение для большего расстояния */
 }
 
 .button {
   border: none; /* заменяет border-none */
   outline: none; /* заменяет outline-0 */
   cursor: pointer;
-  font-size: 1.525rem;
+  font-size: 1.725rem;
   line-height: 1.75rem;
-  padding-right: 5px;
+  padding: 5px;
   background: none !important;
   border-radius: 100%;
 
@@ -37,7 +40,30 @@
 }
 .userIcon {
   fill: #a4a4a4;
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   display: block; // Важно для SVG
+}
+
+.input {
+  margin-bottom: 0.8rem; /* Отступ снизу каждого поля */
+  height: 40px;
+  border: 2px solid #b8babc; /* Серая обводка */
+  border-radius: 6px; /* Закругление углов */
+  transition: border-color 0.3s ease; /* Плавное изменение */
+}
+
+.form input::placeholder {
+  padding-left: 10px; /* Отступ слева */
+  padding-right: 10px; /* Отступ справа */
+  color: #8f9297; /* Цвет текста плейсхолдера */
+}
+.form input:focus {
+  border-color: #3f89ff; /* Синяя обводка при фокусе */
+  outline: none; /* Убираем стандартный outline */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); /* Свечение */
+}
+.register {
+  margin-top: 5px;
+  font-size: 0.625rem;
 }

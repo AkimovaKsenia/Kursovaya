@@ -54,6 +54,7 @@ const LoginForm: FC = () => {
       <motion.div animate={isShow ? "open" : "closed"} variants={menuAnimation}>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <Field
+            className={styles.input}
             type="email"
             placeholder="Email"
             error={errors.email}
@@ -66,6 +67,7 @@ const LoginForm: FC = () => {
             })}
           />
           <Field
+            className={styles.input}
             type="password"
             placeholder="password"
             error={errors.password}
@@ -80,7 +82,12 @@ const LoginForm: FC = () => {
           <div className={"mt-5 mb-1 text-center"}>
             <Button onClick={() => setType("login")}>Login</Button>
           </div>
-          <button onClick={() => setType("register")}>Register</button>
+          <button
+            className={styles.register}
+            onClick={() => setType("register")}
+          >
+            Register
+          </button>
         </form>
       </motion.div>
     </div>
