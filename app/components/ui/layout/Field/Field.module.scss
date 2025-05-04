@@ -1,0 +1,19 @@
+/* Field.module.scss */
+.input {
+  display: flex;
+  flex-direction: column;
+}
+.error {
+  color: red;
+  font-size: 0.75rem;
+}
+
+/* Button.module.scss */
+.button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
