@@ -10,6 +10,8 @@ import { validEmail } from "./login-auth.constants";
 import Button from "../../Button/Button";
 import Field from "../../Field/Field";
 import UserAvatar from "../../user-avatar/UserAvatar";
+import { menuAnimation } from "utils/animation/Fade";
+import { motion } from "framer-motion";
 
 const LoginForm: FC = () => {
   const { ref, setIsShow, isShow } = useOutside(false);
@@ -49,7 +51,7 @@ const LoginForm: FC = () => {
         </button>
       )}
 
-      {isShow && (
+      <motion.div animate={isShow ? "open" : "closed"} variants={menuAnimation}>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <Field
             type="email"
@@ -80,7 +82,7 @@ const LoginForm: FC = () => {
           </div>
           <button onClick={() => setType("register")}>Register</button>
         </form>
-      )}
+      </motion.div>
     </div>
     //   <div className="text-black">LoginForm</div>
   );
