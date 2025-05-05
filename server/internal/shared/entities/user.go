@@ -25,3 +25,13 @@ type CreateUser struct {
 	Password string `json:"password" db:"password"`
 	RoleID   int    `json:"role_id" db:"role_id"`
 }
+
+type LoginUserRequest struct {
+	Email    string `json:"email" db:"email"`
+	Password string `json:"password" db:"password"`
+}
+
+type LoginUserResponse struct {
+	Token string `json:"token" db:"token"`
+	Role  string `json:"role" db:"role"`
+}

@@ -1,12 +1,15 @@
 package handler
 
 import (
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/rs/zerolog"
+	_ "kino/docs"
 	"kino/internal/shared/config"
 	"kino/internal/shared/log"
 	"kino/internal/shared/repository"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/rs/zerolog"
+	fiberSwagger "github.com/swaggo/fiber-swagger"
 )
 
 type Handler struct {
@@ -32,6 +35,13 @@ func (h *Handler) InitRouter() {
 		AllowMethods: "GET, HEAD, PUT, PATCH, POST, DELETE",
 	}))
 	f.Use(log.RequestLogger(h.logger))
+
+	f.Get("/swagger/*", fiberSwagger.WrapHandler)
+	f.Get("/", func(c *fiber.Ctx) error {
+		return c.Status(fiber.StatusOK).SendString("healthy")
+	})
+
+	f.Post("/login", h.Login)
 
 	f.Listen(":10000")
 }

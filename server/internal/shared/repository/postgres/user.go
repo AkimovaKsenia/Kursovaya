@@ -24,3 +24,18 @@ func (db *DB) CreateUser(u *entities.User) (int, error) {
 
 	return id, nil
 }
+
+func (db *DB) GetUserByEmail(email string) (*entities.GetUser, error) {
+	user := entities.GetUser{}
+	query := `SELECT users.id, users.name, users.surname, roles.name AS role, users.email, users.password
+		FROM users
+		JOIN public.roles ON users.role_id = roles.id
+		WHERE email = $1`
+	err := db.DB.Get(&user, query, email)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+
+}

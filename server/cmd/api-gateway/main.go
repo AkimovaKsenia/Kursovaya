@@ -12,6 +12,12 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// @title Kino API
+// @version 1.0
+// @BasePath /
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	if err := godotenv.Load(".env"); err != nil {
 		fmt.Println("No .env file found")
