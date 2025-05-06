@@ -57,18 +57,6 @@ const LoginForm: FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <Field
             className={styles.input}
-            type="name"
-            placeholder="Имя"
-            error={errors.name}
-          />
-          <Field
-            className={styles.input}
-            type="surname"
-            placeholder="Фамилия"
-            error={errors.surname}
-          />
-          <Field
-            className={styles.input}
             type="email"
             placeholder="Email"
             error={errors.email}
