@@ -20,6 +20,7 @@ const LoginForm: FC = () => {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<IAuthFields>({
     mode: "onChange",
   });
@@ -30,15 +31,16 @@ const LoginForm: FC = () => {
       setUser({
         id: 1,
         email: "test@test.ru",
-        avatarPath: "/clapper.ico",
         name: "Dev",
       });
+    reset();
+    setIsShow(false);
     // else if (type=='register') registerSync(data)
   };
   return (
     <div className={styles.wrapper} ref={ref}>
       {user ? (
-        <UserAvatar />
+        <UserAvatar link="/dashboard" title="Перейти в админ" />
       ) : (
         <button
           style={{
@@ -55,6 +57,18 @@ const LoginForm: FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <Field
             className={styles.input}
+            type="name"
+            placeholder="Имя"
+            error={errors.name}
+          />
+          <Field
+            className={styles.input}
+            type="surname"
+            placeholder="Фамилия"
+            error={errors.surname}
+          />
+          <Field
+            className={styles.input}
             type="email"
             placeholder="Email"
             error={errors.email}
@@ -69,7 +83,7 @@ const LoginForm: FC = () => {
           <Field
             className={styles.input}
             type="password"
-            placeholder="password"
+            placeholder="Пароль"
             error={errors.password}
             {...register("password", {
               required: "password is required",
