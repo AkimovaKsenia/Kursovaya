@@ -57,19 +57,6 @@ const LoginForm: FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <Field
             className={styles.input}
-            type="email"
-            placeholder="Email"
-            error={errors.email}
-            {...register("email", {
-              required: "Email is required",
-              pattern: {
-                value: validEmail,
-                message: "Please enter a valid email address",
-              },
-            })}
-          />
-          <Field
-            className={styles.input}
             type="password"
             placeholder="Пароль"
             error={errors.password}
