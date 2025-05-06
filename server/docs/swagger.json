@@ -1,0 +1,96 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Kino API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "basePath": "/",
+    "paths": {
+        "/login": {
+            "post": {
+                "description": "Вход пользователя в систему с выдачей jwt и роли",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Аутентификация пользователя",
+                "parameters": [
+                    {
+                        "description": "Данные для входа",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.LoginUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешная аутентификация",
+                        "schema": {
+                            "$ref": "#/definitions/entities.LoginUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные данные для входа",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "entities.Error": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.LoginUserRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.LoginUserResponse": {
+            "type": "object",
+            "properties": {
+                "role": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
