@@ -11,7 +11,6 @@ export const AuthService = {
 
     if (response.data.token) {
       saveToStorage(response.data);
-      console.log(`Пользователь ${email} успешно вошел в систему`);
     }
     return response.data;
   },
