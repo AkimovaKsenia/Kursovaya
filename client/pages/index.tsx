@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { Geist, Geist_Mono } from "next/font/google";
 import Layout from "@/components/ui/layout/Layout";
+import { NextPage } from "next";
+import Home from "../app/screens/home/Home";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,6 +14,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function Home() {
-  return <Layout title="Cinema">Главная</Layout>;
-}
+const HomePage: NextPage = () => {
+  return (
+    <main className={`${geistSans.variable} ${geistMono.variable}`}>
+      <Layout title="Home Page" description="Welcome to the home page">
+        <Home />
+      </Layout>
+    </main>
+  );
+};
+
+export default HomePage;

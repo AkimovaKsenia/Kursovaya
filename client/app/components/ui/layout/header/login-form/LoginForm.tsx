@@ -42,6 +42,12 @@ const LoginForm: FC = () => {
 
   const onSubmit: SubmitHandler<IAuthFields> = (data) => {
     if (type == "login") loginSync.mutate(data);
+    // if (type == "login")
+    //   setUser({
+    //     id: 1,
+    //     email: "test@test.ru",
+    //     name: "Dev",
+    //   });
     // else if (type=='register') registerSync(data)
   };
   return (
@@ -60,7 +66,11 @@ const LoginForm: FC = () => {
         </button>
       )}
 
-      <motion.div animate={isShow ? "open" : "closed"} variants={menuAnimation}>
+      <motion.div
+        initial={false}
+        animate={isShow ? "open" : "closed"}
+        variants={menuAnimation}
+      >
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <Field
             className={styles.input}
@@ -92,6 +102,7 @@ const LoginForm: FC = () => {
             <Button onClick={() => setType("login")}>Login</Button>
           </div>
           <button
+            type="button"
             className={styles.register}
             onClick={() => setType("register")}
           >
