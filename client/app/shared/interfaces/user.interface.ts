@@ -3,3 +3,8 @@ export interface IUser {
   name: string;
   email: string;
 }
+
+export interface IAuthResponse {
+  user: IUser;
+  accessToken: string;
+}
