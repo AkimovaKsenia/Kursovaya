@@ -1,5 +1,18 @@
 name: kursovaya
 services:
+  api-gateway:
+    build:
+      context: server
+      dockerfile: ./cmd/api-gateway/Dockerfile
+    ports:
+      - "10000:10000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    env_file:
+      - ./server/.env
+
   minio:
     image: quay.io/minio/minio
     container_name: minio-kino
@@ -8,7 +21,8 @@ services:
       - "127.0.0.1:10421:9001"
     volumes:
       - ./.data/minio:/data
-    env_file: ./server/.env
+    env_file:
+    - ./server/.env
     command: server /data --console-address ":9001"
     restart: unless-stopped
 
