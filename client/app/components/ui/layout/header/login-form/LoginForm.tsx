@@ -12,6 +12,8 @@ import Field from "../../Field/Field";
 import UserAvatar from "../../user-avatar/UserAvatar";
 import { menuAnimation } from "utils/animation/Fade";
 import { motion } from "framer-motion";
+import { useMutation } from "@tanstack/react-query";
+import { AuthService } from "services/auth.service";
 
 const LoginForm: FC = () => {
   const { ref, setIsShow, isShow } = useOutside(false);
@@ -26,15 +28,20 @@ const LoginForm: FC = () => {
   });
 
   const { user, setUser } = useAuth();
+
+  const loginSync = useMutation({
+    mutationKey: ["login"],
+    mutationFn: (data: IAuthFields) =>
+      AuthService.login(data.email, data.password),
+    onSuccess: (data) => {
+      if (setUser) setUser(data.user);
+      reset();
+      setIsShow(false);
+    },
+  });
+
   const onSubmit: SubmitHandler<IAuthFields> = (data) => {
-    if (type == "login")
-      setUser({
-        id: 1,
-        email: "test@test.ru",
-        name: "Dev",
-      });
-    reset();
-    setIsShow(false);
+    if (type == "login") loginSync.mutate(data);
     // else if (type=='register') registerSync(data)
   };
   return (
