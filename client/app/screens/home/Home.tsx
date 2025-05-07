@@ -5,6 +5,8 @@ import Button from "../../components/ui/layout/Button/Button";
 import { useAuth } from "hooks/useAuth";
 import { useRouter } from "next/router";
 import { AuthService } from "services/auth.service";
+import Head from "next/head";
+import styles from "./Home.module.scss";
 
 const Home: FC = () => {
   const { user, setUser } = useAuth(); // Используем контекст для получения текущего пользователя
@@ -19,12 +21,27 @@ const Home: FC = () => {
   console.log("Rendering Home page"); // Добавьте лог
 
   return (
-    <Layout title="Cinema">
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <h1 className="text-4xl font-bold mb-8">Главная страница</h1>
-
+    <Layout
+      title="Cinema"
+      backgroundImage="/imageMain.png"
+      backgroundColor="#1E1E1E"
+    >
+      <div
+        style={{
+          backgroundBlendMode: "overlay", // накладывает цвет на изображение
+        }}
+        className="flex flex-col items-center mr-230 justify-center min-h-[60vh] space-y-2 mt-10"
+      >
+        <h1 className={styles.heading}>Cinema</h1>
+        <h1 className={styles.headingMastery}>MASTERY</h1>
+        <div className="max-w-110">
+          <h3 className={styles.text}>
+            Вы окунётесь в мир новых приключений! Вас ждёт атмосферное
+            выживание, новые знакомства, куча эмоций и многое другое.
+          </h3>
+        </div>
         <Link href="/movies" passHref>
-          <Button className="px-6 py-3 text-lg">Перейти к фильмам</Button>
+          <Button className="px-6 py-3 text-lg mt-5">Перейти к фильмам</Button>
         </Link>
         <div>
           <button onClick={handleLogout}>Logout</button>

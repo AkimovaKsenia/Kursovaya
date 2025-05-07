@@ -28,10 +28,6 @@ const LoginForm: FC = () => {
   });
 
   const { user, setUser } = useAuth();
-  if (user) {
-    console.log(user.role); // Доступ к роли пользователя
-    console.log(user.token); // Доступ к токену
-  }
 
   const loginSync = useMutation({
     mutationKey: ["login"],
@@ -79,7 +75,11 @@ const LoginForm: FC = () => {
           className={styles.button}
           onClick={() => setIsShow(!isShow)}
         >
-          <FaUserCircle fill="#A4A4A4" className={styles.userIcon} />
+          <img
+            src="/FirstUser.png" // путь к изображению в public
+            alt="User"
+            className={styles.userIcon}
+          />{" "}
         </button>
       )}
 

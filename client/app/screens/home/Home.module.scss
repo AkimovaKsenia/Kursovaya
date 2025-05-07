@@ -1,0 +1,41 @@
+.heading {
+  font-size: 85px;
+  font-family: "CormorantSC", serif;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(90deg, #ffffff, #c4bef5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.headingMastery {
+  margin-top: -50px;
+  font-size: 95px;
+  font-family: "CormorantSC", serif;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(90deg, #ffffff, #c4bef5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #dccff9;
+  text-align: center;
+}
+
+.parallax {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 30, 30, 0.7),
+    rgba(0, 0, 0, 0.9)
+  );
+  animation: fadeInGradient 2s ease forwards;
+  z-index: 1;
+}

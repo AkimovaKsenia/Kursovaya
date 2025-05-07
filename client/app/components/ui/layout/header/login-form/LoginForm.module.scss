@@ -7,6 +7,7 @@
 
 .form {
   position: absolute;
+  z-index: 5; // Оверлей будет ниже, чем форма
   top: 100%; // Форма будет появляться под элементом
   right: 0.5rem;
   margin-top: 0.5rem;
@@ -29,9 +30,11 @@
   cursor: pointer;
   font-size: 1.725rem;
   line-height: 1.75rem;
-  padding: 5px;
+  margin-right: 17px;
+
   background: none !important;
   border-radius: 100%;
+  position: relative;
 
   /* Для лучшей доступности можно добавить фокус-стиль */
   &:focus {
@@ -40,9 +43,16 @@
 }
 .userIcon {
   fill: #a4a4a4;
-  width: 30px;
-  height: 30px;
-  display: block; // Важно для SVG
+  width: 38px;
+  height: 40px;
+}
+
+.userIcon:hover {
+  transform: scale(1.03); /* увеличение при наведении */
+}
+
+.userIcon:active {
+  transform: scale(0.95); /* лёгкое сжатие при клике */
 }
 
 .input {
@@ -66,4 +76,26 @@
 .register {
   margin-top: 5px;
   font-size: 0.625rem;
+}
+
+.gradientOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 30, 30, 0.7),
+    rgba(0, 0, 0, 0.9)
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 5;
+}
+
+.visible {
+  opacity: 1;
+  pointer-events: auto;
 }
