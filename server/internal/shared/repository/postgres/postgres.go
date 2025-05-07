@@ -41,4 +41,18 @@ func NewDatabase(envConf *config.Config) *DB {
 func CreateTable(db *sqlx.DB) {
 	db.MustExec(createTableRoles)
 	db.MustExec(createTableUsers)
+	db.MustExec(createTableCinemaConditions)
+	db.MustExec(createTableCinemaCategories)
+	db.MustExec(createTableCinemas)
+	db.MustExec(createTableCinemaHallTypes)
+	db.MustExec(createTableCinemaHalls)
+	db.MustExec(createTableFilmStudios)
+	db.MustExec(createTableFilms)
+	db.MustExec(createTableDirectors)
+	db.MustExec(createTableFilmsDirectors)
+	db.MustExec(createTableOperators)
+	db.MustExec(createTableFilmsOperators)
+	db.MustExec(createTableGenres)
+	db.MustExec(createTableFilmsGenres)
+	db.MustExec(createTableCinemaSessions)
 }
