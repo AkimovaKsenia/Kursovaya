@@ -4,12 +4,15 @@ import { removeTokenFromStorage, saveToStorage } from "./auth.helper";
 
 export const AuthService = {
   async login(email: string, password: string) {
-    const response = await axiosClassic.post<IAuthResponse>("/auth/login", {
+    const response = await axiosClassic.post<IAuthResponse>("/login", {
       email,
       password,
     });
 
-    if (response.data.accessToken) saveToStorage(response.data);
+    if (response.data.token) {
+      saveToStorage(response.data);
+      console.log(`Пользователь ${email} успешно вошел в систему`);
+    }
     return response.data;
   },
   logout() {

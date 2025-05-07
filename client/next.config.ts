@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/:path*",
+        source: "/:path*",
         destination: "http://localhost:4200/uploads/:path*",
       },
     ];

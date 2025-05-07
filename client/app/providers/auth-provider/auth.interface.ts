@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
-import { IUser } from "shared/interfaces/user.interface";
+import { IAuthResponse, IUser } from "shared/interfaces/user.interface";
 
-export type TypeUserState = IUser | null;
+export type TypeUserState = IAuthResponse | null;
 export interface IContext {
   user: TypeUserState;
   setUser: Dispatch<SetStateAction<TypeUserState>>;

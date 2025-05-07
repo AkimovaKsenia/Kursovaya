@@ -5,7 +5,7 @@ export const getContentType = () => ({
   "Content-Type": "application/json",
 });
 
-export const API_URL = `${process.env.APP_URL}/api`;
+export const API_URL = `${process.env.APP_URL}`;
 
 export const axiosClassic = axios.create({
   baseURL: API_URL,
