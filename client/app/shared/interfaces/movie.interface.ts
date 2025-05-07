@@ -11,3 +11,16 @@ export interface IMovie {
   views?: number;
   actors?: [];
 }
+
+export interface IMovieDto
+  extends Pick<
+    IMovie,
+    | "name"
+    | "genre"
+    | "description"
+    | "poster"
+    | "director"
+    | "producer"
+    | "film_studio"
+    | "actors"
+  > {}
