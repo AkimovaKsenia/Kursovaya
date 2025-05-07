@@ -1,0 +1,30 @@
+name: kursovaya
+services:
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio-kino
+    ports:
+      - "127.0.0.1:10420:9000"
+      - "127.0.0.1:10421:9001"
+    volumes:
+      - ./.data/minio:/data
+    env_file: ./server/.env
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16.8-alpine3.21
+    container_name: postgres-kino
+    volumes:
+      - ./.data/postgres:/var/lib/postgresql
+    ports:
+      - "127.0.0.1:10400:5432"
+    env_file:
+    - ./server/.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
