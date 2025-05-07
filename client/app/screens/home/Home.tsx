@@ -1,7 +1,36 @@
+import Layout from "@/components/ui/layout/Layout";
 import { FC } from "react";
+import Link from "next/link";
+import Button from "../../components/ui/layout/Button/Button";
+import { useAuth } from "hooks/useAuth";
+import { useRouter } from "next/router";
+import { AuthService } from "services/auth.service";
 
 const Home: FC = () => {
+  const { user, setUser } = useAuth(); // Используем контекст для получения текущего пользователя
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // Логика логаута
+    AuthService.logout(); // Вызываем logout, который удаляет токен и данные пользователя
+    setUser(null); // Очищаем состояние в контексте
+  };
+  console.log("Rendering Home page, user:", user); // Логируем состояние пользователя
   console.log("Rendering Home page"); // Добавьте лог
-  return <div>Home ONLY</div>;
+
+  return (
+    <Layout title="Cinema">
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <h1 className="text-4xl font-bold mb-8">Главная страница</h1>
+
+        <Link href="/movies" passHref>
+          <Button className="px-6 py-3 text-lg">Перейти к фильмам</Button>
+        </Link>
+        <div>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
+      </div>
+    </Layout>
+  );
 };
 export default Home;

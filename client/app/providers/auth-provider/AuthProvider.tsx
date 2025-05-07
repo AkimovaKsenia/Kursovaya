@@ -9,7 +9,6 @@ import { IContext, TypeUserState } from "./auth.interface";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { AuthService } from "services/auth.service";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const AuthContext = createContext({} as IContext);
 
@@ -18,19 +17,25 @@ const AuthProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
   const { pathname } = useRouter();
 
   useEffect(() => {
-    const accessToken = Cookies.get("accessToken");
-    if (accessToken) {
-      const user = JSON.parse(localStorage.getItem("user") || "");
-
-      setUser(user);
+    const token = Cookies.get("token");
+    if (token) {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        try {
+          const user = JSON.parse(userData);
+          setUser(user);
+        } catch (error) {
+          console.error("Ошибка при парсинге данных пользователя:", error);
+        }
+      }
     }
   }, []);
 
   useEffect(() => {
-    const accessToken = Cookies.get("accessToken");
-    if (!accessToken && !user) {
+    const token = Cookies.get("token");
+    if (!token) {
       AuthService.logout();
-      setUser(null);
+      setUser(null); // Сбрасываем состояние пользователя
     }
   }, [pathname]);
 

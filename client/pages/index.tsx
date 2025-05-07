@@ -15,13 +15,13 @@ const geistMono = Geist_Mono({
 });
 
 const HomePage: NextPage = () => {
-  return (
-    <main className={`${geistSans.variable} ${geistMono.variable}`}>
-      <Layout title="Home Page" description="Welcome to the home page">
-        <Home />
-      </Layout>
-    </main>
-  );
+  return <Home />;
 };
+
+// export const getStaticProps:GetStaticProps=async()=>{
+//   try {
+//     const{data: }
+//   }
+// }
 
 export default HomePage;

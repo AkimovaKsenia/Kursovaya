@@ -28,15 +28,32 @@ const LoginForm: FC = () => {
   });
 
   const { user, setUser } = useAuth();
+  if (user) {
+    console.log(user.role); // Доступ к роли пользователя
+    console.log(user.token); // Доступ к токену
+  }
 
   const loginSync = useMutation({
     mutationKey: ["login"],
     mutationFn: (data: IAuthFields) =>
       AuthService.login(data.email, data.password),
     onSuccess: (data) => {
-      if (setUser) setUser(data.user);
-      reset();
-      setIsShow(false);
+      if (data?.token && data?.role) {
+        // Сохраняем только role и accessToken в контексте
+        setUser({
+          role: data.role,
+          token: data.token,
+        });
+        reset();
+        setIsShow(false);
+        console.log("✅ Пользователь вошёл", data);
+      } else {
+        console.warn("⚠️ Нет данных о пользователе");
+        setUser(null); // Очистка состояния пользователя, если данных нет
+      }
+    },
+    onError: (error: any) => {
+      console.error("❌ Ошибка входа:", error?.response?.data || error.message);
     },
   });
 
@@ -93,7 +110,7 @@ const LoginForm: FC = () => {
             {...register("password", {
               required: "password is required",
               minLength: {
-                value: 6,
+                value: 4,
                 message: "Min length should more 6 symbols",
               },
             })}

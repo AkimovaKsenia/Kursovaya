@@ -5,6 +5,6 @@ export interface IUser {
 }
 
 export interface IAuthResponse {
-  user: IUser;
-  accessToken: string;
+  role: string;
+  token: string;
 }
