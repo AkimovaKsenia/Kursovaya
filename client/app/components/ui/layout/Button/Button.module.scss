@@ -1,19 +1,17 @@
-/* Field.module.scss */
-.input {
-  display: flex;
-  flex-direction: column;
-}
-.error {
-  color: red;
-  font-size: 0.75rem;
-}
-
-/* Button.module.scss */
 .button {
-  background-color: #007bff;
-  color: white;
+  background-color: #b4aee3;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.button:hover {
+  transform: scale(1.02);
+  background: linear-gradient(135deg, #ffffff 10%, #c4bef5 90%);
+}
+
+.button:active {
+  transform: scale(0.95);
 }

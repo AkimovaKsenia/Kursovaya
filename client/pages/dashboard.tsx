@@ -24,7 +24,7 @@ const Dashboard: FC = () => {
       <h1 style={{ color: "#fff" }}>Dashboard</h1>
       {user ? (
         <div>
-          <h2 style={{ color: "#e0e0e0" }}>Привет, {user.name}!</h2>
+          <h2 style={{ color: "#e0e0e0" }}>Привет!</h2>
           <p>Добро пожаловать в вашу панель управления.</p>
           <button
             onClick={handleLogout}

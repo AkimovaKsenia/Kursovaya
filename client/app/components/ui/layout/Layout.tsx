@@ -2,7 +2,6 @@ import { FC, PropsWithChildren } from "react";
 import Meta from "utils/Meta";
 import { IMeta } from "utils/meta.interface";
 import Header from "./header/Header";
-import AdminHeader from "../AdminHeader";
 
 const Layout: FC<PropsWithChildren<IMeta>> = ({
   children,
@@ -20,10 +19,9 @@ const Layout: FC<PropsWithChildren<IMeta>> = ({
             ? `url(${backgroundImage})`
             : undefined,
           backgroundColor: backgroundColor || "rgb(163, 163, 181)",
-          backgroundSize: backgroundImage ? "auto 100%" : undefined, // уменьшаем только ширину, высота будет автоматически
+          backgroundSize: backgroundImage ? "auto 100%" : undefined,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "right",
-          // backgroundBlendMode: backgroundImage ? "overlay" : undefined,
         }}
       >
         <Header />

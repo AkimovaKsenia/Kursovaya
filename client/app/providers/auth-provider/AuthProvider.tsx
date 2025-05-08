@@ -14,7 +14,7 @@ export const AuthContext = createContext({} as IContext);
 
 const AuthProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
   const [user, setUser] = useState<TypeUserState>(null);
-  const { pathname } = useRouter();
+  const { pathname } = useRouter(); //Содержит текущий путь
 
   useEffect(() => {
     const token = Cookies.get("token");
