@@ -5,18 +5,16 @@ import Button from "../../components/ui/layout/Button/Button";
 import { useAuth } from "hooks/useAuth";
 import { useRouter } from "next/router";
 import { AuthService } from "services/auth.service";
-import Head from "next/head";
 import styles from "./Home.module.scss";
 import cn from "classnames";
 
 const Home: FC = () => {
-  const { user, setUser } = useAuth(); // Используем контекст для получения текущего пользователя
+  const { user, setUser } = useAuth();
   const router = useRouter();
 
   const handleLogout = () => {
-    // Логика логаута
-    AuthService.logout(); // Вызываем logout, который удаляет токен и данные пользователя
-    setUser(null); // Очищаем состояние в контексте
+    AuthService.logout();
+    setUser(null);
   };
   console.log("Rendering Home page, user:", user); // Логируем состояние пользователя
   console.log("Rendering Home page"); // Добавьте лог

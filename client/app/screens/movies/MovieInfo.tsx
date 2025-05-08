@@ -1,9 +1,10 @@
 import Layout from "@/components/ui/layout/Layout";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { MovieService } from "services/movie.service";
+import { ViewsService } from "services/views.service";
 
 const MoviesInfo: FC = () => {
   const { query } = useRouter();
@@ -13,6 +14,17 @@ const MoviesInfo: FC = () => {
     queryFn: () => MovieService.getMovieById(movieId),
     select: ({ data }) => data,
   });
+
+  //АВТООБНОВЛЕНИЕ ПРОСМОТРОВ СТРАНИЦЫ
+  const { mutateAsync } = useMutation({
+    mutationKey: ["update count opened"],
+    mutationFn: () => ViewsService.updateViews(movieId.toString()),
+  });
+
+  useEffect(() => {
+    if (movieId) mutateAsync();
+  }, [movieId]);
+
   return (
     <Layout title={`${movie?.name}`}>
       <div style={{ background: "blue" }}>MOVIES</div>

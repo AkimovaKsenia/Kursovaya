@@ -1,0 +1,29 @@
+.sidebar {
+  background-color: #dae0fb;
+  width: 60px;
+  .logo {
+    color: #730cc7;
+    margin-bottom: 7px;
+    font-size: 60px;
+  }
+  .menu {
+    margin-top: 80px;
+    align-items: center;
+    margin-left: 8px;
+    .item {
+      display: block;
+      margin-bottom: 6px;
+      transition: all;
+      color: #8581a4;
+      font-size: 30px;
+      margin-top: 25px;
+      &.active {
+        font-size: 35px;
+        color: #730cc7;
+      }
+      &:hover {
+        color: linear-gradient(135deg, #ffffff 10%, #8c81e4 90%);
+      }
+    }
+  }
+}
