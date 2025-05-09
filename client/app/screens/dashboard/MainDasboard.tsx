@@ -4,6 +4,7 @@ import AdminLayout from "@/components/ui/layout/AdminHeader";
 import { useAuth } from "hooks/useAuth";
 import Link from "next/link";
 import MainStatistic from "./MainStatistics";
+import styles from "./MainDashboard.module.scss";
 
 const Dashboard: FC = () => {
   const { user, setUser } = useAuth(); // Получаем данные пользователя из контекста
@@ -20,6 +21,7 @@ const Dashboard: FC = () => {
         }}
       >
         <div
+          className={styles.main}
           style={{
             position: "fixed",
             width: "1000px",
@@ -40,7 +42,9 @@ const Dashboard: FC = () => {
               <h1 style={{ color: "#FFFFFF" }}>Dashboard</h1>
               <h2 style={{ color: "#FFFFFF" }}>Привет!</h2>
               <p>Добро пожаловать в вашу панель управления.</p>
-              <MainStatistic />
+              <div className="w-full flex justify-center">
+                <MainStatistic />
+              </div>
             </div>
           ) : (
             <>

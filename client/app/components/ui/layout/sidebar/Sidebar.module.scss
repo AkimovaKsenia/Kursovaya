@@ -34,11 +34,11 @@
         margin-bottom: 6px;
         transition: all;
         color: #acabb0;
-        font-size: 30px;
+        font-size: 27px;
         margin-top: 25px;
 
         &.active {
-          font-size: 37px;
+          font-size: 30px;
           color: #c4a6e3;
           filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.6))
             drop-shadow(0 0 6px rgba(46, 185, 249, 0.9));
