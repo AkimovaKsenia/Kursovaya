@@ -1,5 +1,7 @@
 package entities
 
+import "github.com/lib/pq"
+
 type Film struct {
 	ID            int      `json:"id" db:"id"`
 	Name          string   `json:"name" db:"name"`
@@ -28,4 +30,16 @@ type Operator struct {
 type Genre struct {
 	ID   int    `json:"id" db:"id"`
 	Name string `json:"name" db:"name"`
+}
+
+type CreateFilm struct {
+	Name          string         `json:"name" db:"name" form:"name"`
+	Description   string         `json:"description" db:"description" form:"description"`
+	Photo         string         `json:"photo" db:"photo" form:"photo"`
+	CastList      pq.StringArray `json:"cast_list" db:"cast_list" form:"cast_list"`
+	FilmStudioID  int            `json:"film_studio_id" db:"film_studio_id" form:"film_studio_id"`
+	DurationInMin int            `json:"duration_in_min" db:"duration_in_min" form:"duration_in_min"`
+	DirectorIDs   []int          `json:"director_ids" db:"director_ids" form:"director_ids"`
+	OperatorIDs   []int          `json:"operator_ids" db:"operator_ids" form:"operator_ids"`
+	GenreIDs      []int          `json:"genre_ids" db:"genre_ids" form:"genre_ids"`
 }

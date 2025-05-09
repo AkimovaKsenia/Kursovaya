@@ -45,7 +45,7 @@ services:
     volumes:
       - ./.data/postgres:/var/lib/postgresql
     ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+      - ${POSTGRES_EXTERNAL_PORT}:${POSTGRES_PORT}
     env_file:
     - .env
     healthcheck:

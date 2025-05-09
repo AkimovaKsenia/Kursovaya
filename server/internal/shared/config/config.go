@@ -5,7 +5,11 @@ import (
 )
 
 type Application struct {
-	SigningKey string
+	SigningKey      string
+	ApiGatewayPort  string
+	ApiGatewayHost  string
+	FilmServicePort string
+	FilmServiceHost string
 }
 
 type Db struct {
@@ -32,7 +36,11 @@ type Config struct {
 func NewEnvConfig() *Config {
 	return &Config{
 		Application: Application{
-			SigningKey: os.Getenv("SIGNING_KEY"),
+			SigningKey:      os.Getenv("SIGNING_KEY"),
+			ApiGatewayPort:  os.Getenv("API_GATEWAY_PORT"),
+			ApiGatewayHost:  os.Getenv("API_GATEWAY_HOST"),
+			FilmServicePort: os.Getenv("FILM_SERVICE_PORT"),
+			FilmServiceHost: os.Getenv("FILM_SERVICE_HOST"),
 		},
 		Db: Db{
 			Host:     os.Getenv("POSTGRES_HOST"),
