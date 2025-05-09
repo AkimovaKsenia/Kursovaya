@@ -26,11 +26,10 @@ const AdminLayout: FC<PropsWithChildren<IMeta>> = ({
 
         <div className={cn("flex-1 flex flex-col", styles.content)}>
           <Header className="header-wrapper" />
-          {user && user.role === "admin" && (
-            <main className={cn("flex-1 overflow-auto", styles.main)}>
-              {children}
-            </main>
-          )}
+
+          <main className={cn("flex-1 overflow-auto", styles.main)}>
+            {children}
+          </main>
         </div>
       </section>
     </>

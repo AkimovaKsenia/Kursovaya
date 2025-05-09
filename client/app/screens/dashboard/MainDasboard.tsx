@@ -3,6 +3,7 @@ import { FaSignOutAlt } from "react-icons/fa"; // Иконка выхода
 import AdminLayout from "@/components/ui/layout/AdminHeader";
 import { useAuth } from "hooks/useAuth";
 import Link from "next/link";
+import MainStatistic from "./MainStatistics";
 
 const Dashboard: FC = () => {
   const { user, setUser } = useAuth(); // Получаем данные пользователя из контекста
@@ -15,6 +16,7 @@ const Dashboard: FC = () => {
           height: "calc(100vh - 52.8px)", // учитываем высоту header, если есть
           padding: "20px",
           boxSizing: "border-box", // 1. Добавляем для корректного расчета размеров
+          overflowX: "hidden" /* запрещает горизонтальный скролл */,
         }}
       >
         <div
@@ -27,24 +29,28 @@ const Dashboard: FC = () => {
             padding: "20px",
             fontFamily: "Arial, sans-serif",
             backgroundColor: "#A7A7B6",
-            color: "#1F1F1F", // Светлый текст
+            color: "#FFFFFF", // Светлый текст
             boxSizing: "border-box",
             overflow: "auto",
             boxShadow: "2px 2px 17px rgba(129, 125, 219, 0.6)",
           }}
         >
-          <h1 style={{ color: "#1F1F1F" }}>Dashboard</h1>
           {user ? (
             <div>
-              <h2 style={{ color: "#1F1F1F" }}>Привет!</h2>
+              <h1 style={{ color: "#FFFFFF" }}>Dashboard</h1>
+              <h2 style={{ color: "#FFFFFF" }}>Привет!</h2>
               <p>Добро пожаловать в вашу панель управления.</p>
+              <MainStatistic />
             </div>
           ) : (
             <>
-              <p>Пожалуйста, войдите в систему, чтобы продолжить.</p>
+              <p style={{ color: "#FFFFFF", marginTop: "15px" }}>
+                Пожалуйста, войдите в систему, чтобы продолжить.
+              </p>
               <Link href="/">
                 <button
                   style={{
+                    marginTop: "15px",
                     padding: "10px 15px",
                     backgroundColor: "#bb86fc", // Цвет кнопки для темной темы
                     color: "#121212", // Темный текст на кнопке
