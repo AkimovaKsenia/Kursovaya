@@ -5,6 +5,7 @@ import { IMeta } from "utils/meta.interface";
 import Header from "./header/Header";
 import Sidebar from "./sidebar/Sidebar";
 import { useAuth } from "hooks/useAuth";
+import cn from "classnames";
 
 const AdminLayout: FC<PropsWithChildren<IMeta>> = ({
   children,
@@ -15,11 +16,21 @@ const AdminLayout: FC<PropsWithChildren<IMeta>> = ({
   return (
     <>
       <Meta {...meta} />
-      <section className={user ? styles.header : ""}>
-        {user && <Sidebar className={styles.sidebar} />}
-        <div className={styles.content}>
-          <Header className={styles["header-component"]} />
-          <main className={styles.main}>{children}</main>
+      <section
+        className={cn("flex min-h-screen", user && styles.wrapper)}
+        style={{ backgroundColor: backgroundColor }}
+      >
+        {user && user.role === "admin" && (
+          <Sidebar className={styles.sidebar} />
+        )}
+
+        <div className={cn("flex-1 flex flex-col", styles.content)}>
+          <Header className="header-wrapper" />
+          {user && user.role === "admin" && (
+            <main className={cn("flex-1 overflow-auto", styles.main)}>
+              {children}
+            </main>
+          )}
         </div>
       </section>
     </>

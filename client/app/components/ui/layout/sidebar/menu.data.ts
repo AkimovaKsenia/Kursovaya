@@ -20,11 +20,11 @@ export const menu: IMenuItem[] = [
     Icon: PiChartBarDuotone,
   },
   {
-    link: "/movies",
+    link: "/manage/movies",
     Icon: PiFilmSlateDuotone,
   },
   {
-    link: "/cinema",
+    link: "/manage/cinema",
     Icon: PiFilmStrip,
   },
 ];
