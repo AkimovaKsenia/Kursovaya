@@ -158,3 +158,184 @@ func (db *DB) CreateFilm(f *entities.CreateFilm) (int, error) {
 
 	return filmID, nil
 }
+
+func (db *DB) GetFilmByID(id int) (*entities.FilmFull, error) {
+	// Основная информация о фильме
+	var film entities.FilmFull
+	err := db.DB.Get(&film, `
+        SELECT 
+            f.id, 
+            f.name, 
+            f.description, 
+            f.photo, 
+            f.cast_list, 
+            fs.name as film_studio_name,
+            f.duration_in_min
+        FROM films f
+        LEFT JOIN film_studios fs ON f.film_studio_id = fs.id
+        WHERE f.id = $1
+    `, id)
+	if err != nil {
+		return nil, fmt.Errorf("error getting film: %w", err)
+	}
+
+	// Получаем режиссеров как массив FIO
+	var directors []string
+	err = db.DB.Select(&directors, `
+        SELECT d.fio
+        FROM directors d
+        JOIN films_directors fd ON d.id = fd.director_id
+        WHERE fd.film_id = $1
+    `, id)
+	if err != nil {
+		return nil, fmt.Errorf("error getting directors: %w", err)
+	}
+	film.Directors = directors
+
+	// Получаем операторов как массив FIO
+	var operators []string
+	err = db.DB.Select(&operators, `
+        SELECT o.fio
+        FROM operators o
+        JOIN films_operators fo ON o.id = fo.operator_id
+        WHERE fo.film_id = $1
+    `, id)
+	if err != nil {
+		return nil, fmt.Errorf("error getting operators: %w", err)
+	}
+	film.Operators = operators
+
+	// Получаем жанры как массив названий
+	var genres []string
+	err = db.DB.Select(&genres, `
+        SELECT g.name
+        FROM genres g
+        JOIN films_genres fg ON g.id = fg.genre_id
+        WHERE fg.film_id = $1
+    `, id)
+	if err != nil {
+		return nil, fmt.Errorf("error getting genres: %w", err)
+	}
+	film.Genres = genres
+
+	return &film, nil
+}
+
+func (db *DB) GetAllFilms() ([]entities.FilmFull, error) {
+	// Сначала получаем основные данные о фильмах
+	var films []entities.FilmFull
+	err := db.DB.Select(&films, `
+        SELECT 
+            f.id, 
+            f.name, 
+            f.description, 
+            f.photo, 
+            f.cast_list, 
+            fs.name as film_studio_name,
+            f.duration_in_min
+        FROM films f
+        LEFT JOIN film_studios fs ON f.film_studio_id = fs.id
+        ORDER BY f.id
+    `)
+	if err != nil {
+		return nil, fmt.Errorf("error getting basic film data: %w", err)
+	}
+
+	// Затем для каждого фильма получаем связанные данные
+	for i := range films {
+		filmID := films[i].ID
+
+		// Получаем режиссеров
+		var directors []string
+		err = db.DB.Select(&directors, `
+            SELECT d.fio
+            FROM directors d
+            JOIN films_directors fd ON d.id = fd.director_id
+            WHERE fd.film_id = $1
+        `, filmID)
+		if err != nil {
+			return nil, fmt.Errorf("error getting directors for film %d: %w", filmID, err)
+		}
+		films[i].Directors = directors
+
+		// Получаем операторов
+		var operators []string
+		err = db.DB.Select(&operators, `
+            SELECT o.fio
+            FROM operators o
+            JOIN films_operators fo ON o.id = fo.operator_id
+            WHERE fo.film_id = $1
+        `, filmID)
+		if err != nil {
+			return nil, fmt.Errorf("error getting operators for film %d: %w", filmID, err)
+		}
+		films[i].Operators = operators
+
+		// Получаем жанры
+		var genres []string
+		err = db.DB.Select(&genres, `
+            SELECT g.name
+            FROM genres g
+            JOIN films_genres fg ON g.id = fg.genre_id
+            WHERE fg.film_id = $1
+        `, filmID)
+		if err != nil {
+			return nil, fmt.Errorf("error getting genres for film %d: %w", filmID, err)
+		}
+		films[i].Genres = genres
+	}
+
+	return films, nil
+}
+
+func (db *DB) GetAllGenres() ([]entities.Genre, error) {
+	var genres []entities.Genre
+	err := db.DB.Select(&genres, `
+        SELECT id, name
+        FROM genres
+        ORDER BY name
+    `)
+	if err != nil {
+		return nil, fmt.Errorf("error getting all genres: %w", err)
+	}
+	return genres, nil
+}
+
+func (db *DB) GetAllOperators() ([]entities.Operator, error) {
+	var operators []entities.Operator
+	err := db.DB.Select(&operators, `
+        SELECT id, fio
+        FROM operators
+        ORDER BY fio
+    `)
+	if err != nil {
+		return nil, fmt.Errorf("error getting all operators: %w", err)
+	}
+	return operators, nil
+}
+
+func (db *DB) GetAllDirectors() ([]entities.Director, error) {
+	var directors []entities.Director
+	err := db.DB.Select(&directors, `
+        SELECT id, fio
+        FROM directors
+        ORDER BY fio
+    `)
+	if err != nil {
+		return nil, fmt.Errorf("error getting all directors: %w", err)
+	}
+	return directors, nil
+}
+
+func (db *DB) GetAllFilmStudios() ([]entities.FilmStudio, error) {
+	var studios []entities.FilmStudio
+	err := db.DB.Select(&studios, `
+        SELECT id, name
+        FROM film_studios
+        ORDER BY name
+    `)
+	if err != nil {
+		return nil, fmt.Errorf("error getting all film studios: %w", err)
+	}
+	return studios, nil
+}

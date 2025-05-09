@@ -35,3 +35,8 @@ type LoginUserResponse struct {
 	Token string `json:"token" db:"token"`
 	Role  string `json:"role" db:"role"`
 }
+
+type UserRole struct {
+	ID   int    `json:"id" db:"id"`
+	Role string `json:"role" db:"role"`
+}
