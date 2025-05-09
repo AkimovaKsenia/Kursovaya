@@ -5,13 +5,26 @@ services:
       context: server
       dockerfile: ./cmd/api-gateway/Dockerfile
     ports:
-      - "10000:10000"
+      - ${API_GATEWAY_PORT}:${API_GATEWAY_PORT}
     depends_on:
       postgres:
         condition: service_healthy
     restart: unless-stopped
     env_file:
-      - ./server/.env
+      - .env
+
+  film_service:
+    build:
+      context: server
+      dockerfile: ./cmd/test/Dockerfile
+    ports:
+      - ${FILM_SERVICE_PORT}:${FILM_SERVICE_PORT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    env_file:
+      - .env
 
   minio:
     image: quay.io/minio/minio
@@ -22,7 +35,7 @@ services:
     volumes:
       - ./.data/minio:/data
     env_file:
-    - ./server/.env
+    - .env
     command: server /data --console-address ":9001"
     restart: unless-stopped
 
@@ -32,9 +45,9 @@ services:
     volumes:
       - ./.data/postgres:/var/lib/postgresql
     ports:
-      - "127.0.0.1:10400:5432"
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     env_file:
-    - ./server/.env
+    - .env
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_PASSWORD}"]
       interval: 10s
