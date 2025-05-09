@@ -39,3 +39,18 @@ func (db *DB) GetUserByEmail(email string) (*entities.GetUser, error) {
 	return &user, nil
 
 }
+
+func (db *DB) GetUserRoleById(userID int) (*entities.UserRole, error) {
+	query := `
+		SELECT users.id, roles.name AS role 
+		FROM users JOIN roles ON users.role_id = roles.id 
+		WHERE users.id = $1
+	`
+
+	var us entities.UserRole
+	err := db.DB.Get(&us, query, userID)
+	if err != nil {
+		return nil, err
+	}
+	return &us, nil
+}

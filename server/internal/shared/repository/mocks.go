@@ -9,6 +9,11 @@ import (
 func (r *Repository) CreateMocks() {
 	r.CreateRoles()
 	r.CreateUsers()
+	r.CreateFilmStudios()
+	r.CreateGenres()
+	r.CreateDirectors()
+	r.CreateOperators()
+	r.CreateFilms()
 }
 
 func (r *Repository) CreateRoles() {
@@ -56,5 +61,105 @@ func (r *Repository) CreateUsers() {
 		log.Println("successful creating mock users")
 	} else {
 		log.Println("users already exist, skipping creation")
+	}
+}
+
+func (r *Repository) CreateFilmStudios() {
+	var count int
+	err := r.DB.DB.QueryRow("SELECT COUNT(*) FROM film_studios").Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if count == 0 {
+		for _, studio := range mockFilmStudios {
+			_, err = r.DB.CreateFilmStudio(&studio)
+			if err != nil {
+				log.Fatal(fmt.Errorf("error creating mock film studios: %w", err))
+			}
+		}
+		log.Println("successful creating mock film studios")
+	} else {
+		log.Println("film studios already exist, skipping creation")
+	}
+}
+
+func (r *Repository) CreateGenres() {
+	var count int
+	err := r.DB.DB.QueryRow("SELECT COUNT(*) FROM genres").Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if count == 0 {
+		for _, genre := range mockGenres {
+			_, err = r.DB.CreateGenre(&genre)
+			if err != nil {
+				log.Fatal(fmt.Errorf("error creating mock genres: %w", err))
+			}
+		}
+		log.Println("successful creating mock genres")
+	} else {
+		log.Println("genres already exist, skipping creation")
+	}
+}
+
+func (r *Repository) CreateDirectors() {
+	var count int
+	err := r.DB.DB.QueryRow("SELECT COUNT(*) FROM directors").Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if count == 0 {
+		for _, director := range mockDirectors {
+			_, err = r.DB.CreateDirector(&director)
+			if err != nil {
+				log.Fatal(fmt.Errorf("error creating mock directors: %w", err))
+			}
+		}
+		log.Println("successful creating mock directors")
+	} else {
+		log.Println("directors already exist, skipping creation")
+	}
+}
+
+func (r *Repository) CreateOperators() {
+	var count int
+	err := r.DB.DB.QueryRow("SELECT COUNT(*) FROM operators").Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if count == 0 {
+		for _, operator := range mockOperators {
+			_, err = r.DB.CreateOperator(&operator)
+			if err != nil {
+				log.Fatal(fmt.Errorf("error creating mock operators: %w", err))
+			}
+		}
+		log.Println("successful creating mock operators")
+	} else {
+		log.Println("operators already exist, skipping creation")
+	}
+}
+
+func (r *Repository) CreateFilms() {
+	var count int
+	err := r.DB.DB.QueryRow("SELECT COUNT(*) FROM films").Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if count == 0 {
+		for _, film := range mockFilms {
+			_, err := r.DB.CreateFilm(&film)
+			if err != nil {
+				log.Fatal(fmt.Errorf("error creating mock film: %w", err))
+			}
+		}
+		log.Println("successful creating mock films")
+	} else {
+		log.Println("film already exist, skipping creation")
 	}
 }

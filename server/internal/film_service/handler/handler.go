@@ -1,15 +1,13 @@
 package handler
 
 import (
-	_ "kino/docs"
-	"kino/internal/shared/config"
-	"kino/internal/shared/log"
-	"kino/internal/shared/repository"
-
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/rs/zerolog"
-	fiberSwagger "github.com/swaggo/fiber-swagger"
+	"kino/internal/shared/config"
+	"kino/internal/shared/log"
+	"kino/internal/shared/repository"
 )
 
 type Handler struct {
@@ -29,34 +27,16 @@ func (h *Handler) InitRouter() {
 	})
 
 	f.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
+		AllowOrigins: h.conf.Application.ApiGatewayHost,
 		//AllowCredentials: true,
 		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
 		AllowMethods: "GET, HEAD, PUT, PATCH, POST, DELETE",
 	}))
 	f.Use(log.RequestLogger(h.logger))
 
-	f.Get("/swagger/*", fiberSwagger.WrapHandler)
 	f.Get("/", func(c *fiber.Ctx) error {
-		return c.Status(fiber.StatusOK).SendString("api-gateway healthy")
+		return c.Status(fiber.StatusOK).SendString("film service healthy")
 	})
 
-	f.Post("/login", h.Login)
-
-	authGroup := f.Group("/auth")
-	authGroup.Use(func(c *fiber.Ctx) error {
-		return h.WithJWTAuth(c)
-	})
-	{
-		authGroup.Get("/genres", h.GetAllGenres)
-		authGroup.Get("/operators", h.GetAllOperators)
-		authGroup.Get("/directors", h.GetAllDirectors)
-		authGroup.Get("/film-studios", h.GetAllFilmStudios)
-
-		authGroup.Post("/film", h.CreateFilm)
-		authGroup.Get("/film", h.GetAllFilms)
-		authGroup.Get("/film/id/:id", h.GetFilmByID)
-	}
-
-	f.Listen(":10000")
+	f.Listen(fmt.Sprintf(":%s", h.conf.Application.FilmServicePort))
 }

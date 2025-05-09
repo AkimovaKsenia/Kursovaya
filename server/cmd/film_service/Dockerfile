@@ -7,15 +7,15 @@ RUN go mod download && go mod verify
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o api ./cmd/api-gateway
+RUN CGO_ENABLED=0 GOOS=linux go build -o film_service ./cmd/film_service
 
 
 FROM alpine:3.18
 WORKDIR /app
 COPY --from=builder /app .
 
-ARG PORT=10000
-ENV PORT=${API_GATEWAY_PORT}
+ARG PORT=10001
+ENV PORT=${FILM_SERVICE_PORT}
 EXPOSE $PORT
 
-CMD ["./api"]
+CMD ["./film_service"]

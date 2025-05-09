@@ -67,3 +67,20 @@ func (h *Handler) Login(c *fiber.Ctx) error {
 	logEvent.Msg("success")
 	return c.Status(fiber.StatusOK).JSON(res)
 }
+
+// Register
+// @Tags         Auth
+// @Summary      Создание нового пользователя
+// @Description  Создание пользователя с переданными данными (только для админа)
+// @Accept       json
+// @Produce      json
+// @Param        request body entities.CreateUser true "Данные пользователя"
+// @Success      200 {object} entities.ID "Пользователь создан"
+// @Failure      400 {object} entities.Error "Некорректные данные для входа"
+// @Failure      403 {object} entities.Error "Недостаточно прав"
+// @Failure      500 {object} entities.Error "Ошибка на стороне сервера"
+// @Router       /auth/register [post]
+// @Security ApiKeyAuth
+func (h *Handler) Register(c *fiber.Ctx) error {
+	return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "not implemented"})
+}

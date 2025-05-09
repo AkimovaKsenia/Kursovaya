@@ -1,9 +1,79 @@
 basePath: /
 definitions:
+  entities.CreateUser:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      role_id:
+        type: integer
+      surname:
+        type: string
+    type: object
+  entities.Director:
+    properties:
+      fio:
+        type: string
+      id:
+        type: integer
+    type: object
   entities.Error:
     properties:
       error:
         type: string
+    type: object
+  entities.FilmFull:
+    properties:
+      cast_list:
+        items:
+          type: string
+        type: array
+      description:
+        type: string
+      directors:
+        items:
+          type: string
+        type: array
+      duration_in_min:
+        type: integer
+      film_studio_name:
+        type: string
+      genres:
+        items:
+          type: string
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+      operators:
+        items:
+          type: string
+        type: array
+      photo:
+        type: string
+    type: object
+  entities.FilmStudio:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  entities.Genre:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  entities.ID:
+    properties:
+      id:
+        type: integer
     type: object
   entities.LoginUserRequest:
     properties:
@@ -19,11 +89,290 @@ definitions:
       token:
         type: string
     type: object
+  entities.Operator:
+    properties:
+      fio:
+        type: string
+      id:
+        type: integer
+    type: object
 info:
   contact: {}
   title: Kino API
   version: "1.0"
 paths:
+  /auth/directors:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список всех режиссеров
+          schema:
+            items:
+              $ref: '#/definitions/entities.Director'
+            type: array
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех режиссеров
+      tags:
+      - Film
+  /auth/film:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Все фильмы успешно получены
+          schema:
+            items:
+              $ref: '#/definitions/entities.FilmFull'
+            type: array
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех фильмов
+      tags:
+      - Film
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: Название
+        example: '"Оно"'
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Описание
+        example: '"Сука клоун"'
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Фото фильма
+        in: formData
+        name: film_photo
+        type: file
+      - collectionFormat: csv
+        description: Список актеров
+        example: '"Райан Рейнольдс, Морена Баккарин"'
+        in: formData
+        items:
+          type: string
+        name: cast_list
+        required: true
+        type: array
+      - description: ID киностудии
+        in: formData
+        name: film_studio_id
+        required: true
+        type: integer
+      - description: Продолжительность фильма в минутах
+        in: formData
+        name: duration_in_min
+        required: true
+        type: integer
+      - collectionFormat: csv
+        description: ID режиссеров
+        in: formData
+        items:
+          type: integer
+        name: director_ids
+        required: true
+        type: array
+      - collectionFormat: csv
+        description: ID операторов
+        in: formData
+        items:
+          type: integer
+        name: operator_ids
+        required: true
+        type: array
+      - collectionFormat: csv
+        description: ID жанров
+        in: formData
+        items:
+          type: integer
+        name: genre_ids
+        required: true
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Фильм успешно создан
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "401":
+          description: Пользователь не авторизован
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "403":
+          description: Недостаточно прав для запроса
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание фильма
+      tags:
+      - Film
+  /auth/film-studios:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список всех киностудий
+          schema:
+            items:
+              $ref: '#/definitions/entities.FilmStudio'
+            type: array
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех киностудий
+      tags:
+      - Film
+  /auth/film/id/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID фильма
+        example: 1
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Фильм по ID успешно получен
+          schema:
+            $ref: '#/definitions/entities.FilmFull'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение фильма по ID
+      tags:
+      - Film
+  /auth/genres:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список всех жанров
+          schema:
+            items:
+              $ref: '#/definitions/entities.Genre'
+            type: array
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех жанров
+      tags:
+      - Film
+  /auth/operators:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список всех операторов
+          schema:
+            items:
+              $ref: '#/definitions/entities.Operator'
+            type: array
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех операторов
+      tags:
+      - Film
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Создание пользователя с переданными данными (только для админа)
+      parameters:
+      - description: Данные пользователя
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entities.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Пользователь создан
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректные данные для входа
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "403":
+          description: Недостаточно прав
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание нового пользователя
+      tags:
+      - Auth
   /login:
     post:
       consumes:
