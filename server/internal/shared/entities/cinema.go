@@ -1,5 +1,15 @@
 package entities
 
+type CinemaCondition struct {
+	ID   int    `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
+}
+
+type CinemaCategory struct {
+	ID   int    `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
+}
+
 type Cinema struct {
 	ID          int    `json:"id" db:"id"`
 	Name        string `json:"name" db:"name"`
@@ -12,12 +22,13 @@ type Cinema struct {
 	CategoryID  int    `json:"category_id" db:"category_id"`
 }
 
-type CinemaCondition struct {
-	ID   int    `json:"id" db:"id"`
-	Name string `json:"name" db:"name"`
+type CinemaNameAddress struct {
+	ID      int    `json:"id" db:"id"`
+	Name    string `json:"name" db:"name"`
+	Address string `json:"address" db:"address"`
 }
 
-type CinemaCategory struct {
+type CinemaHallType struct {
 	ID   int    `json:"id" db:"id"`
 	Name string `json:"name" db:"name"`
 }
@@ -30,7 +41,9 @@ type CinemaHall struct {
 	CinemaID int    `json:"cinema_id" db:"cinema_id"`
 }
 
-type CinemaHallType struct {
-	ID   int    `json:"id" db:"id"`
-	Name string `json:"name" db:"name"`
+type GetCinemaHall struct {
+	ID       int    `json:"id" db:"id"`
+	Name     string `json:"name" db:"name"`
+	Capacity int    `json:"capacity" db:"capacity"`
+	Type     string `json:"type" db:"type"`
 }
