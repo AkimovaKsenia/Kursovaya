@@ -16,7 +16,7 @@ services:
   film_service:
     build:
       context: server
-      dockerfile: ./cmd/test/Dockerfile
+      dockerfile: ./cmd/film_service/Dockerfile
     ports:
       - ${FILM_SERVICE_PORT}:${FILM_SERVICE_PORT}
     depends_on:
