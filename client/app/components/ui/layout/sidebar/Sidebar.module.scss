@@ -1,0 +1,63 @@
+.sidebar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  background-color: none;
+  transform: translateY(40%);
+  height: 450px;
+  width: 50px;
+  min-width: 50px;
+  margin-left: 218px;
+  background-image: url("/Vector.png"); /* Путь к изображению */
+  background-size: cover; /* Растягиваем изображение на весь блок */
+  background-position: center; /* Центрируем изображение */
+  background-repeat: no-repeat; /* Запрещаем повторение */
+  overflow: hidden; /* важно для корректного отображения */
+
+  > div {
+    position: absolute;
+    width: 100%;
+
+    .logo {
+      color: #730cc7;
+      margin-bottom: 7px;
+      font-size: 50px;
+    }
+    .menu {
+      align-items: center;
+      // margin-left: 8px;
+      .item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 6px;
+        transition: all;
+        color: #acabb0;
+        font-size: 27px;
+        margin-top: 25px;
+
+        &.active {
+          font-size: 30px;
+          color: #c4a6e3;
+          filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.6))
+            drop-shadow(0 0 6px rgba(46, 185, 249, 0.9));
+          text-shadow: 0 0 10px rgba(221, 221, 221, 0.3); // Свечение для активной иконки
+        }
+
+        &:hover {
+          color: #baa3cb; // Изменение цвета при наведении
+          filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
+            drop-shadow(0 0 6px rgba(46, 185, 249, 0.8));
+          transform: scale(1.09); // Увеличение на 10%
+          text-shadow: 0 0 12px rgba(115, 12, 199, 0.4); // Лёгкое свечение
+        }
+
+        > svg {
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+    }
+  }
+}

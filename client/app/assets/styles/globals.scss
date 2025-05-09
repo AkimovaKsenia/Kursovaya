@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "CormorantSC";
+  src: url("/CormorantSC-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -22,6 +29,16 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #ebeffd;
+  font-family: "CormorantSC", Arial, Helvetica, sans-serif;
+  background-color: #eff1ff;
+}
+
+.header-wrapper {
+  padding: 6px;
+  height: 52.8px;
+  background-color: none !important;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(110, 109, 109, 0.1);
+  width: 100% !important;
 }

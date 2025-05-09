@@ -1,11 +1,9 @@
 import { useOutside } from "hooks/useOutside";
 import { FC, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Meta from "utils/Meta";
 import { IAuthFields } from "./login-form.interface";
 import { useAuth } from "hooks/useAuth";
 import styles from "./LoginForm.module.scss";
-import { FaUserCircle } from "react-icons/fa";
 import { validEmail } from "./login-auth.constants";
 import Button from "../../Button/Button";
 import Field from "../../Field/Field";
@@ -14,6 +12,7 @@ import { menuAnimation } from "utils/animation/Fade";
 import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import { AuthService } from "services/auth.service";
+import cn from "classnames";
 
 const LoginForm: FC = () => {
   const { ref, setIsShow, isShow } = useOutside(false);
@@ -28,10 +27,6 @@ const LoginForm: FC = () => {
   });
 
   const { user, setUser } = useAuth();
-  if (user) {
-    console.log(user.role); // Доступ к роли пользователя
-    console.log(user.token); // Доступ к токену
-  }
 
   const loginSync = useMutation({
     mutationKey: ["login"],
@@ -39,7 +34,6 @@ const LoginForm: FC = () => {
       AuthService.login(data.email, data.password),
     onSuccess: (data) => {
       if (data?.token && data?.role) {
-        // Сохраняем только role и accessToken в контексте
         setUser({
           role: data.role,
           token: data.token,
@@ -79,7 +73,7 @@ const LoginForm: FC = () => {
           className={styles.button}
           onClick={() => setIsShow(!isShow)}
         >
-          <FaUserCircle fill="#A4A4A4" className={styles.userIcon} />
+          <img src="/FirstUser.png" alt="User" className={styles.userIcon} />
         </button>
       )}
 
@@ -115,16 +109,16 @@ const LoginForm: FC = () => {
               },
             })}
           />
-          <div className={"mt-5 mb-1 text-center"}>
-            <Button onClick={() => setType("login")}>Login</Button>
-          </div>
-          <button
-            type="button"
-            className={styles.register}
-            onClick={() => setType("register")}
+          <div
+            className={cn(" boldText mt-1 mb-1 text-center", styles.darkText)}
           >
-            Register
-          </button>
+            <Button
+              className={cn(" boldText mt-1 mb-1 text-center", styles.darkText)}
+              onClick={() => setType("login")}
+            >
+              Login
+            </Button>
+          </div>
         </form>
       </motion.div>
     </div>

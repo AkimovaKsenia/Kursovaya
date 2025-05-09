@@ -24,3 +24,7 @@ export interface IMovieDto
     | "film_studio"
     | "actors"
   > {}
+
+export interface IListOfMovies {
+  newMovies: IMovie[];
+}

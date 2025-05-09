@@ -3,4 +3,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px;
+  height: 52.8px;
+  background-color: rgba(149, 166, 176, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(10px); // поддержка для Safari
+  border-bottom: 1px solid rgba(110, 109, 109, 0.01);
 }

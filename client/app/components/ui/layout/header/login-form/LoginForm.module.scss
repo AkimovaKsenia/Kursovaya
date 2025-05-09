@@ -7,9 +7,9 @@
 
 .form {
   position: absolute;
-  top: 100%; // Форма будет появляться под элементом
+  top: 100%;
   right: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0.9rem;
   width: 16rem;
   background: #1f2937;
   padding: 1rem;
@@ -20,50 +20,56 @@
   animation: scaleIn 0.2s ease-in-out;
   display: flex;
   flex-direction: column;
-  gap: 0.1rem; /* Увеличьте это значение для большего расстояния */
+  gap: 0.1rem;
 }
-
+.darkText {
+  color: #3b393e;
+}
 .button {
-  border: none; /* заменяет border-none */
-  outline: none; /* заменяет outline-0 */
+  border: none;
+  outline: none;
   cursor: pointer;
   font-size: 1.725rem;
   line-height: 1.75rem;
-  padding: 5px;
+  margin-right: 17px;
+
   background: none !important;
   border-radius: 100%;
+  position: relative;
 
-  /* Для лучшей доступности можно добавить фокус-стиль */
   &:focus {
     outline-offset: 1px;
   }
 }
 .userIcon {
   fill: #a4a4a4;
-  width: 30px;
-  height: 30px;
-  display: block; // Важно для SVG
+  width: 38px;
+  height: 40px;
+}
+
+.userIcon:hover {
+  transform: scale(1.03); /* увеличение при наведении */
+}
+
+.userIcon:active {
+  transform: scale(0.95); /* лёгкое сжатие при клике */
 }
 
 .input {
-  margin-bottom: 0.8rem; /* Отступ снизу каждого поля */
+  margin-bottom: 0.8rem;
   height: 40px;
-  border: 2px solid #b8babc; /* Серая обводка */
-  border-radius: 6px; /* Закругление углов */
-  transition: border-color 0.3s ease; /* Плавное изменение */
+  border: 2px solid #b8babc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
 }
 
 .form input::placeholder {
-  padding-left: 10px; /* Отступ слева */
-  padding-right: 10px; /* Отступ справа */
-  color: #8f9297; /* Цвет текста плейсхолдера */
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #8f9297;
 }
 .form input:focus {
-  border-color: #3f89ff; /* Синяя обводка при фокусе */
-  outline: none; /* Убираем стандартный outline */
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); /* Свечение */
-}
-.register {
-  margin-top: 5px;
-  font-size: 0.625rem;
+  border-color: #3f89ff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }

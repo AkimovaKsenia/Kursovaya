@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  min-height: 100vh; // Занимает всю высоту экрана
+  // display: grid;
+  // grid-template-columns: 1fr 16fr;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.content {
+  flex: 1; // Растягивается на всё доступное пространство
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1; // Занимает всё оставшееся место
+  overflow-y: auto; // Добавляет скролл при необходимости
+}
