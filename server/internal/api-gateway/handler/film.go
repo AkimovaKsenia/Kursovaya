@@ -30,9 +30,23 @@ import (
 // @Router       /auth/film [post]
 // @Security ApiKeyAuth
 func (h *Handler) CreateFilm(c *fiber.Ctx) error {
+	userId := c.Locals("id").(int)
+	uRole, err := h.repository.DB.GetUserRoleById(userId)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error getting user role: %s", err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error getting user role: %s", err.Error())})
+	}
+
+	if uRole.Role != "admin" {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusForbidden})
+		logEvent.Str("user_role", uRole.Role).Msg("there are not enough rights for this action")
+		return c.Status(fiber.StatusForbidden).JSON(entities.Error{Error: "there are not enough rights for this action"})
+	}
+
 	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
 	c.Locals("request_url", requestURL)
-	c.Locals("request_method", fiber.MethodPost)
+	c.Locals("request_method", c.Method())
 	c.Locals("content_type", "multipart/form-data")
 
 	h.logger.Debug().Msg("call h.Redirect")
@@ -60,7 +74,7 @@ func (h *Handler) CreateFilm(c *fiber.Ctx) error {
 func (h *Handler) GetFilmByID(c *fiber.Ctx) error {
 	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
 	c.Locals("request_url", requestURL)
-	c.Locals("request_method", fiber.MethodGet)
+	c.Locals("request_method", c.Method())
 
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
@@ -86,7 +100,7 @@ func (h *Handler) GetFilmByID(c *fiber.Ctx) error {
 func (h *Handler) GetAllFilms(c *fiber.Ctx) error {
 	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
 	c.Locals("request_url", requestURL)
-	c.Locals("request_method", fiber.MethodGet)
+	c.Locals("request_method", c.Method())
 
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
@@ -111,7 +125,7 @@ func (h *Handler) GetAllFilms(c *fiber.Ctx) error {
 func (h *Handler) GetAllGenres(c *fiber.Ctx) error {
 	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
 	c.Locals("request_url", requestURL)
-	c.Locals("request_method", fiber.MethodGet)
+	c.Locals("request_method", c.Method())
 
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
@@ -136,7 +150,7 @@ func (h *Handler) GetAllGenres(c *fiber.Ctx) error {
 func (h *Handler) GetAllOperators(c *fiber.Ctx) error {
 	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
 	c.Locals("request_url", requestURL)
-	c.Locals("request_method", fiber.MethodGet)
+	c.Locals("request_method", c.Method())
 
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
@@ -161,7 +175,7 @@ func (h *Handler) GetAllOperators(c *fiber.Ctx) error {
 func (h *Handler) GetAllDirectors(c *fiber.Ctx) error {
 	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
 	c.Locals("request_url", requestURL)
-	c.Locals("request_method", fiber.MethodGet)
+	c.Locals("request_method", c.Method())
 
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
@@ -186,7 +200,101 @@ func (h *Handler) GetAllDirectors(c *fiber.Ctx) error {
 func (h *Handler) GetAllFilmStudios(c *fiber.Ctx) error {
 	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
 	c.Locals("request_url", requestURL)
-	c.Locals("request_method", fiber.MethodGet)
+	c.Locals("request_method", c.Method())
+
+	h.logger.Debug().Msg("call h.Redirect")
+	responseBody, err := h.Redirect(c)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusInternalServerError})
+		logEvent.Msg(fmt.Sprintf("error sending request to film service: %s", err.Error()))
+		return c.Status(fiber.StatusInternalServerError).JSON(entities.Error{Error: fmt.Sprintf("error sending request to film service: %s", err.Error())})
+	}
+
+	return c.Send(responseBody)
+}
+
+// UpdateFilm
+// @Tags         Film
+// @Summary      Обновление фильма
+// @Accept       multipart/form-data
+// @Produce      json
+// @Param        id                formData      int       true  "ID фильма"
+// @Param        name              formData  string    true  "Название"
+// @Param        description       formData  string    true  "Описание"
+// @Param        film_photo        formData  file      false "Фото фильма"
+// @Param        cast_list         formData  []string  true  "Список актеров"
+// @Param        film_studio_id    formData  int       true  "ID киностудии"
+// @Param        duration_in_min   formData  int       true  "Продолжительность фильма в минутах"
+// @Param        director_ids      formData  []int     true  "ID режиссеров"
+// @Param        operator_ids      formData  []int     true  "ID операторов"
+// @Param        genre_ids         formData  []int     true  "ID жанров"
+// @Success      200  {object}  entities.ID  "Фильм успешно обновлен"
+// @Failure      400  {object}  entities.Error  "Некорректный запрос"
+// @Failure      404  {object}  entities.Error  "Фильм не найден"
+// @Failure      500  {object}  entities.Error  "Ошибка на стороне сервера"
+// @Router       /auth/film/{id} [put]
+// @Security     ApiKeyAuth
+func (h *Handler) UpdateFilm(c *fiber.Ctx) error {
+	userId := c.Locals("id").(int)
+	uRole, err := h.repository.DB.GetUserRoleById(userId)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error getting user role: %s", err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error getting user role: %s", err.Error())})
+	}
+
+	if uRole.Role != "admin" {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusForbidden})
+		logEvent.Str("user_role", uRole.Role).Msg("there are not enough rights for this action")
+		return c.Status(fiber.StatusForbidden).JSON(entities.Error{Error: "there are not enough rights for this action"})
+	}
+
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
+	c.Locals("request_method", c.Method())
+	c.Locals("content_type", "multipart/form-data")
+
+	h.logger.Debug().Msg("call h.Redirect")
+	responseBody, err := h.Redirect(c)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusInternalServerError})
+		logEvent.Msg(fmt.Sprintf("error sending request to film service: %s", err.Error()))
+		return c.Status(fiber.StatusInternalServerError).JSON(entities.Error{Error: fmt.Sprintf("error sending request to film service: %s", err.Error())})
+	}
+
+	return c.Send(responseBody)
+}
+
+// DeleteFilm
+// @Tags         Film
+// @Summary      Удаление фильма
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "ID фильма"
+// @Success      200  {object}  entities.ID  "Фильм успешно удален"
+// @Failure      400  {object}  entities.Error  "Некорректный запрос"
+// @Failure      404  {object}  entities.Error  "Фильм не найден"
+// @Failure      500  {object}  entities.Error  "Ошибка на стороне сервера"
+// @Router       /auth/film/{id} [delete]
+// @Security     ApiKeyAuth
+func (h *Handler) DeleteFilm(c *fiber.Ctx) error {
+	userId := c.Locals("id").(int)
+	uRole, err := h.repository.DB.GetUserRoleById(userId)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error getting user role: %s", err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error getting user role: %s", err.Error())})
+	}
+
+	if uRole.Role != "admin" {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusForbidden})
+		logEvent.Str("user_role", uRole.Role).Msg("there are not enough rights for this action")
+		return c.Status(fiber.StatusForbidden).JSON(entities.Error{Error: "there are not enough rights for this action"})
+	}
+
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
+	c.Locals("request_method", c.Method())
 
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)

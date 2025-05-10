@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -215,4 +216,96 @@ func (h *Handler) GetAllFilmStudios(c *fiber.Ctx) error {
 		})
 	}
 	return c.JSON(studios)
+}
+
+func (h *Handler) UpdateFilm(c *fiber.Ctx) error {
+	var f entities.UpdateFilm
+	if err := c.BodyParser(&f); err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error parsing request: %v", err))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: err.Error()})
+	}
+
+	if f.ID < 1 {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg("invalid field 'id'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "invalid field 'id'"})
+	}
+
+	if f.Name == "" {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg("empty field 'name'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "empty field 'name'"})
+	}
+
+	if f.Description == "" {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg("empty field 'description'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "empty field 'description'"})
+	}
+
+	if len(f.CastList) == 0 {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg("invalid field 'cast_list'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "invalid field 'cast_list'"})
+	}
+
+	if f.FilmStudioID <= 0 {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg("invalid field 'film_studio_id'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "invalid field 'film_studio_id'"})
+	}
+
+	if f.DurationInMin <= 0 {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg("invalid field 'duration_in_min'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "invalid field 'duration_in_min'"})
+	}
+
+	if len(f.DirectorIDs) == 0 {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg("empty field 'duration_in_min'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "empty field 'duration_in_min'"})
+	}
+
+	if len(f.GenreIDs) == 0 {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg("empty field 'director_ids'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "empty field 'director_ids'"})
+	}
+
+	if err := h.repository.DB.UpdateFilm(&f); err != nil {
+		status := fiber.StatusInternalServerError
+		if strings.Contains(err.Error(), "not found") {
+			status = fiber.StatusNotFound
+		}
+
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: status})
+		logEvent.Msg(fmt.Sprintf("error updating film: %v", err))
+		return c.Status(status).JSON(entities.Error{Error: err.Error()})
+	}
+
+	return c.JSON(entities.ID{ID: f.ID})
+}
+
+func (h *Handler) DeleteFilm(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("invalid film ID: %v", err))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "Invalid film ID"})
+	}
+
+	if err := h.repository.DB.DeleteFilm(id); err != nil {
+		status := fiber.StatusInternalServerError
+		if strings.Contains(err.Error(), "not found") {
+			status = fiber.StatusNotFound
+		}
+
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: status})
+		logEvent.Msg(fmt.Sprintf("error deleting film: %v", err))
+		return c.Status(status).JSON(entities.Error{Error: err.Error()})
+	}
+
+	return c.JSON(entities.ID{ID: id})
 }

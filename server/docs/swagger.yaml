@@ -262,6 +262,129 @@ paths:
       summary: Получение всех киностудий
       tags:
       - Film
+  /auth/film/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID фильма
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Фильм успешно удален
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "404":
+          description: Фильм не найден
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Удаление фильма
+      tags:
+      - Film
+    put:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: ID фильма
+        in: formData
+        name: id
+        required: true
+        type: integer
+      - description: Название
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Описание
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Фото фильма
+        in: formData
+        name: film_photo
+        type: file
+      - collectionFormat: csv
+        description: Список актеров
+        in: formData
+        items:
+          type: string
+        name: cast_list
+        required: true
+        type: array
+      - description: ID киностудии
+        in: formData
+        name: film_studio_id
+        required: true
+        type: integer
+      - description: Продолжительность фильма в минутах
+        in: formData
+        name: duration_in_min
+        required: true
+        type: integer
+      - collectionFormat: csv
+        description: ID режиссеров
+        in: formData
+        items:
+          type: integer
+        name: director_ids
+        required: true
+        type: array
+      - collectionFormat: csv
+        description: ID операторов
+        in: formData
+        items:
+          type: integer
+        name: operator_ids
+        required: true
+        type: array
+      - collectionFormat: csv
+        description: ID жанров
+        in: formData
+        items:
+          type: integer
+        name: genre_ids
+        required: true
+        type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Фильм успешно обновлен
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "404":
+          description: Фильм не найден
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление фильма
+      tags:
+      - Film
   /auth/film/id/{id}:
     get:
       consumes:

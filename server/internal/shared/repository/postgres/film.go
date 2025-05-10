@@ -339,3 +339,135 @@ func (db *DB) GetAllFilmStudios() ([]entities.FilmStudio, error) {
 	}
 	return studios, nil
 }
+
+func (db *DB) UpdateFilm(f *entities.UpdateFilm) error {
+	tx, err := db.DB.Beginx()
+	if err != nil {
+		return fmt.Errorf("error starting transaction: %w", err)
+	}
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		}
+	}()
+
+	result, err := tx.Exec(`
+        UPDATE films SET
+            name = $1,
+            description = $2,
+            photo = $3,
+            cast_list = $4,
+            film_studio_id = $5,
+            duration_in_min = $6
+        WHERE id = $7
+    `, f.Name, f.Description, f.Photo, f.CastList, f.FilmStudioID, f.DurationInMin, f.ID)
+
+	if err != nil {
+		return fmt.Errorf("error updating film: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("error checking rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return fmt.Errorf("film with id %d not found", f.ID)
+	}
+
+	_, err = tx.Exec("DELETE FROM films_directors WHERE film_id = $1", f.ID)
+	if err != nil {
+		return fmt.Errorf("error deleting old film directors: %w", err)
+	}
+
+	for _, directorID := range f.DirectorIDs {
+		_, err = tx.Exec(`
+            INSERT INTO films_directors (film_id, director_id) 
+            VALUES ($1, $2)
+        `, f.ID, directorID)
+		if err != nil {
+			return fmt.Errorf("error creating film-director relation: %w", err)
+		}
+	}
+
+	_, err = tx.Exec("DELETE FROM films_operators WHERE film_id = $1", f.ID)
+	if err != nil {
+		return fmt.Errorf("error deleting old film operators: %w", err)
+	}
+
+	for _, operatorID := range f.OperatorIDs {
+		_, err = tx.Exec(`
+            INSERT INTO films_operators (film_id, operator_id) 
+            VALUES ($1, $2)
+        `, f.ID, operatorID)
+		if err != nil {
+			return fmt.Errorf("error creating film-operator relation: %w", err)
+		}
+	}
+
+	_, err = tx.Exec("DELETE FROM films_genres WHERE film_id = $1", f.ID)
+	if err != nil {
+		return fmt.Errorf("error deleting old film genres: %w", err)
+	}
+
+	for _, genreID := range f.GenreIDs {
+		_, err = tx.Exec(`
+            INSERT INTO films_genres (film_id, genre_id) 
+            VALUES ($1, $2)
+        `, f.ID, genreID)
+		if err != nil {
+			return fmt.Errorf("error creating film-genre relation: %w", err)
+		}
+	}
+
+	if err = tx.Commit(); err != nil {
+		return fmt.Errorf("error committing transaction: %w", err)
+	}
+
+	return nil
+}
+
+func (db *DB) DeleteFilm(id int) error {
+	tx, err := db.DB.Beginx()
+	if err != nil {
+		return fmt.Errorf("error starting transaction: %w", err)
+	}
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		}
+	}()
+
+	_, err = tx.Exec("DELETE FROM films_directors WHERE film_id = $1", id)
+	if err != nil {
+		return fmt.Errorf("error deleting film directors: %w", err)
+	}
+
+	_, err = tx.Exec("DELETE FROM films_operators WHERE film_id = $1", id)
+	if err != nil {
+		return fmt.Errorf("error deleting film operators: %w", err)
+	}
+
+	_, err = tx.Exec("DELETE FROM films_genres WHERE film_id = $1", id)
+	if err != nil {
+		return fmt.Errorf("error deleting film genres: %w", err)
+	}
+
+	result, err := tx.Exec("DELETE FROM films WHERE id = $1", id)
+	if err != nil {
+		return fmt.Errorf("error deleting film: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("error checking rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return fmt.Errorf("film with id %d not found", id)
+	}
+
+	if err = tx.Commit(); err != nil {
+		return fmt.Errorf("error committing transaction: %w", err)
+	}
+
+	return nil
+}
