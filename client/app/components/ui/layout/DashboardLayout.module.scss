@@ -1,0 +1,42 @@
+.main {
+  position: relative;
+  position: fixed;
+  width: 1000px;
+  height: 700px;
+  margin-top: 5px;
+  border-radius: 30px;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+  background-color: #a7a7b6;
+  color: #ffffff; // Светлый текст
+  box-sizing: border-box;
+  overflow: auto;
+  box-shadow: 2px 2px 17px rgba(129, 125, 219, 0.6);
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 11px;
+    left: -11px;
+    border-radius: 30px;
+    content: "";
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background-color: #b8b5d0;
+    z-index: -1;
+    // transform: translateX(-12px) translateY(-7px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 40px 25px -1px rgba(144, 105, 242, 0.6);
+    transition: all;
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  height: calc(100vh - 52.8px);
+  padding: 20px;
+  box-sizing: border-box; // 1. Добавляем для корректного расчета размеров
+  overflow-x: hidden;
+}

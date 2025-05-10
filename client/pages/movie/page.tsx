@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import MoviesInfo from "screens/movies/MovieInfo";
+import MoviesInfo from "screens/MovieInfo";
 
 // Создаем компонент, который рендерит Movies
 const MovieInfoPage: NextPage = () => {

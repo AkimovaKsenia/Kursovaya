@@ -1,0 +1,48 @@
+.main {
+  position: relative;
+  position: fixed;
+  width: 1000px;
+  height: 700px;
+  margin-top: 5px;
+  border-radius: 30px;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+  background-color: #b8b5d0;
+  color: #ffffff; // Светлый текст
+  box-sizing: border-box;
+  overflow: auto;
+  box-shadow: 2px 2px 17px rgba(129, 125, 219, 0.6);
+}
+
+.containerfirst {
+  display: flex;
+  justify-content: center;
+  height: calc(100vh - 52.8px);
+  padding: 20px;
+  box-sizing: border-box; // 1. Добавляем для корректного расчета размеров
+  overflow-x: hidden;
+}
+
+.items {
+  display: grid;
+  grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  height: calc(100vh - 52.8px);
+  padding: 20px;
+  box-sizing: border-box; // 1. Добавляем для корректного расчета размеров
+  overflow-x: hidden;
+}
+.catalog {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: white;
+  text-align: center;
+  font-family: "CormorantSC", bold;
+}

@@ -5,6 +5,7 @@ import { IListOfMovies, IMovie } from "shared/interfaces/movie.interface";
 import styles from "./AllMovies.module.scss";
 import { MovieService } from "services/movie.service";
 import AdminLayout from "@/components/ui/layout/AdminHeader";
+import DashboardLayout from "../../../components/ui/layout/DashboardLayout";
 
 const Movies: FC = () => {
   const [movies, setMovies] = useState<IMovie[]>([]);
@@ -26,34 +27,9 @@ const Movies: FC = () => {
     fetchMovies();
   }, []);
   return (
-    <AdminLayout title="Cinema" backgroundColor="#1F1F1F">
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          height: "calc(100vh - 52.8px)", // учитываем высоту header, если есть
-          padding: "20px",
-          boxSizing: "border-box", // 1. Добавляем для корректного расчета размеров
-          overflowX: "hidden" /* запрещает горизонтальный скролл */,
-        }}
-      >
-        <div
-          className={styles.main}
-          style={{
-            position: "fixed",
-            width: "1000px",
-            height: "700px",
-            marginTop: "5px",
-            borderRadius: "30px",
-            padding: "20px",
-            fontFamily: "Arial, sans-serif",
-            backgroundColor: "#A7A7B6",
-            color: "#FFFFFF", // Светлый текст
-            boxSizing: "border-box",
-            overflow: "auto",
-            boxShadow: "2px 2px 17px rgba(129, 125, 219, 0.6)",
-          }}
-        >
+    <AdminLayout title="Dashboard" backgroundColor="#1F1F1F">
+      <div className={styles.containerfirst}>
+        <div className={styles.main}>
           <div
             style={{ background: "rgba(129, 125, 219, 0.8)" }}
             className={styles.catalog}

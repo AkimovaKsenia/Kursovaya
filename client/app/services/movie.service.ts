@@ -32,6 +32,6 @@ export const MovieService = {
     return axios.patch<string>("/movie");
   },
   async deleteMovie(id: number) {
-    return axios.delete<string>(`/movie/${id}`);
+    return instance.delete<string>(`/auth/film/${id}`);
   },
 };

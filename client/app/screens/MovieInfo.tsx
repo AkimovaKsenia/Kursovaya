@@ -30,9 +30,9 @@ const MoviesInfo: FC = () => {
       <div style={{ background: "blue" }}>MOVIES</div>
       <div>
         <h1>{movie?.name}</h1>
-        {movie?.poster && movie?.name && (
+        {movie?.photo && movie?.name && (
           <Image
-            src={movie.poster}
+            src={movie.photo}
             alt={movie.name}
             width={220}
             height={330}
@@ -43,9 +43,9 @@ const MoviesInfo: FC = () => {
           <ul>
             <li>
               <span>Жанр</span>
-              <span>{movie?.genre}</span>
+              <span>{movie?.genres}</span>
               <span>Режиссер</span>
-              <span>{movie?.director}</span>
+              <span>{movie?.directors}</span>
             </li>
           </ul>
         </div>
