@@ -76,10 +76,6 @@ func (s3 *S3) PresignedGetObject(ctx context.Context, bucketName, filePath strin
 		return nil, err
 	}
 
-	publicURL := *object
-	publicURL.Host = "localhost:10420"
-	publicURL.Scheme = "http"
-
 	return object, nil
 }
 

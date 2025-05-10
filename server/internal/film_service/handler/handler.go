@@ -39,7 +39,14 @@ func (h *Handler) InitRouter() {
 		return c.Status(fiber.StatusOK).SendString("film service healthy")
 	})
 
+	f.Get("/genres", h.GetAllGenres)
+	f.Get("/operators", h.GetAllOperators)
+	f.Get("/directors", h.GetAllDirectors)
 	f.Get("/film-studios", h.GetAllFilmStudios)
+
+	f.Post("/film", h.CreateFilm)
+	f.Get("/film", h.GetAllFilms)
+	f.Get("/film/id/:id", h.GetFilmByID)
 
 	h.logger.Info().Msg(fmt.Sprintf("start film service on port %s", h.conf.Application.ApiGatewayPort))
 	f.Listen(fmt.Sprintf(":%s", h.conf.Application.FilmServicePort))

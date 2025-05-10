@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
+	"github.com/joho/godotenv"
 	"kino/internal/api-gateway/handler"
 	"kino/internal/shared/config"
 	"kino/internal/shared/log"
 	"kino/internal/shared/repository"
 	"kino/internal/shared/repository/minio"
 	"kino/internal/shared/repository/postgres"
-
-	"github.com/joho/godotenv"
 )
 
 // @title Kino API

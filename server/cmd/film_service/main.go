@@ -8,6 +8,7 @@ import (
 	"kino/internal/shared/repository"
 	"kino/internal/shared/repository/minio"
 	"kino/internal/shared/repository/postgres"
+	"kino/pkg/util"
 
 	"github.com/joho/godotenv"
 )
@@ -16,6 +17,8 @@ func main() {
 	if err := godotenv.Load(".env"); err != nil {
 		fmt.Println("No .env file found")
 	}
+
+	util.CreateTmpDirectory()
 
 	conf := config.NewEnvConfig()
 	log := log.InitLogger(conf)
