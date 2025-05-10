@@ -1,5 +1,5 @@
 import Layout from "@/components/ui/layout/Layout";
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
 import Link from "next/link";
 import Button from "../../components/ui/layout/Button/Button";
 import { useAuth } from "hooks/useAuth";
@@ -7,10 +7,13 @@ import { useRouter } from "next/router";
 import { AuthService } from "services/auth.service";
 import styles from "./Home.module.scss";
 import cn from "classnames";
+import gsap from "gsap";
 
 const Home: FC = () => {
   const { user, setUser } = useAuth();
   const router = useRouter();
+  const animationRef = useRef<gsap.Context | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = () => {
     AuthService.logout();
@@ -19,6 +22,27 @@ const Home: FC = () => {
   console.log("Rendering Home page, user:", user); // Логируем состояние пользователя
   console.log("Rendering Home page"); // Добавьте лог
 
+  useEffect(() => {
+    if (animationRef.current) {
+      animationRef.current.revert();
+    }
+
+    animationRef.current = gsap.context(() => {
+      gsap.from(contentRef.current, {
+        duration: 0.8,
+        opacity: 0,
+        y: 30,
+        ease: "power2.out",
+        delay: 0.3,
+      });
+    });
+    return () => {
+      if (animationRef.current) {
+        animationRef.current.revert();
+      }
+    };
+  }, [router.pathname]); // Зависимость от пути
+
   return (
     <Layout
       title="Cinema"
@@ -26,10 +50,11 @@ const Home: FC = () => {
       backgroundColor="#1E1E1E"
     >
       <div
+        ref={contentRef}
         style={{
           backgroundBlendMode: "overlay", // накладывает цвет на изображение
         }}
-        className="flex flex-col items-center mr-230 justify-center min-h-[60vh] space-y-2 mt-21"
+        className="flex flex-col items-center mr-210 justify-center min-h-[60vh] space-y-2 mt-21"
       >
         <h1 className={styles.heading}>Cinema</h1>
         <h1 className={styles.headingMastery}>MASTERY</h1>

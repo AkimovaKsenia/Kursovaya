@@ -21,7 +21,7 @@ const Layout: FC<PropsWithChildren<IMeta>> = ({
           backgroundColor: backgroundColor || "rgb(163, 163, 181)",
           backgroundSize: backgroundImage ? "auto 100%" : undefined,
           backgroundRepeat: "no-repeat",
-          backgroundPosition: "right",
+          backgroundPosition: "120% center",
         }}
       >
         <Header />
