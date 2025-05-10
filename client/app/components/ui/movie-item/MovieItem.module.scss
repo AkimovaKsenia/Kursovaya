@@ -1,12 +1,58 @@
-.item {
-  position: relative;
-  width: 24%;
+.main {
+  display: flex;
+  align-items: start;
+  gap: 20px;
 }
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0px;
+}
+.item {
+  display: block; // или inline-block, если нужно
+  position: relative;
+  width: 20%;
+}
+
+// .poster {
+//   width: 12% !important;
+//   border-radius: 30% !important;
+// }
+
 .poster {
-  border-radius: 20%;
+  object-fit: contain;
+  width: 500px !important;
+  aspect-ratio: 2 / 3;
   overflow: hidden;
 }
 .heading {
+  font-family: "CormorantSC", bold;
   color: black;
-  margin-top: 2px;
+  margin-top: 40px;
+  font-size: 24px;
+}
+.icons {
+  gap: 9px;
+  margin-left: auto;
+  margin-top: 40px;
+  display: flex;
+  font-size: 27px;
+  color: #ffffff; // Изменение цвета при наведении
+  filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
+    drop-shadow(0 0 6px rgba(46, 185, 249, 0.8));
+  text-shadow: 0 0 12px rgba(115, 12, 199, 0.4); // Лёгкое свечение
+  // align-items: start;
+}
+
+.firsticon {
+  &:hover {
+    color: #baa3cb; // Изменение цвета при наведении
+    filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
+      drop-shadow(0 0 6px rgba(46, 185, 249, 0.8));
+    transform: scale(1.09); // Увеличение на 10%
+    text-shadow: 0 0 12px rgba(115, 12, 199, 0.4); // Лёгкое свечение
+    cursor: pointer;
+  }
 }

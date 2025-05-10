@@ -1,28 +1,27 @@
 export interface IMovie {
   id: number;
   name: string;
-  genre: string;
+  genres: string[];
   description: string;
-  director: string;
-  producer: string;
-  poster: string;
-  film_studio: string;
-  duration: number;
-  views?: number;
-  actors?: [];
+  directors: string[];
+  operators: string[];
+  photo: string;
+  film_studio_name: string;
+  duration_in_min: number;
+  cast_list: string[];
 }
 
 export interface IMovieDto
   extends Pick<
     IMovie,
     | "name"
-    | "genre"
+    | "genres"
     | "description"
-    | "poster"
-    | "director"
-    | "producer"
-    | "film_studio"
-    | "actors"
+    | "photo"
+    | "directors"
+    | "operators"
+    | "film_studio_name"
+    | "cast_list"
   > {}
 
 export interface IListOfMovies {
