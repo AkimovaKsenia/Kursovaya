@@ -232,7 +232,7 @@ func (h *Handler) GetAllFilmStudios(c *fiber.Ctx) error {
 // @Failure      400  {object}  entities.Error  "Некорректный запрос"
 // @Failure      404  {object}  entities.Error  "Фильм не найден"
 // @Failure      500  {object}  entities.Error  "Ошибка на стороне сервера"
-// @Router       /auth/film/{id} [put]
+// @Router       /auth/film [put]
 // @Security     ApiKeyAuth
 func (h *Handler) UpdateFilm(c *fiber.Ctx) error {
 	userId := c.Locals("id").(int)

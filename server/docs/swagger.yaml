@@ -240,62 +240,6 @@ paths:
       summary: Создание фильма
       tags:
       - Film
-  /auth/film-studios:
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Список всех киностудий
-          schema:
-            items:
-              $ref: '#/definitions/entities.FilmStudio'
-            type: array
-        "500":
-          description: Ошибка на стороне сервера
-          schema:
-            $ref: '#/definitions/entities.Error'
-      security:
-      - ApiKeyAuth: []
-      summary: Получение всех киностудий
-      tags:
-      - Film
-  /auth/film/{id}:
-    delete:
-      consumes:
-      - application/json
-      parameters:
-      - description: ID фильма
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Фильм успешно удален
-          schema:
-            $ref: '#/definitions/entities.ID'
-        "400":
-          description: Некорректный запрос
-          schema:
-            $ref: '#/definitions/entities.Error'
-        "404":
-          description: Фильм не найден
-          schema:
-            $ref: '#/definitions/entities.Error'
-        "500":
-          description: Ошибка на стороне сервера
-          schema:
-            $ref: '#/definitions/entities.Error'
-      security:
-      - ApiKeyAuth: []
-      summary: Удаление фильма
-      tags:
-      - Film
     put:
       consumes:
       - multipart/form-data
@@ -383,6 +327,62 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Обновление фильма
+      tags:
+      - Film
+  /auth/film-studios:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список всех киностудий
+          schema:
+            items:
+              $ref: '#/definitions/entities.FilmStudio'
+            type: array
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех киностудий
+      tags:
+      - Film
+  /auth/film/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID фильма
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Фильм успешно удален
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "404":
+          description: Фильм не найден
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Удаление фильма
       tags:
       - Film
   /auth/film/id/{id}:

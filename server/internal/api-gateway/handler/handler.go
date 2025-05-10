@@ -61,8 +61,8 @@ func (h *Handler) InitRouter() {
 		authGroup.Post("/film", h.CreateFilm)
 		authGroup.Get("/film", h.GetAllFilms)
 		authGroup.Get("/film/id/:id", h.GetFilmByID)
-		authGroup.Put("/film/id/:id", h.UpdateFilm)
-		authGroup.Delete("/film/id/:id", h.DeleteFilm)
+		authGroup.Put("/film", h.UpdateFilm)
+		authGroup.Delete("/film/:id", h.DeleteFilm)
 	}
 
 	h.logger.Info().Msg(fmt.Sprintf("start api-gateway on port %s", h.conf.Application.ApiGatewayPort))

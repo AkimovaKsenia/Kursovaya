@@ -128,7 +128,7 @@ func (h *Handler) GetFilmByID(c *fiber.Ctx) error {
 
 	re := regexp.MustCompile("^(https?|ftp):\\/\\/[^\\s/$.?#].[^\\s]*$")
 
-	if !re.MatchString(film.Photo) {
+	if !re.MatchString(film.Photo) && film.Photo != "" {
 		url, _ := h.repository.S3.PresignedGetObject(context.Background(), "film-media", film.Photo, 7*24*time.Hour)
 		film.Photo = url.String()
 	}
@@ -274,6 +274,55 @@ func (h *Handler) UpdateFilm(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "empty field 'director_ids'"})
 	}
 
+	filmDB, err := h.repository.DB.GetFilmByID(f.ID)
+	if err != nil {
+		status := fiber.StatusInternalServerError
+		if strings.Contains(err.Error(), "not found") {
+			status = fiber.StatusNotFound
+		}
+
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: status})
+		logEvent.Msg(fmt.Sprintf("error updating film: error getting film by id: %v", err))
+		return c.Status(status).JSON(entities.Error{Error: err.Error()})
+	}
+
+	h.logger.Debug().Caller().Msg("call h.repository.S3.FPutObject")
+	err = h.repository.S3.RemoveObject(context.Background(), "film-media", filmDB.Photo)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error removing file %s from minio: %s", filmDB.Photo, err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error removing file %s from minio: %s", filmDB.Photo, err.Error())})
+	}
+
+	file, err := c.FormFile("film_photo")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Photo file is required",
+		})
+	}
+	filePath := fmt.Sprintf("./tmp/%s", file.Filename)
+
+	h.logger.Debug().Caller().Msg("save file")
+	c.SaveFile(file, filePath)
+	fileName := util.GenerateRandomFileName(filepath.Ext(file.Filename))
+
+	h.logger.Debug().Caller().Msg("call h.repository.S3.FPutObject")
+	err = h.repository.S3.FPutObject(context.Background(), "film-media", fileName, filePath, file.Header.Get("Content-Type"))
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error creating file %s in minio: %s", fileName, err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error creating file %s in minio: %s", file.Filename, err.Error())})
+	}
+	h.logger.Debug().Caller().Msg("remove file")
+	err = os.Remove(filePath)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error removing file %s: %s", file.Filename, err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error removing file %s: %s", file.Filename, err.Error())})
+	}
+
+	f.Photo = fileName
+
 	if err := h.repository.DB.UpdateFilm(&f); err != nil {
 		status := fiber.StatusInternalServerError
 		if strings.Contains(err.Error(), "not found") {
@@ -294,6 +343,29 @@ func (h *Handler) DeleteFilm(c *fiber.Ctx) error {
 		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
 		logEvent.Msg(fmt.Sprintf("invalid film ID: %v", err))
 		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "Invalid film ID"})
+	}
+
+	filmDB, err := h.repository.DB.GetFilmByID(id)
+	if err != nil {
+		status := fiber.StatusInternalServerError
+		if strings.Contains(err.Error(), "not found") {
+			status = fiber.StatusNotFound
+		}
+
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: status})
+		logEvent.Msg(fmt.Sprintf("error updating film: error getting film by id: %v", err))
+		return c.Status(status).JSON(entities.Error{Error: err.Error()})
+	}
+
+	re := regexp.MustCompile("^(https?|ftp):\\/\\/[^\\s/$.?#].[^\\s]*$")
+
+	if !re.MatchString(filmDB.Photo) && filmDB.Photo != "" {
+		err = h.repository.S3.RemoveObject(context.Background(), "film-media", filmDB.Photo)
+		if err != nil {
+			logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+			logEvent.Msg(fmt.Sprintf("error removing file %s from minio: %s", filmDB.Photo, err.Error()))
+			return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error removing file %s from minio: %s", filmDB.Photo, err.Error())})
+		}
 	}
 
 	if err := h.repository.DB.DeleteFilm(id); err != nil {
