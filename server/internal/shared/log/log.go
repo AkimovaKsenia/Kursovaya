@@ -27,15 +27,15 @@ func InitLogger(envConf *config.Config) *zerolog.Logger {
 func CreateLog(log *zerolog.Logger, field LogsField) *zerolog.Event {
 	var event *zerolog.Event
 	if field.Level == "Info" {
-		event = log.Info().Caller()
+		event = log.Info()
 	} else if field.Level == "Error" {
-		event = log.Error().Caller()
+		event = log.Error()
 	} else if field.Level == "Warn" {
-		event = log.Warn().Caller()
+		event = log.Warn()
 	} else if field.Level == "Debug" {
-		event = log.Debug().Caller()
+		event = log.Debug()
 	} else if field.Level == "Fatal" {
-		event = log.Fatal().Caller()
+		event = log.Fatal()
 	} else {
 		fmt.Println("Unknown log level")
 		return nil
