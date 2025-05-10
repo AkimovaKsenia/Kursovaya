@@ -8,7 +8,30 @@ const nextConfig: NextConfig = {
     APP_URL: process.env.REACT_APP_URL,
   },
   images: {
-    domains: ["localhost"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "s1ru1.kinoplan24.ru",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "s2ru1.kinoplan24.ru",
+        pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "10000",
+        pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "minio",
+        port: "9000",
+        pathname: "/**",
+      },
+    ],
   },
   async rewrites() {
     return [

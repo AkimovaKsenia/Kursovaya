@@ -23,6 +23,7 @@ instance.interceptors.request.use((config) => {
   if (config.headers && token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
 

@@ -1,5 +1,17 @@
 .main {
   position: relative;
+  position: fixed;
+  width: 1000px;
+  height: 700px;
+  margin-top: 5px;
+  border-radius: 30px;
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+  background-color: #a7a7b6;
+  color: #ffffff; // Светлый текст
+  box-sizing: border-box;
+  overflow: auto;
+  box-shadow: 2px 2px 17px rgba(129, 125, 219, 0.6);
   &::before {
     content: "";
     position: absolute;
@@ -18,4 +30,25 @@
       0 40px 25px -1px rgba(144, 105, 242, 0.6);
     transition: all;
   }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  height: calc(100vh - 52.8px);
+  padding: 20px;
+  box-sizing: border-box; // 1. Добавляем для корректного расчета размеров
+  overflow-x: hidden;
+}
+
+.button {
+  margin-top: 15px;
+  padding: 10px 15px;
+  background-color: #bb86fc; // Цвет кнопки для темной темы
+  color: #121212; // Темный текст на кнопке
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 5px; // Скругление углов
 }
