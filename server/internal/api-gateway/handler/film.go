@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"fmt"
-	"github.com/gofiber/fiber/v2"
 	"kino/internal/shared/entities"
 	"kino/internal/shared/log"
 	"kino/pkg/util"
@@ -11,7 +10,10 @@ import (
 	"path/filepath"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 // CreateFilm
@@ -203,17 +205,9 @@ func (h *Handler) GetAllGenres(c *fiber.Ctx) error {
 func (h *Handler) GetAllOperators(c *fiber.Ctx) error {
 	operators, err := h.repository.DB.GetAllOperators()
 	if err != nil {
-		logEvent := log.CreateLog(h.logger, log.LogsField{
-			Level:  "Error",
-			Method: c.Method(),
-			Url:    c.OriginalURL(),
-			Status: fiber.StatusInternalServerError,
-		})
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusInternalServerError})
 		logEvent.Msg(fmt.Sprintf("error getting operators: %s", err.Error()))
-
-		return c.Status(fiber.StatusInternalServerError).JSON(entities.Error{
-			Error: "Failed to get operators list",
-		})
+		return c.Status(fiber.StatusInternalServerError).JSON(entities.Error{Error: "Failed to get operators list"})
 	}
 	return c.JSON(operators)
 }
@@ -255,19 +249,17 @@ func (h *Handler) GetAllDirectors(c *fiber.Ctx) error {
 // @Router       /auth/film-studios [get]
 // @Security ApiKeyAuth
 func (h *Handler) GetAllFilmStudios(c *fiber.Ctx) error {
-	studios, err := h.repository.DB.GetAllFilmStudios()
-	if err != nil {
-		logEvent := log.CreateLog(h.logger, log.LogsField{
-			Level:  "Error",
-			Method: c.Method(),
-			Url:    c.OriginalURL(),
-			Status: fiber.StatusInternalServerError,
-		})
-		logEvent.Msg(fmt.Sprintf("error getting film studios: %s", err.Error()))
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
+	c.Locals("request_method", fiber.MethodGet)
 
-		return c.Status(fiber.StatusInternalServerError).JSON(entities.Error{
-			Error: "Failed to get film studios list",
-		})
+	h.logger.Debug().Msg("call h.Redirect")
+	responseBody, err := h.Redirect(c)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusInternalServerError})
+		logEvent.Msg(fmt.Sprintf("error sending request to film service: %s", err.Error()))
+		return c.Status(fiber.StatusInternalServerError).JSON(entities.Error{Error: fmt.Sprintf("error sending request to film service: %s", err.Error())})
 	}
-	return c.JSON(studios)
+
+	return c.Send(responseBody)
 }

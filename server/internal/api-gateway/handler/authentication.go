@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"kino/internal/shared/log"
 	"strings"
 	"time"
 
@@ -18,17 +19,23 @@ func (h *Handler) WithJWTAuth(c *fiber.Ctx) error {
 	header := c.Get("Authorization")
 
 	if header == "" {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error with jwt auth: %s", "Missing auth token"))
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Missing auth token"})
 	}
 
 	tokenString := strings.Split(header, " ")
 
 	if len(tokenString) != 2 {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error with jwt auth: %s", "Invalid auth header"))
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid auth header"})
 	}
 
 	id, err := h.ParseToken(tokenString[1])
 	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error with jwt auth parse token: %s", err.Error()))
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": err.Error()})
 	}
 	// Записываем id в контекст, чтобы в дальнейшем использовать в других функциях

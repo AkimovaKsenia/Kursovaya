@@ -2,12 +2,13 @@ package handler
 
 import (
 	"fmt"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/rs/zerolog"
 	"kino/internal/shared/config"
 	"kino/internal/shared/log"
 	"kino/internal/shared/repository"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/rs/zerolog"
 )
 
 type Handler struct {
@@ -27,10 +28,10 @@ func (h *Handler) InitRouter() {
 	})
 
 	f.Use(cors.New(cors.Config{
-		AllowOrigins: h.conf.Application.ApiGatewayHost,
-		//AllowCredentials: true,
-		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
-		AllowMethods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+		AllowOrigins:     h.conf.Application.ApiGatewayHost,
+		AllowCredentials: true,
+		AllowHeaders:     "Origin, Content-Type, Accept, Authorization",
+		AllowMethods:     "GET, HEAD, PUT, PATCH, POST, DELETE",
 	}))
 	f.Use(log.RequestLogger(h.logger))
 
@@ -38,5 +39,8 @@ func (h *Handler) InitRouter() {
 		return c.Status(fiber.StatusOK).SendString("film service healthy")
 	})
 
+	f.Get("/film-studios", h.GetAllFilmStudios)
+
+	h.logger.Info().Msg(fmt.Sprintf("start film service on port %s", h.conf.Application.ApiGatewayPort))
 	f.Listen(fmt.Sprintf(":%s", h.conf.Application.FilmServicePort))
 }
