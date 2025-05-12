@@ -4,8 +4,26 @@ import Link from "next/link";
 import styles from "./MovieItem.module.scss";
 import Image from "next/image";
 import { PiPencil, PiTrash } from "react-icons/pi";
+import { MovieService } from "services/movie.service";
+import { useRouter } from "next/router";
 
 const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
+  const router = useRouter();
+
+  const handleDelete = async (id: number) => {
+    try {
+      console.log("Удаляем фильм с ID:", id);
+      await MovieService.deleteMovie(id);
+      // Можно обновить список фильмов или показать уведомление
+      router.reload(); // Обновляем страницу после удаления
+
+      alert("Фильм удалён");
+    } catch (error) {
+      console.error("Ошибка при удалении фильма:", error);
+      alert("Ошибка при удалении");
+    }
+  };
+
   return (
     <div className={styles.main}>
       <Link href={`/movie/${movie.id}`} className={styles.item}>
@@ -28,8 +46,13 @@ const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
       </div>
 
       <div className={styles.icons}>
-        <PiPencil className={styles.firsticon} />
-        <PiTrash className={styles.firsticon} />
+        <Link href={`/manage/movies/edit/${movie.id}`} passHref legacyBehavior>
+          <PiPencil className={styles.firsticon} />
+        </Link>
+        <PiTrash
+          className={styles.firsticon}
+          onClick={() => handleDelete(movie.id)}
+        />
       </div>
     </div>
   );

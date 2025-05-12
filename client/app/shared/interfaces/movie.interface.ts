@@ -11,19 +11,24 @@ export interface IMovie {
   cast_list: string[];
 }
 
-export interface IMovieDto
-  extends Pick<
-    IMovie,
-    | "name"
-    | "genres"
-    | "description"
-    | "photo"
-    | "directors"
-    | "operators"
-    | "film_studio_name"
-    | "cast_list"
-  > {}
+export interface IMovieDto {
+  name: string;
+  genres: string[]; // или string, если бек принимает как одну строку
+  description: string;
+  photo: File | string; // теперь это File, не string
+  directors: string[];
+  operators: string[];
+  film_studio_name: string;
+  cast_list: string[];
+}
 
 export interface IListOfMovies {
   newMovies: IMovie[];
 }
+
+export interface IGenre {
+  id: number;
+  name: string;
+}
+
+export type IListOfGenres = IGenre[];

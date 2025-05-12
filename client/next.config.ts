@@ -36,8 +36,12 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: "/:path*",
-        destination: "http://localhost:10000/:path*",
+        source: "/auth/:path*", // только API-запросы
+        destination: "http://localhost:10000/auth/:path*",
+      },
+      {
+        source: "/login", // авторизация
+        destination: "http://localhost:10000/login",
       },
     ];
   },

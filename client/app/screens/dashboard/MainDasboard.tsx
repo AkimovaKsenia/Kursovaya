@@ -5,6 +5,7 @@ import { useAuth } from "hooks/useAuth";
 import Link from "next/link";
 import MainStatistic from "./MainStatistics";
 import styles from "./MainDashboard.module.scss";
+import DashboardLayout from "../../components/ui/layout/DashboardLayout";
 
 const Dashboard: FC = () => {
   const { user, setUser } = useAuth(); // Получаем данные пользователя из контекста
