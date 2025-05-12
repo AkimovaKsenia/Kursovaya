@@ -50,6 +50,6 @@ func (h *Handler) InitRouter() {
 	f.Put("/film", h.UpdateFilm)
 	f.Delete("/film/:id", h.DeleteFilm)
 
-	h.logger.Info().Msg(fmt.Sprintf("start film service on port %s", h.conf.Application.ApiGatewayPort))
+	h.logger.Info().Msg(fmt.Sprintf("start film service on port %s", h.conf.Application.FilmServicePort))
 	f.Listen(fmt.Sprintf(":%s", h.conf.Application.FilmServicePort))
 }

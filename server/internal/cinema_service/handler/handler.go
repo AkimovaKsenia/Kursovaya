@@ -49,6 +49,6 @@ func (h *Handler) InitRouter() {
 	f.Put("/cinema", h.UpdateCinema)
 	f.Delete("/cinema/:id", h.DeleteCinema)
 
-	h.logger.Info().Msg(fmt.Sprintf("start cinema service on port %s", h.conf.Application.ApiGatewayPort))
+	h.logger.Info().Msg(fmt.Sprintf("start cinema service on port %s", h.conf.Application.CinemaServicePort))
 	f.Listen(fmt.Sprintf(":%s", h.conf.Application.CinemaServicePort))
 }

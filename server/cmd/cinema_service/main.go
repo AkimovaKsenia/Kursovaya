@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"kino/internal/film_service/handler"
+	"kino/internal/cinema_service/handler"
 	"kino/internal/shared/config"
 	"kino/internal/shared/log"
 	"kino/internal/shared/repository"

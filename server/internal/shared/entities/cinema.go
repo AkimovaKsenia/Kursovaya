@@ -44,7 +44,7 @@ type GetCinema struct {
 	Category    string `json:"category" db:"category"`
 }
 
-type CinemaNameAddress struct {
+type CinemaAddressName struct {
 	ID      int    `json:"id" db:"id"`
 	Name    string `json:"name" db:"name"`
 	Address string `json:"address" db:"address"`

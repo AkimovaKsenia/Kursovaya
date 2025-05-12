@@ -26,6 +26,19 @@ services:
     env_file:
       - .env
 
+  cinema_service:
+    build:
+      context: server
+      dockerfile: ./cmd/cinema_service/Dockerfile
+    ports:
+      - ${CINEMA_SERVICE_PORT}:${CINEMA_SERVICE_PORT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    env_file:
+      - .env
+
   minio:
     image: quay.io/minio/minio
     container_name: minio-kino

@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"kino/internal/shared/entities"
 	"kino/internal/shared/log"
+	"strings"
 )
 
 // CreateFilm
@@ -43,6 +44,9 @@ func (h *Handler) CreateFilm(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusForbidden).JSON(entities.Error{Error: "there are not enough rights for this action"})
 	}
 
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
+
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
 	if err != nil {
@@ -66,6 +70,8 @@ func (h *Handler) CreateFilm(c *fiber.Ctx) error {
 // @Router       /auth/film/id/{id} [get]
 // @Security ApiKeyAuth
 func (h *Handler) GetFilmByID(c *fiber.Ctx) error {
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
 	if err != nil {
@@ -88,6 +94,8 @@ func (h *Handler) GetFilmByID(c *fiber.Ctx) error {
 // @Router       /auth/film [get]
 // @Security ApiKeyAuth
 func (h *Handler) GetAllFilms(c *fiber.Ctx) error {
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
 	if err != nil {
@@ -109,6 +117,8 @@ func (h *Handler) GetAllFilms(c *fiber.Ctx) error {
 // @Router       /auth/genres [get]
 // @Security ApiKeyAuth
 func (h *Handler) GetAllGenres(c *fiber.Ctx) error {
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
 	if err != nil {
@@ -130,6 +140,8 @@ func (h *Handler) GetAllGenres(c *fiber.Ctx) error {
 // @Router       /auth/operators [get]
 // @Security ApiKeyAuth
 func (h *Handler) GetAllOperators(c *fiber.Ctx) error {
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
 	if err != nil {
@@ -151,6 +163,8 @@ func (h *Handler) GetAllOperators(c *fiber.Ctx) error {
 // @Router       /auth/directors [get]
 // @Security ApiKeyAuth
 func (h *Handler) GetAllDirectors(c *fiber.Ctx) error {
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
 	if err != nil {
@@ -172,6 +186,8 @@ func (h *Handler) GetAllDirectors(c *fiber.Ctx) error {
 // @Router       /auth/film-studios [get]
 // @Security ApiKeyAuth
 func (h *Handler) GetAllFilmStudios(c *fiber.Ctx) error {
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
 	if err != nil {
@@ -218,6 +234,8 @@ func (h *Handler) UpdateFilm(c *fiber.Ctx) error {
 		logEvent.Str("user_role", uRole.Role).Msg("there are not enough rights for this action")
 		return c.Status(fiber.StatusForbidden).JSON(entities.Error{Error: "there are not enough rights for this action"})
 	}
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
 
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)
@@ -256,6 +274,8 @@ func (h *Handler) DeleteFilm(c *fiber.Ctx) error {
 		logEvent.Str("user_role", uRole.Role).Msg("there are not enough rights for this action")
 		return c.Status(fiber.StatusForbidden).JSON(entities.Error{Error: "there are not enough rights for this action"})
 	}
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
 
 	h.logger.Debug().Msg("call h.Redirect")
 	responseBody, err := h.Redirect(c)

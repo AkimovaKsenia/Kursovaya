@@ -353,7 +353,7 @@ func (h *Handler) DeleteFilm(c *fiber.Ctx) error {
 		}
 
 		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: status})
-		logEvent.Msg(fmt.Sprintf("error updating film: error getting film by id: %v", err))
+		logEvent.Msg(fmt.Sprintf("error deleting film: error getting film by id: %v", err))
 		return c.Status(status).JSON(entities.Error{Error: err.Error()})
 	}
 

@@ -77,8 +77,8 @@ func (db *DB) CreateCinema(c *entities.CreateCinema) (int, error) {
 	return id, nil
 }
 
-func (db *DB) GetAllCinemasAddressName() ([]entities.CinemaNameAddress, error) {
-	var cinemas []entities.CinemaNameAddress
+func (db *DB) GetAllCinemasAddressName() ([]entities.CinemaAddressName, error) {
+	var cinemas []entities.CinemaAddressName
 	err := db.DB.Select(&cinemas, `
         SELECT id, name, address 
         FROM cinemas 

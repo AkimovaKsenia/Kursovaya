@@ -11,6 +11,7 @@ type Application struct {
 	FilmServicePort   string
 	FilmServiceHost   string
 	CinemaServicePort string
+	CinemaServiceHost string
 }
 
 type Db struct {
@@ -43,6 +44,7 @@ func NewEnvConfig() *Config {
 			FilmServicePort:   os.Getenv("FILM_SERVICE_PORT"),
 			FilmServiceHost:   os.Getenv("FILM_SERVICE_HOST"),
 			CinemaServicePort: os.Getenv("CINEMA_SERVICE_PORT"),
+			CinemaServiceHost: os.Getenv("CINEMA_SERVICE_HOST"),
 		},
 		Db: Db{
 			Host:     os.Getenv("POSTGRES_HOST"),
