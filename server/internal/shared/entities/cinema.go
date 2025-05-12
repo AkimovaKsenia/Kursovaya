@@ -22,6 +22,28 @@ type Cinema struct {
 	CategoryID  int    `json:"category_id" db:"category_id"`
 }
 
+type CreateCinema struct {
+	Name        string `json:"name" db:"name"`
+	Description string `json:"description" db:"description"`
+	Photo       string `json:"photo" db:"photo"`
+	Address     string `json:"address" db:"address"`
+	Email       string `json:"email" db:"email"`
+	Phone       string `json:"phone" db:"phone"`
+	ConditionID int    `json:"condition_id" db:"condition_id"`
+	CategoryID  int    `json:"category_id" db:"category_id"`
+}
+
+type GetCinema struct {
+	Name        string `json:"name" db:"name"`
+	Description string `json:"description" db:"description"`
+	Photo       string `json:"photo" db:"photo"`
+	Address     string `json:"address" db:"address"`
+	Email       string `json:"email" db:"email"`
+	Phone       string `json:"phone" db:"phone"`
+	Condition   string `json:"condition" db:"condition"`
+	Category    string `json:"category" db:"category"`
+}
+
 type CinemaNameAddress struct {
 	ID      int    `json:"id" db:"id"`
 	Name    string `json:"name" db:"name"`
