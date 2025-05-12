@@ -77,7 +77,41 @@ func (h *Handler) GetAllCinemaHallTypes(c *fiber.Ctx) error {
 	return c.Send(responseBody)
 }
 
+// CreateCinema
+// @Tags         Cinema
+// @Summary      Создание кинотеатра
+// @Accept multipart/form-data
+// @Produce      json
+// @Param name formData string true "Название" example("Кварц")
+// @Param description formData string true "Описание" example("Привет Подольск")
+// @Param photo formData file false "Фото кинотеатра"
+// @Param address formData string true "Адрес" example("Гевинская 9/29")
+// @Param email formData string true "Контактная почта" example("meow@meow.meow")
+// @Param phone formData string true "Контактный номер телефона" example("+7(952)812-02-02")
+// @Param condition_id formData int true "ID состояния"
+// @Param category_id formData int true "ID категории"
+// @Success      200 {object} entities.ID "Кинотеатр успешно создан"
+// @Failure      400 {object} entities.Error "Некорректный запрос"
+// @Failure      401 {object} entities.Error "Пользователь не авторизован"
+// @Failure      403 {object} entities.Error "Недостаточно прав для запроса"
+// @Failure      500 {object} entities.Error "Ошибка на стороне сервера"
+// @Router       /auth/cinema [post]
+// @Security ApiKeyAuth
 func (h *Handler) CreateCinema(c *fiber.Ctx) error {
+	userId := c.Locals("id").(int)
+	uRole, err := h.repository.DB.GetUserRoleById(userId)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error getting user role: %s", err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error getting user role: %s", err.Error())})
+	}
+
+	if uRole.Role != "admin" {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusForbidden})
+		logEvent.Str("user_role", uRole.Role).Msg("there are not enough rights for this action")
+		return c.Status(fiber.StatusForbidden).JSON(entities.Error{Error: "there are not enough rights for this action"})
+	}
+
 	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.CinemaServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
 	c.Locals("request_url", requestURL)
 	h.logger.Debug().Msg("call h.Redirect")
@@ -166,7 +200,42 @@ func (h *Handler) GetCinemaByID(c *fiber.Ctx) error {
 	return c.Send(responseBody)
 }
 
+// UpdateCinema
+// @Tags         Cinema
+// @Summary      Обновление кинотеатра
+// @Accept multipart/form-data
+// @Produce      json
+// @Param        id                formData      int       true  "ID кинотеатра"
+// @Param name formData string true "Название" example("Кварц")
+// @Param description formData string true "Описание" example("Привет Подольск")
+// @Param photo formData file false "Фото кинотеатра"
+// @Param address formData string true "Адрес" example("Гевинская 9/29")
+// @Param email formData string true "Контактная почта" example("meow@meow.meow")
+// @Param phone formData string true "Контактный номер телефона" example("+7(952)812-02-02")
+// @Param condition_id formData int true "ID состояния"
+// @Param category_id formData int true "ID категории"
+// @Success      200 {object} entities.ID "Кинотеатр успешно создан"
+// @Failure      400 {object} entities.Error "Некорректный запрос"
+// @Failure      401 {object} entities.Error "Пользователь не авторизован"
+// @Failure      403 {object} entities.Error "Недостаточно прав для запроса"
+// @Failure      500 {object} entities.Error "Ошибка на стороне сервера"
+// @Router       /auth/cinema [put]
+// @Security ApiKeyAuth
 func (h *Handler) UpdateCinema(c *fiber.Ctx) error {
+	userId := c.Locals("id").(int)
+	uRole, err := h.repository.DB.GetUserRoleById(userId)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error getting user role: %s", err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error getting user role: %s", err.Error())})
+	}
+
+	if uRole.Role != "admin" {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusForbidden})
+		logEvent.Str("user_role", uRole.Role).Msg("there are not enough rights for this action")
+		return c.Status(fiber.StatusForbidden).JSON(entities.Error{Error: "there are not enough rights for this action"})
+	}
+
 	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.CinemaServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
 	c.Locals("request_url", requestURL)
 	h.logger.Debug().Msg("call h.Redirect")
@@ -181,7 +250,7 @@ func (h *Handler) UpdateCinema(c *fiber.Ctx) error {
 }
 
 // DeleteCinema
-// @Tags         Film
+// @Tags         Cinema
 // @Summary      Удаление кинотеатра
 // @Accept       json
 // @Produce      json
@@ -193,6 +262,20 @@ func (h *Handler) UpdateCinema(c *fiber.Ctx) error {
 // @Router       /auth/cinema/{id} [delete]
 // @Security     ApiKeyAuth
 func (h *Handler) DeleteCinema(c *fiber.Ctx) error {
+	userId := c.Locals("id").(int)
+	uRole, err := h.repository.DB.GetUserRoleById(userId)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error getting user role: %s", err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error getting user role: %s", err.Error())})
+	}
+
+	if uRole.Role != "admin" {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusForbidden})
+		logEvent.Str("user_role", uRole.Role).Msg("there are not enough rights for this action")
+		return c.Status(fiber.StatusForbidden).JSON(entities.Error{Error: "there are not enough rights for this action"})
+	}
+
 	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.CinemaServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
 	c.Locals("request_url", requestURL)
 	h.logger.Debug().Msg("call h.Redirect")

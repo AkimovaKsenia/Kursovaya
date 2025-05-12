@@ -161,6 +161,164 @@ info:
   title: Kino API
   version: "1.0"
 paths:
+  /auth/cinema:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: Название
+        example: '"Кварц"'
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Описание
+        example: '"Привет Подольск"'
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Фото кинотеатра
+        in: formData
+        name: photo
+        type: file
+      - description: Адрес
+        example: '"Гевинская 9/29"'
+        in: formData
+        name: address
+        required: true
+        type: string
+      - description: Контактная почта
+        example: '"meow@meow.meow"'
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Контактный номер телефона
+        example: '"+7(952'
+        in: formData
+        name: phone
+        required: true
+        type: string
+      - description: ID состояния
+        in: formData
+        name: condition_id
+        required: true
+        type: integer
+      - description: ID категории
+        in: formData
+        name: category_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Кинотеатр успешно создан
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "401":
+          description: Пользователь не авторизован
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "403":
+          description: Недостаточно прав для запроса
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание кинотеатра
+      tags:
+      - Cinema
+    put:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: ID кинотеатра
+        in: formData
+        name: id
+        required: true
+        type: integer
+      - description: Название
+        example: '"Кварц"'
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Описание
+        example: '"Привет Подольск"'
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Фото кинотеатра
+        in: formData
+        name: photo
+        type: file
+      - description: Адрес
+        example: '"Гевинская 9/29"'
+        in: formData
+        name: address
+        required: true
+        type: string
+      - description: Контактная почта
+        example: '"meow@meow.meow"'
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Контактный номер телефона
+        example: '"+7(952'
+        in: formData
+        name: phone
+        required: true
+        type: string
+      - description: ID состояния
+        in: formData
+        name: condition_id
+        required: true
+        type: integer
+      - description: ID категории
+        in: formData
+        name: category_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Кинотеатр успешно создан
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "401":
+          description: Пользователь не авторизован
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "403":
+          description: Недостаточно прав для запроса
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление кинотеатра
+      tags:
+      - Cinema
   /auth/cinema/{id}:
     delete:
       consumes:
@@ -194,7 +352,7 @@ paths:
       - ApiKeyAuth: []
       summary: Удаление кинотеатра
       tags:
-      - Film
+      - Cinema
   /auth/cinema/address_name:
     get:
       consumes:

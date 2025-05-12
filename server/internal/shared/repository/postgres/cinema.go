@@ -175,7 +175,7 @@ func (db *DB) GetCinemaByID(id int) (*entities.GetCinema, error) {
 	return &cinema, nil
 }
 
-func (db *DB) UpdateCinema(id int, c *entities.CreateCinema) error {
+func (db *DB) UpdateCinema(c *entities.Cinema) error {
 	result, err := db.DB.Exec(`
         UPDATE cinemas SET
             name = $1,
@@ -188,7 +188,7 @@ func (db *DB) UpdateCinema(id int, c *entities.CreateCinema) error {
             category_id = $8
         WHERE id = $9
     `, c.Name, c.Description, c.Photo, c.Address,
-		c.Email, c.Phone, c.ConditionID, c.CategoryID, id)
+		c.Email, c.Phone, c.ConditionID, c.CategoryID, c.ID)
 
 	if err != nil {
 		return fmt.Errorf("error updating cinema: %w", err)
@@ -199,7 +199,7 @@ func (db *DB) UpdateCinema(id int, c *entities.CreateCinema) error {
 		return fmt.Errorf("error checking rows affected: %w", err)
 	}
 	if rowsAffected == 0 {
-		return fmt.Errorf("cinema with id %d not found", id)
+		return fmt.Errorf("cinema with id %d not found", c.ID)
 	}
 
 	return nil
