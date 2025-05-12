@@ -70,10 +70,10 @@ func (h *Handler) InitRouter() {
 }
 
 func (h *Handler) Redirect(c *fiber.Ctx) ([]byte, error) {
-	requestURL := c.Locals("request_url")
-	requestMethod := c.Locals("request_method")
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.FilmServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	requestMethod := c.Method()
 	userID := c.Locals("id")
-	if requestURL == nil || requestMethod == nil || userID == nil {
+	if requestURL == "" || requestMethod == "" || userID == nil {
 		return nil, fmt.Errorf("error creating request to service: missing required locals (request_url, request_method or id)")
 	}
 
@@ -85,8 +85,8 @@ func (h *Handler) Redirect(c *fiber.Ctx) ([]byte, error) {
 	h.logger.Debug().Caller().Msg("create new request")
 	req, err := http.NewRequestWithContext(
 		c.Context(),
-		requestMethod.(string),
-		requestURL.(string),
+		requestMethod,
+		requestURL,
 		bytes.NewReader(c.BodyRaw()),
 	)
 	if err != nil {
