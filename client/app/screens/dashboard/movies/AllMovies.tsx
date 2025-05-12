@@ -27,25 +27,21 @@ const Movies: FC = () => {
     fetchMovies();
   }, []);
   return (
-    <AdminLayout title="Dashboard" backgroundColor="#1F1F1F">
-      <div className={styles.containerfirst}>
-        <div className={styles.main}>
-          <div
-            style={{ background: "rgba(129, 125, 219, 0.8)" }}
-            className={styles.catalog}
-          >
-            MOVIES
-          </div>
-          <div className={styles.items}>
-            {movies.length ? (
-              movies.map((movie) => <MovieItem movie={movie} key={movie.id} />)
-            ) : (
-              <div>Movies not found</div>
-            )}
-          </div>
-        </div>
+    <DashboardLayout>
+      <div
+        style={{ background: "rgba(129, 125, 219, 0.8)" }}
+        className={styles.catalog}
+      >
+        MOVIES
       </div>
-    </AdminLayout>
+      <div className={styles.items}>
+        {movies.length ? (
+          movies.map((movie) => <MovieItem movie={movie} key={movie.id} />)
+        ) : (
+          <div>Movies not found</div>
+        )}
+      </div>
+    </DashboardLayout>
   );
 };
 

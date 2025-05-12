@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 
 const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
   const router = useRouter();
+
   const handleDelete = async (id: number) => {
     try {
       console.log("Удаляем фильм с ID:", id);

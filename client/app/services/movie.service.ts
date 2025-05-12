@@ -1,11 +1,15 @@
 import instance from "api/interceptor";
 import axios, { axiosClassic } from "api/interceptor";
-import { IMovie, IMovieDto } from "shared/interfaces/movie.interface";
+import {
+  IListOfGenres,
+  IMovie,
+  IMovieDto,
+} from "shared/interfaces/movie.interface";
 import Cookies from "js-cookie";
 
 export const MovieService = {
   async getMovieById(id: number) {
-    return axiosClassic.get<IMovie>(`/movie/${id}`);
+    return instance.get<IMovie>(`/auth/film/id/${id}`);
   },
   async getAll() {
     const fullUrl = instance.defaults.baseURL + "/auth/film";
@@ -33,5 +37,18 @@ export const MovieService = {
   },
   async deleteMovie(id: number) {
     return instance.delete<string>(`/auth/film/${id}`);
+  },
+  async getGenres() {
+    try {
+      const response = await instance.get<IListOfGenres>("/auth/genres", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+      }); // Логируем ответ
+      return response;
+    } catch (error) {
+      console.error("Genres fetch error:", error);
+      throw error;
+    }
   },
 };
