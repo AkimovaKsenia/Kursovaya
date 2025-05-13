@@ -154,7 +154,6 @@ const MovieForm: FC<MovieFormProps> = ({
             "form-select w-full text-m px-3 py-2 border border-gray-300 rounded-md",
             styles.select
           )}
-          multiple
           size={4}
         >
           {filmStudioData?.map((filmStudio) => (

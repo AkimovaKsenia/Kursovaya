@@ -7,6 +7,8 @@ import { MovieService } from "services/movie.service";
 import AdminLayout from "@/components/ui/layout/AdminHeader";
 import DashboardLayout from "../../../components/ui/layout/DashboardLayout";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Button from "@/components/ui/layout/Button/Button";
+import Link from "next/link";
 
 const Movies: FC = () => {
   const [movies, setMovies] = useState<IMovie[]>([]);
@@ -36,6 +38,9 @@ const Movies: FC = () => {
       >
         MOVIES
       </div>
+      {/* <Link href="/manage/movies/createmovie" className={styles.button}>
+        <Button> Создать фильм </Button>
+      </Link> */}
       <div className={styles.items}>
         {movies.length ? (
           movies.map((movie) => <MovieItem movie={movie} key={movie.id} />)

@@ -33,14 +33,10 @@ export const MovieService = {
     }
   },
 
-  async createMovie() {
-    return axios.put<string>("/movie");
-  },
-  async updateMovie(id: number, body: IMovieExportDto) {
+  async createMovie(body: IMovieExportDto) {
     try {
       const formData = new FormData();
 
-      formData.append("id", id.toString());
       formData.append("name", body.name);
       formData.append("description", body.description);
       formData.append("duration_in_min", body.duration_in_min.toString());
@@ -75,7 +71,7 @@ export const MovieService = {
       for (let pair of formData.entries()) {
         console.log(`${pair[0]}:`, pair[1]);
       }
-      const response = await instance.put<string>("/auth/film", formData, {
+      const response = await instance.post<string>("/auth/film", formData, {
         headers: {
           Authorization: `Bearer ${Cookies.get("accessToken")}`,
         },
@@ -83,6 +79,55 @@ export const MovieService = {
       return response;
     } catch (error) {
       console.error("FilmStudio fetch error:", error);
+      throw error;
+    }
+  },
+
+  async updateMovie(id: number, body: IMovieExportDto) {
+    try {
+      const formData = new FormData();
+
+      formData.append("id", id.toString());
+      formData.append("name", body.name);
+      formData.append("description", body.description);
+      formData.append("duration_in_min", body.duration_in_min.toString());
+      formData.append("film_studio_id", body.film_studio_id.toString());
+
+      // Файл
+      if (body.film_photo && body.film_photo instanceof File) {
+        formData.append("film_photo", body.film_photo);
+      }
+
+      // Массивы
+      console.log("cast_list:", body.cast_list);
+      console.log("Array.isArray(cast_list):", Array.isArray(body.cast_list));
+
+      if (Array.isArray(body.cast_list)) {
+        body.cast_list.forEach((actor: string) => {
+          formData.append("cast_list[]", actor);
+        });
+      }
+      body.genre_ids.forEach((id) =>
+        formData.append("genre_ids", id.toString())
+      );
+      body.operator_ids.forEach((id) =>
+        formData.append("operator_ids", id.toString())
+      );
+      body.director_ids.forEach((id) =>
+        formData.append("director_ids", id.toString())
+      );
+
+      console.log("📦 Формируем formData для отправки:");
+      for (let pair of formData.entries()) {
+        console.log(`${pair[0]}:`, pair[1]);
+      }
+      const response = await instance.put<string>("/auth/film", formData, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+      });
+      return response;
+    } catch (error) {
       throw error;
     }
   },

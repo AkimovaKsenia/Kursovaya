@@ -19,7 +19,7 @@ export interface IMovieDto {
   directors: string[];
   operators: string[];
   film_studio_name: string;
-  cast_list: string[];
+  cast_list: string;
   duration_in_min: number;
 }
 

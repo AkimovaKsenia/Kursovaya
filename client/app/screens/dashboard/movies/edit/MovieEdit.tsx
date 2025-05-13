@@ -49,16 +49,15 @@ const MovieEdit: FC = () => {
 
   const { data, isLoading } = useMovieById(movieId);
 
-  useEffect(() => {
-    if (genresData) {
-      console.log("Жанры успешно загружены:", genresData);
-    }
-  }, [genresData]);
-
   // Обработка успешного запроса через useEffect
   useEffect(() => {
     console.log("Сработал useEffect, data =", data);
     if (data) {
+      const castListString = Array.isArray(data.cast_list)
+        ? data.cast_list.join(", ")
+        : "";
+
+      setValue("cast_list", castListString);
       setValue("name", data.name);
       setValue("genres", data.genres);
       setValue("description", data.description);
@@ -66,7 +65,7 @@ const MovieEdit: FC = () => {
       setValue("directors", data.directors);
       setValue("operators", data.operators);
       setValue("film_studio_name", data.film_studio_name);
-      setValue("cast_list", data.cast_list);
+      // setValue("cast_list", data.cast_list);
       setValue("duration_in_min", data.duration_in_min);
     } else {
       console.log("Данные фильма не получены");
@@ -80,6 +79,7 @@ const MovieEdit: FC = () => {
     onSuccess: (updatedMovie) => {
       queryClient.setQueryData(["movie", movieId], updatedMovie);
       alert("Фильм успешно обновлен!");
+      router.push("/manage/movies/listmovies");
     },
     onError: (error) => {
       console.error("Ошибка при обновлении фильма:", error);
@@ -94,13 +94,34 @@ const MovieEdit: FC = () => {
     filmStudios: IListOfFilmStudio,
     directors: IListOfDirector
   ): IMovieExportDto => {
+    const castListArray = dto.cast_list
+      .split(",")
+      .map((actor) => actor.trim())
+      .filter((actor) => actor.length > 0);
+    const inputName =
+      typeof dto.film_studio_name === "string"
+        ? dto.film_studio_name.trim().toLowerCase()
+        : "";
+
+    const studio = filmStudios.find(
+      (s) => s.name.trim().toLowerCase() === inputName
+    );
+
+    if (!studio) {
+      console.warn("Киностудия не найдена:", dto.film_studio_name);
+    }
+    console.log("Сравнение киностудий:");
+    console.log(
+      "Ищем:",
+      `"${inputName}"`,
+      "среди:",
+      filmStudios.map((s) => `"${s.name.trim().toLowerCase()}"`)
+    );
     const exportDto: IMovieExportDto = {
       name: dto.name,
       description: dto.description,
-      cast_list: dto.cast_list,
-      film_studio_id:
-        filmStudios.find((studio) => studio.name === dto.film_studio_name)
-          ?.id ?? 0,
+      cast_list: castListArray,
+      film_studio_id: studio?.id ?? 0,
       duration_in_min: dto.duration_in_min,
       genre_ids: genres
         .filter((g) => dto.genres.includes(g.name))
@@ -119,6 +140,8 @@ const MovieEdit: FC = () => {
   };
 
   const onSubmit = (formData: IMovieDto) => {
+    console.log("film_studio_name из формы:", formData.film_studio_name);
+
     if (!genresData || !operatorsData || !filmStudioData || !directorsData) {
       alert("Справочники не загружены.");
 
@@ -129,6 +152,16 @@ const MovieEdit: FC = () => {
       }
       return;
     }
+
+    const inputName =
+      Array.isArray(formData.film_studio_name) &&
+      formData.film_studio_name.length > 0
+        ? formData.film_studio_name[0].trim().toLowerCase()
+        : "";
+
+    const studio = filmStudioData.find(
+      (s) => s.name.trim().toLowerCase() === inputName
+    );
 
     const exportDto = mapDtoToExportDto(
       formData,
