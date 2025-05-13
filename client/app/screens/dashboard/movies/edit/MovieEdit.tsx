@@ -94,10 +94,9 @@ const MovieEdit: FC = () => {
     filmStudios: IListOfFilmStudio,
     directors: IListOfDirector
   ): IMovieExportDto => {
-    return {
+    const exportDto: IMovieExportDto = {
       name: dto.name,
       description: dto.description,
-      film_photo: dto.photo,
       cast_list: dto.cast_list,
       film_studio_id:
         filmStudios.find((studio) => studio.name === dto.film_studio_name)
@@ -113,11 +112,21 @@ const MovieEdit: FC = () => {
         .filter((d) => dto.directors.includes(d.fio))
         .map((d) => d.id),
     };
+    if (dto.photo) {
+      exportDto.film_photo = dto.photo;
+    }
+    return exportDto;
   };
 
   const onSubmit = (formData: IMovieDto) => {
     if (!genresData || !operatorsData || !filmStudioData || !directorsData) {
       alert("Справочники не загружены.");
+
+      if (!(formData.photo instanceof File)) {
+        console.error("Ошибка: photo не является файлом", formData.photo);
+        alert("Загрузите изображение заново");
+        return;
+      }
       return;
     }
 
@@ -128,10 +137,6 @@ const MovieEdit: FC = () => {
       filmStudioData,
       directorsData
     );
-    if (!(exportDto.film_photo instanceof File)) {
-      alert("Загрузите файл постера!");
-      return;
-    }
     console.log("🔄 Отправка запроса на обновление фильма с телом:", exportDto);
 
     mutate(exportDto);
@@ -140,8 +145,8 @@ const MovieEdit: FC = () => {
   const handleFileUpload = (files: File[]) => {
     if (files.length > 0) {
       setValue("photo", files[0], { shouldDirty: true });
-
-      const reader = new FileReader();
+    } else {
+      setValue("photo", "", { shouldDirty: true }); // Очистка поля, если файл не выбран
     }
   };
   // const genreOptions = genresData || [];

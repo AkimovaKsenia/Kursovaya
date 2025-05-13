@@ -47,7 +47,7 @@ export const MovieService = {
       formData.append("film_studio_id", body.film_studio_id.toString());
 
       // Файл
-      if (body.film_photo) {
+      if (body.film_photo && body.film_photo instanceof File) {
         formData.append("film_photo", body.film_photo);
       }
 

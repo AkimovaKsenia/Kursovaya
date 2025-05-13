@@ -26,7 +26,7 @@ export interface IMovieDto {
 export interface IMovieExportDto {
   name: string;
   description: string;
-  film_photo: File | string;
+  film_photo?: File | string;
   cast_list: string[];
   film_studio_id: number;
   duration_in_min: number;
