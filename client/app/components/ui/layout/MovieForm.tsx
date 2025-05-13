@@ -4,11 +4,18 @@ import {
   UseFormHandleSubmit,
   Control,
 } from "react-hook-form";
-import { IListOfGenres, IMovieDto } from "shared/interfaces/movie.interface";
+import {
+  IListOfDirector,
+  IListOfFilmStudio,
+  IListOfGenres,
+  IListOfOperators,
+  IMovieDto,
+} from "shared/interfaces/movie.interface";
 import { FC } from "react";
 import FileUploader from "./FileUploader";
 import cn from "classnames";
 import styles from "./MovieForm.module.scss";
+
 interface MovieFormProps {
   register: UseFormRegister<IMovieDto>;
   errors: FieldErrors<IMovieDto>;
@@ -16,6 +23,9 @@ interface MovieFormProps {
   onSubmit: (formData: IMovieDto) => void;
   isPending: boolean;
   genresData: IListOfGenres | undefined;
+  operatorsData: IListOfOperators | undefined;
+  filmStudioData: IListOfFilmStudio | undefined;
+  directorsData: IListOfDirector | undefined;
   handleFileUpload: (files: File[]) => void;
 }
 
@@ -26,6 +36,9 @@ const MovieForm: FC<MovieFormProps> = ({
   onSubmit,
   isPending,
   genresData,
+  operatorsData,
+  filmStudioData,
+  directorsData,
   handleFileUpload,
 }) => {
   return (
@@ -71,20 +84,42 @@ const MovieForm: FC<MovieFormProps> = ({
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Режиссер:
         </label>
-        <input
-          {...register("directors")}
-          className="w-115 px-3 py-2 border border-gray-300 rounded-md"
-        />
+        <select
+          {...register("directors", { required: "Выберите директоров" })}
+          className={cn(
+            "form-select w-full text-m px-3 py-2 border border-gray-300 rounded-md",
+            styles.select
+          )}
+          multiple
+          size={4}
+        >
+          {directorsData?.map((director) => (
+            <option key={director.id} value={director.fio}>
+              {director.fio}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Оператор:
         </label>
-        <input
-          {...register("operators")}
-          className="w-115 px-3 py-2 border border-gray-300 rounded-md"
-        />
+        <select
+          {...register("operators", { required: "Выберите операторов" })}
+          className={cn(
+            "form-select w-full text-m px-3 py-2 border border-gray-300 rounded-md",
+            styles.select
+          )}
+          multiple
+          size={4}
+        >
+          {operatorsData?.map((operator) => (
+            <option key={operator.id} value={operator.fio}>
+              {operator.fio}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div>
@@ -100,12 +135,34 @@ const MovieForm: FC<MovieFormProps> = ({
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
+          Длительность:
+        </label>
+        <textarea
+          {...register("duration_in_min")}
+          className="w-115 px-3 py-2 border border-gray-300 rounded-md"
+          rows={1}
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Киностудия:
         </label>
-        <input
-          {...register("film_studio_name")}
-          className="w-115 px-3 py-2 border border-gray-300 rounded-md"
-        />
+        <select
+          {...register("film_studio_name", { required: "Выберите киностудию" })}
+          className={cn(
+            "form-select w-full text-m px-3 py-2 border border-gray-300 rounded-md",
+            styles.select
+          )}
+          multiple
+          size={4}
+        >
+          {filmStudioData?.map((filmStudio) => (
+            <option key={filmStudio.id} value={filmStudio.name}>
+              {filmStudio.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div>

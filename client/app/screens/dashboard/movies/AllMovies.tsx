@@ -6,6 +6,7 @@ import styles from "./AllMovies.module.scss";
 import { MovieService } from "services/movie.service";
 import AdminLayout from "@/components/ui/layout/AdminHeader";
 import DashboardLayout from "../../../components/ui/layout/DashboardLayout";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const Movies: FC = () => {
   const [movies, setMovies] = useState<IMovie[]>([]);
@@ -26,6 +27,7 @@ const Movies: FC = () => {
 
     fetchMovies();
   }, []);
+
   return (
     <DashboardLayout>
       <div

@@ -14,8 +14,7 @@ const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
     try {
       console.log("Удаляем фильм с ID:", id);
       await MovieService.deleteMovie(id);
-      // Можно обновить список фильмов или показать уведомление
-      router.reload(); // Обновляем страницу после удаления
+      router.reload();
 
       alert("Фильм удалён");
     } catch (error) {
