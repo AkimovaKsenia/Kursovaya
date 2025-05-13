@@ -2,13 +2,12 @@ package handler
 
 import (
 	"fmt"
-	"kino/internal/shared/config"
-	"kino/internal/shared/log"
-	"kino/internal/shared/repository"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/rs/zerolog"
+	"kino/internal/shared/config"
+	"kino/internal/shared/log"
+	"kino/internal/shared/repository"
 )
 
 type Handler struct {
@@ -36,20 +35,20 @@ func (h *Handler) InitRouter() {
 	f.Use(log.RequestLogger(h.logger))
 
 	f.Get("/", func(c *fiber.Ctx) error {
-		return c.Status(fiber.StatusOK).SendString("film service healthy")
+		return c.Status(fiber.StatusOK).SendString("cinema service healthy")
 	})
 
-	f.Get("/genres", h.GetAllGenres)
-	f.Get("/operators", h.GetAllOperators)
-	f.Get("/directors", h.GetAllDirectors)
-	f.Get("/film-studios", h.GetAllFilmStudios)
+	f.Get("/cinema/conditions", h.GetAllCinemaConditions)
+	f.Get("/cinema/categories", h.GetAllCinemaCategories)
+	f.Get("/cinema/hall/types", h.GetAllCinemaHallTypes)
 
-	f.Post("/film", h.CreateFilm)
-	f.Get("/film", h.GetAllFilms)
-	f.Get("/film/id/:id", h.GetFilmByID)
-	f.Put("/film", h.UpdateFilm)
-	f.Delete("/film/:id", h.DeleteFilm)
+	f.Post("/cinema", h.CreateCinema)
+	f.Get("/cinema/address_name", h.GetAllCinemasAddressName)
+	f.Get("/cinema/halls/:id", h.GetAllCinemaHallsByID)
+	f.Get("/cinema/id/:id", h.GetCinemaByID)
+	f.Put("/cinema", h.UpdateCinema)
+	f.Delete("/cinema/:id", h.DeleteCinema)
 
-	h.logger.Info().Msg(fmt.Sprintf("start film service on port %s", h.conf.Application.FilmServicePort))
-	f.Listen(fmt.Sprintf(":%s", h.conf.Application.FilmServicePort))
+	h.logger.Info().Msg(fmt.Sprintf("start cinema service on port %s", h.conf.Application.CinemaServicePort))
+	f.Listen(fmt.Sprintf(":%s", h.conf.Application.CinemaServicePort))
 }

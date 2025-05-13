@@ -26,6 +26,19 @@ services:
     env_file:
       - .env
 
+  cinema_service:
+    build:
+      context: server
+      dockerfile: ./cmd/cinema_service/Dockerfile
+    ports:
+      - ${CINEMA_SERVICE_PORT}:${CINEMA_SERVICE_PORT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    env_file:
+      - .env
+
   minio:
     image: quay.io/minio/minio
     container_name: minio-kino
@@ -35,7 +48,7 @@ services:
     volumes:
       - ./.data/minio:/data
     env_file:
-    - .env
+      - .env
     command: server /data --console-address ":9001"
     restart: unless-stopped
 
@@ -43,13 +56,13 @@ services:
     image: postgres:16.8-alpine3.21
     container_name: postgres-kino
     volumes:
-      - ./.data/postgres:/var/lib/postgresql
+      - ./.data/postgres:/var/lib/postgresql/data
     ports:
       - ${POSTGRES_EXTERNAL_PORT}:${POSTGRES_PORT}
     env_file:
-    - .env
+      - .env
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_PASSWORD}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5

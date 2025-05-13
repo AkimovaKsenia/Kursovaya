@@ -1,5 +1,35 @@
 basePath: /
 definitions:
+  entities.CinemaAddressName:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  entities.CinemaCategory:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  entities.CinemaCondition:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  entities.CinemaHallType:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
   entities.CreateUser:
     properties:
       email:
@@ -70,6 +100,36 @@ definitions:
       name:
         type: string
     type: object
+  entities.GetCinema:
+    properties:
+      address:
+        type: string
+      category:
+        type: string
+      condition:
+        type: string
+      description:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      photo:
+        type: string
+    type: object
+  entities.GetCinemaHall:
+    properties:
+      capacity:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      type:
+        type: string
+    type: object
   entities.ID:
     properties:
       id:
@@ -101,6 +161,364 @@ info:
   title: Kino API
   version: "1.0"
 paths:
+  /auth/cinema:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: Название
+        example: '"Кварц"'
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Описание
+        example: '"Привет Подольск"'
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Фото кинотеатра
+        in: formData
+        name: photo
+        type: file
+      - description: Адрес
+        example: '"Гевинская 9/29"'
+        in: formData
+        name: address
+        required: true
+        type: string
+      - description: Контактная почта
+        example: '"meow@meow.meow"'
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Контактный номер телефона
+        example: '"+7(952'
+        in: formData
+        name: phone
+        required: true
+        type: string
+      - description: ID состояния
+        in: formData
+        name: condition_id
+        required: true
+        type: integer
+      - description: ID категории
+        in: formData
+        name: category_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Кинотеатр успешно создан
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "401":
+          description: Пользователь не авторизован
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "403":
+          description: Недостаточно прав для запроса
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание кинотеатра
+      tags:
+      - Cinema
+    put:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: ID кинотеатра
+        in: formData
+        name: id
+        required: true
+        type: integer
+      - description: Название
+        example: '"Кварц"'
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: Описание
+        example: '"Привет Подольск"'
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Фото кинотеатра
+        in: formData
+        name: photo
+        type: file
+      - description: Адрес
+        example: '"Гевинская 9/29"'
+        in: formData
+        name: address
+        required: true
+        type: string
+      - description: Контактная почта
+        example: '"meow@meow.meow"'
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: Контактный номер телефона
+        example: '"+7(952'
+        in: formData
+        name: phone
+        required: true
+        type: string
+      - description: ID состояния
+        in: formData
+        name: condition_id
+        required: true
+        type: integer
+      - description: ID категории
+        in: formData
+        name: category_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Кинотеатр успешно создан
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "401":
+          description: Пользователь не авторизован
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "403":
+          description: Недостаточно прав для запроса
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление кинотеатра
+      tags:
+      - Cinema
+  /auth/cinema/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID кинотеатра
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Кинотеатр успешно удален
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "404":
+          description: Кинотеатр не найден
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Удаление кинотеатра
+      tags:
+      - Cinema
+  /auth/cinema/address_name:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список всех названий и адресов кинотеатров
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/entities.CinemaAddressName'
+              type: array
+            type: array
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех названий и адресов кинотеатров
+      tags:
+      - Cinema
+  /auth/cinema/categories:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список всех категорий кинотеатра
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/entities.CinemaCategory'
+              type: array
+            type: array
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех категорий кинотеатра
+      tags:
+      - Cinema
+  /auth/cinema/conditions:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список всех состояний кинотеатра
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/entities.CinemaCondition'
+              type: array
+            type: array
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех состояний кинотеатра
+      tags:
+      - Cinema
+  /auth/cinema/hall/types:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список всех типов зала кинотеатра
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/entities.CinemaHallType'
+              type: array
+            type: array
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех типов зала кинотеатра
+      tags:
+      - Cinema
+  /auth/cinema/halls/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID кинотеатра
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Залы кинотеатра успешно получены
+          schema:
+            items:
+              $ref: '#/definitions/entities.GetCinemaHall'
+            type: array
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "404":
+          description: Зал не найден
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех залов кинотеатра по его ID
+      tags:
+      - Cinema
+  /auth/cinema/id/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID кинотеатра
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Полная информация о кинотеатре получена
+          schema:
+            $ref: '#/definitions/entities.GetCinema'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "404":
+          description: Зал не найден
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение полной информации о кинотеатре по его ID
+      tags:
+      - Cinema
   /auth/directors:
     get:
       consumes:

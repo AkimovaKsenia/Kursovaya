@@ -96,7 +96,7 @@ func (h *Handler) CreateFilm(c *fiber.Ctx) error {
 
 	f.Photo = fileName
 
-	h.logger.Debug().Msg("call h.repository.DB.DBUserGetByEmail")
+	h.logger.Debug().Msg("call h.repository.DB.CreateFilm")
 	id, err := h.repository.DB.CreateFilm(&f)
 	if err != nil {
 		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(),
@@ -106,7 +106,7 @@ func (h *Handler) CreateFilm(c *fiber.Ctx) error {
 	}
 
 	logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Info", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusOK})
-	logEvent.Msg(fmt.Sprintf("successful creating university with id=%v", id))
+	logEvent.Msg(fmt.Sprintf("successful creating film with id=%v", id))
 	return c.Status(fiber.StatusOK).JSON(entities.ID{ID: id})
 }
 
@@ -286,44 +286,40 @@ func (h *Handler) UpdateFilm(c *fiber.Ctx) error {
 		return c.Status(status).JSON(entities.Error{Error: err.Error()})
 	}
 
-	h.logger.Debug().Caller().Msg("call h.repository.S3.FPutObject")
-	err = h.repository.S3.RemoveObject(context.Background(), "film-media", filmDB.Photo)
-	if err != nil {
-		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
-		logEvent.Msg(fmt.Sprintf("error removing file %s from minio: %s", filmDB.Photo, err.Error()))
-		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error removing file %s from minio: %s", filmDB.Photo, err.Error())})
-	}
-
 	file, err := c.FormFile("film_photo")
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Photo file is required",
-		})
+		f.Photo = filmDB.Photo
+	} else {
+		h.logger.Debug().Caller().Msg("call h.repository.S3.RemoveObject")
+		err = h.repository.S3.RemoveObject(context.Background(), "film-media", filmDB.Photo)
+		if err != nil {
+			logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+			logEvent.Msg(fmt.Sprintf("error removing file %s from minio: %s", filmDB.Photo, err.Error()))
+			return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error removing file %s from minio: %s", filmDB.Photo, err.Error())})
+		}
+		filePath := fmt.Sprintf("./tmp/%s", file.Filename)
+
+		h.logger.Debug().Caller().Msg("save file")
+		c.SaveFile(file, filePath)
+		fileName := util.GenerateRandomFileName(filepath.Ext(file.Filename))
+
+		h.logger.Debug().Caller().Msg("call h.repository.S3.FPutObject")
+		err = h.repository.S3.FPutObject(context.Background(), "film-media", fileName, filePath, file.Header.Get("Content-Type"))
+		if err != nil {
+			logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+			logEvent.Msg(fmt.Sprintf("error creating file %s in minio: %s", fileName, err.Error()))
+			return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error creating file %s in minio: %s", file.Filename, err.Error())})
+		}
+		h.logger.Debug().Caller().Msg("remove file")
+		err = os.Remove(filePath)
+		if err != nil {
+			logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+			logEvent.Msg(fmt.Sprintf("error removing file %s: %s", file.Filename, err.Error()))
+			return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error removing file %s: %s", file.Filename, err.Error())})
+		}
 	}
-	filePath := fmt.Sprintf("./tmp/%s", file.Filename)
 
-	h.logger.Debug().Caller().Msg("save file")
-	c.SaveFile(file, filePath)
-	fileName := util.GenerateRandomFileName(filepath.Ext(file.Filename))
-
-	h.logger.Debug().Caller().Msg("call h.repository.S3.FPutObject")
-	err = h.repository.S3.FPutObject(context.Background(), "film-media", fileName, filePath, file.Header.Get("Content-Type"))
-	if err != nil {
-		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
-		logEvent.Msg(fmt.Sprintf("error creating file %s in minio: %s", fileName, err.Error()))
-		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error creating file %s in minio: %s", file.Filename, err.Error())})
-	}
-	h.logger.Debug().Caller().Msg("remove file")
-	err = os.Remove(filePath)
-	if err != nil {
-		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
-		logEvent.Msg(fmt.Sprintf("error removing file %s: %s", file.Filename, err.Error()))
-		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error removing file %s: %s", file.Filename, err.Error())})
-	}
-
-	f.Photo = fileName
-
-	if err := h.repository.DB.UpdateFilm(&f); err != nil {
+	if err = h.repository.DB.UpdateFilm(&f); err != nil {
 		status := fiber.StatusInternalServerError
 		if strings.Contains(err.Error(), "not found") {
 			status = fiber.StatusNotFound
@@ -353,7 +349,7 @@ func (h *Handler) DeleteFilm(c *fiber.Ctx) error {
 		}
 
 		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: status})
-		logEvent.Msg(fmt.Sprintf("error updating film: error getting film by id: %v", err))
+		logEvent.Msg(fmt.Sprintf("error deleting film: error getting film by id: %v", err))
 		return c.Status(status).JSON(entities.Error{Error: err.Error()})
 	}
 

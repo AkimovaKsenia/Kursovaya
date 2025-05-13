@@ -53,16 +53,34 @@ func (h *Handler) InitRouter() {
 		return h.WithJWTAuth(c)
 	})
 	{
-		authGroup.Get("/genres", h.GetAllGenres)
-		authGroup.Get("/operators", h.GetAllOperators)
-		authGroup.Get("/directors", h.GetAllDirectors)
-		authGroup.Get("/film-studios", h.GetAllFilmStudios)
+		// FILM
+		{
+			authGroup.Get("/genres", h.GetAllGenres)
+			authGroup.Get("/operators", h.GetAllOperators)
+			authGroup.Get("/directors", h.GetAllDirectors)
+			authGroup.Get("/film-studios", h.GetAllFilmStudios)
 
-		authGroup.Post("/film", h.CreateFilm)
-		authGroup.Get("/film", h.GetAllFilms)
-		authGroup.Get("/film/id/:id", h.GetFilmByID)
-		authGroup.Put("/film", h.UpdateFilm)
-		authGroup.Delete("/film/:id", h.DeleteFilm)
+			authGroup.Post("/film", h.CreateFilm)
+			authGroup.Get("/film", h.GetAllFilms)
+			authGroup.Get("/film/id/:id", h.GetFilmByID)
+			authGroup.Put("/film", h.UpdateFilm)
+			authGroup.Delete("/film/:id", h.DeleteFilm)
+		}
+
+		// CINEMA
+		{
+			authGroup.Get("/cinema/conditions", h.GetAllCinemaConditions)
+			authGroup.Get("/cinema/categories", h.GetAllCinemaCategories)
+			authGroup.Get("/cinema/hall/types", h.GetAllCinemaHallTypes)
+
+			authGroup.Post("/cinema", h.CreateCinema)
+			authGroup.Get("/cinema/address_name", h.GetAllCinemasAddressName)
+			authGroup.Get("/cinema/halls/:id", h.GetAllCinemaHallsByID)
+			authGroup.Get("/cinema/id/:id", h.GetCinemaByID)
+			authGroup.Put("/cinema", h.UpdateCinema)
+			authGroup.Delete("/cinema/:id", h.DeleteCinema)
+		}
+
 	}
 
 	h.logger.Info().Msg(fmt.Sprintf("start api-gateway on port %s", h.conf.Application.ApiGatewayPort))
@@ -71,9 +89,9 @@ func (h *Handler) InitRouter() {
 
 func (h *Handler) Redirect(c *fiber.Ctx) ([]byte, error) {
 	requestURL := c.Locals("request_url")
-	requestMethod := c.Locals("request_method")
+	requestMethod := c.Method()
 	userID := c.Locals("id")
-	if requestURL == nil || requestMethod == nil || userID == nil {
+	if requestURL == nil || requestMethod == "" || userID == nil {
 		return nil, fmt.Errorf("error creating request to service: missing required locals (request_url, request_method or id)")
 	}
 
@@ -85,7 +103,7 @@ func (h *Handler) Redirect(c *fiber.Ctx) ([]byte, error) {
 	h.logger.Debug().Caller().Msg("create new request")
 	req, err := http.NewRequestWithContext(
 		c.Context(),
-		requestMethod.(string),
+		requestMethod,
 		requestURL.(string),
 		bytes.NewReader(c.BodyRaw()),
 	)

@@ -162,4 +162,220 @@ var (
 			GenreIDs:      []int{5, 6},
 		},
 	}
+
+	mockCinemaConditions = []entities.CinemaCondition{
+		{Name: "Работает в обычном режиме"},
+		{Name: "Открыт с ограничениями"},
+		{Name: "Закрыт на санитарный день"},
+		{Name: "Закрыт на техническое обслуживание"},
+		{Name: "Реконструкция здания"},
+		{Name: "Временное приостановление работы"},
+		{Name: "Открытие после ремонта"},
+		{Name: "Работает только онлайн-продажи"},
+		{Name: "Ограниченный режим работы"},
+		{Name: "Закрыт по решению администрации"},
+	}
+
+	mockCinemaCategories = []entities.CinemaCategory{
+		{Name: "Стандартный"},
+		{Name: "Артхаусный"},
+		{Name: "IMAX"},
+		{Name: "Премиум-класса"},
+		{Name: "Детский"},
+		{Name: "Летний открытый"},
+		{Name: "Автокинотеатр"},
+		{Name: "Обзорный"},
+	}
+
+	mockCinemaHallTypes = []entities.CinemaHallType{
+		{Name: "Стандартный зал"},
+		{Name: "VIP-зал"},
+		{Name: "IMAX"},
+		{Name: "3D"},
+		{Name: "Dolby Atmos"},
+	}
+
+	mockCinemas = []entities.CreateCinema{
+		{
+			Name:        "КИНО ОККО",
+			Description: "КИНО ОККО в «Афимолл Сити» – это современный кинотеатр крупнейшей сети «Синема парк и Формула кино».\n\nКинотеатр для тех, кто ценит качество и постоянство.\n\nМедиацентр главных событий киноиндустрии и бизнес-среды Москвы.\n\nЗалы оснащены инновационным оборудованием, которые обеспечивают захватывающий эффект полного погружения.\n\nПремиум зал Screen Max Sapphire – сверхмощная графика, объемный звук, привилегированное обслуживание с собственным лаундж-баром.",
+			Photo:       "https://afimall.ru/netcat_files/390_1939.jpg",
+			Address:     "Москва, Пресненская наб., 2, ТЦ «Афимолл-сити», 5-й этаж",
+			Email:       "gewinn@cherepok.ksesha",
+			Phone:       "+7(495)419-21-07",
+			ConditionID: 1,
+			CategoryID:  3,
+		},
+		{
+			Name:        "Киномакс Жулебино",
+			Description: "Кинотеатр в Москве «Киномакс-Жулебино» – это 6 стильных комфортабельных залов на 762 места, оснащенные современным оборудованием и удобными креслами, среди которых зал со звуком Dolby Atmos и  VIP-зал.",
+			Photo:       "https://avatars.mds.yandex.net/get-altay/2057543/2a0000016d24c41222c9aaef5ffea0c164cf/XXXL",
+			Address:     "г. Москва, ул. Генерала Кузнецова, 22, ТРЦ «Миля»",
+			Email:       "zhulebino@kinomax.ru",
+			Phone:       "+7(952)812-02-02",
+			ConditionID: 1,
+			CategoryID:  1,
+		},
+		{
+			Name:        "Кинозал ГУМа",
+			Description: "Кинозал ГУМа — это камерный театр из трех залов, где показывают кино. Архитектурный проект был выполнен по специальному заказу ГУМа. Классический «театральный декор» отвечает самым высоким акустическим стандартам привычных «черных коробок».",
+			Photo:       "https://gum.ru/local/templates/gum_main/images/kinozal/kino-new1-min.jpg",
+			Address:     "г. Москва, ул. Генерала Кузнецова, 22, ТРЦ «Миля»",
+			Email:       "info@gum.ru",
+			Phone:       "+7(495)788-43-43",
+			ConditionID: 1,
+			CategoryID:  4,
+		},
+		{
+			Name:        "Синема парк Deluxe",
+			Description: "Кинотеатр «Синема Парк DELUXE» расположен вблизи станции метро Войковская, в торговом центре «Метрополис».\n\nОсобенность дизайна этого кинотеатра заключается в том, что интерьер стилизован под зону курортного отдыха — на стенах висят большие фотографии с видом на Майами. Современный стиль хай-тек позволит вам расслабиться и отвлечься от суеты повседневной жизни.",
+			Photo:       "https://avatars.mds.yandex.net/get-altay/5583647/2a000001804243d9ea7d2433d85ca404c46f/XXXL",
+			Address:     "ул. Мультяшная, 5",
+			Email:       "metropolis@cinema.ru",
+			Phone:       "+7(495)197-77-11",
+			ConditionID: 1,
+			CategoryID:  4,
+		},
+	}
+
+	mockCinemaHalls = []entities.CinemaHall{
+		{
+			Name:     "Зал 1",
+			Capacity: 100,
+			TypeID:   1,
+			CinemaID: 1,
+		},
+		{
+			Name:     "Зал 2",
+			Capacity: 100,
+			TypeID:   1,
+			CinemaID: 1,
+		},
+		{
+			Name:     "Зал 3",
+			Capacity: 100,
+			TypeID:   1,
+			CinemaID: 1,
+		},
+		{
+			Name:     "Зал 4",
+			Capacity: 90,
+			TypeID:   3,
+			CinemaID: 1,
+		},
+		{
+			Name:     "Зал 5",
+			Capacity: 90,
+			TypeID:   3,
+			CinemaID: 1,
+		},
+		{
+			Name:     "Зал 6",
+			Capacity: 80,
+			TypeID:   4,
+			CinemaID: 1,
+		},
+		{
+			Name:     "Зал 7",
+			Capacity: 80,
+			TypeID:   4,
+			CinemaID: 1,
+		},
+		{
+			Name:     "Зал 1",
+			Capacity: 110,
+			TypeID:   1,
+			CinemaID: 2,
+		},
+		{
+			Name:     "Зал 2",
+			Capacity: 110,
+			TypeID:   1,
+			CinemaID: 2,
+		},
+		{
+			Name:     "Зал 3",
+			Capacity: 120,
+			TypeID:   1,
+			CinemaID: 2,
+		},
+		{
+			Name:     "Зал 4",
+			Capacity: 120,
+			TypeID:   1,
+			CinemaID: 2,
+		},
+		{
+			Name:     "Зал 5",
+			Capacity: 70,
+			TypeID:   2,
+			CinemaID: 2,
+		},
+		{
+			Name:     "Зал 6",
+			Capacity: 70,
+			TypeID:   2,
+			CinemaID: 2,
+		},
+		{
+			Name:     "Большой зал",
+			Capacity: 70,
+			TypeID:   2,
+			CinemaID: 3,
+		},
+		{
+			Name:     "Детский зал",
+			Capacity: 20,
+			TypeID:   1,
+			CinemaID: 3,
+		},
+		{
+			Name:     "Специальный зал",
+			Capacity: 16,
+			TypeID:   2,
+			CinemaID: 3,
+		},
+		{
+			Name:     "зал Киносалон",
+			Capacity: 25,
+			TypeID:   2,
+			CinemaID: 3,
+		},
+		{
+			Name:     "Зал 1",
+			Capacity: 100,
+			TypeID:   4,
+			CinemaID: 4,
+		},
+		{
+			Name:     "Зал 2",
+			Capacity: 100,
+			TypeID:   4,
+			CinemaID: 4,
+		},
+		{
+			Name:     "Зал 3",
+			Capacity: 100,
+			TypeID:   4,
+			CinemaID: 4,
+		},
+		{
+			Name:     "Зал 4",
+			Capacity: 100,
+			TypeID:   4,
+			CinemaID: 4,
+		},
+		{
+			Name:     "Зал 5",
+			Capacity: 32,
+			TypeID:   2,
+			CinemaID: 4,
+		},
+		{
+			Name:     "Зал 6",
+			Capacity: 32,
+			TypeID:   2,
+			CinemaID: 4,
+		},
+	}
 )

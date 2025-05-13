@@ -14,6 +14,11 @@ func (r *Repository) CreateMocks() {
 	r.CreateDirectors()
 	r.CreateOperators()
 	r.CreateFilms()
+	r.CreateCinemaConditions()
+	r.CreateCinemaCategories()
+	r.CreateCinemaHallTypes()
+	r.CreateCinemas()
+	r.CreateCinemaHalls()
 }
 
 func (r *Repository) CreateRoles() {
@@ -161,5 +166,105 @@ func (r *Repository) CreateFilms() {
 		log.Println("successful creating mock films")
 	} else {
 		log.Println("film already exist, skipping creation")
+	}
+}
+
+func (r *Repository) CreateCinemaConditions() {
+	var count int
+	err := r.DB.DB.QueryRow("SELECT COUNT(*) FROM cinema_conditions").Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if count == 0 {
+		for _, cinemaCondition := range mockCinemaConditions {
+			_, err := r.DB.CreateCinemaCondition(&cinemaCondition)
+			if err != nil {
+				log.Fatal(fmt.Errorf("error creating mock cinema conditions: %w", err))
+			}
+		}
+		log.Println("successful creating mock cinema conditions")
+	} else {
+		log.Println("cinema conditions already exist, skipping creation")
+	}
+}
+
+func (r *Repository) CreateCinemaCategories() {
+	var count int
+	err := r.DB.DB.QueryRow("SELECT COUNT(*) FROM cinema_categories").Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if count == 0 {
+		for _, cinemaCategories := range mockCinemaCategories {
+			_, err := r.DB.CreateCinemaCategory(&cinemaCategories)
+			if err != nil {
+				log.Fatal(fmt.Errorf("error creating mock cinema categories: %w", err))
+			}
+		}
+		log.Println("successful creating mock cinema categories")
+	} else {
+		log.Println("cinema categories already exist, skipping creation")
+	}
+}
+
+func (r *Repository) CreateCinemaHallTypes() {
+	var count int
+	err := r.DB.DB.QueryRow("SELECT COUNT(*) FROM cinema_hall_types").Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if count == 0 {
+		for _, cinemaHallType := range mockCinemaHallTypes {
+			_, err := r.DB.CreateCinemaHallType(&cinemaHallType)
+			if err != nil {
+				log.Fatal(fmt.Errorf("error creating mock cinema hall types: %w", err))
+			}
+		}
+		log.Println("successful creating mock cinema hall types")
+	} else {
+		log.Println("cinema hall types already exist, skipping creation")
+	}
+}
+
+func (r *Repository) CreateCinemas() {
+	var count int
+	err := r.DB.DB.QueryRow("SELECT COUNT(*) FROM cinemas").Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if count == 0 {
+		for _, cinema := range mockCinemas {
+			_, err := r.DB.CreateCinema(&cinema)
+			if err != nil {
+				log.Fatal(fmt.Errorf("error creating mock cinema: %w", err))
+			}
+		}
+		log.Println("successful creating mock cinema")
+	} else {
+		log.Println("cinema already exist, skipping creation")
+	}
+}
+
+func (r *Repository) CreateCinemaHalls() {
+	var count int
+	err := r.DB.DB.QueryRow("SELECT COUNT(*) FROM cinema_halls").Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if count == 0 {
+		for _, cinemaHall := range mockCinemaHalls {
+			_, err := r.DB.CreateCinemaHall(&cinemaHall)
+			if err != nil {
+				log.Fatal(fmt.Errorf("error creating mock cinema hall: %w", err))
+			}
+		}
+		log.Println("successful creating mock cinema hall")
+	} else {
+		log.Println("cinema hall already exist, skipping creation")
 	}
 }
