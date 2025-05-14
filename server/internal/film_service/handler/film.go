@@ -129,7 +129,13 @@ func (h *Handler) GetFilmByID(c *fiber.Ctx) error {
 	re := regexp.MustCompile("^(https?|ftp):\\/\\/[^\\s/$.?#].[^\\s]*$")
 
 	if !re.MatchString(film.Photo) && film.Photo != "" {
-		url, _ := h.repository.S3.PresignedGetObject(context.Background(), "film-media", film.Photo, 7*24*time.Hour)
+		url, err := h.repository.S3.PresignedGetObject(context.Background(), "film-media", film.Photo, 7*24*time.Hour)
+		if err != nil {
+			logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+			logEvent.Msg(fmt.Sprintf("error getting presigned object %s from minio: %s", film.Photo, err.Error()))
+			return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error getting presigned object %s from minio: %s", film.Photo, err.Error())})
+		}
+
 		film.Photo = url.String()
 	}
 
@@ -139,7 +145,7 @@ func (h *Handler) GetFilmByID(c *fiber.Ctx) error {
 }
 
 func (h *Handler) GetAllFilms(c *fiber.Ctx) error {
-	h.logger.Debug().Msg("calling h.repository.DB.GetFilmByID")
+	h.logger.Debug().Msg("calling h.repository.DB.GetAllFilms")
 	films, err := h.repository.DB.GetAllFilms()
 	if err != nil {
 		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
@@ -151,7 +157,13 @@ func (h *Handler) GetAllFilms(c *fiber.Ctx) error {
 
 	for i := range films {
 		if !re.MatchString(films[i].Photo) {
-			url, _ := h.repository.S3.PresignedGetObject(context.Background(), "film-media", films[i].Photo, 7*24*time.Hour)
+			url, err := h.repository.S3.PresignedGetObject(context.Background(), "film-media", films[i].Photo, 7*24*time.Hour)
+			if err != nil {
+				logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+				logEvent.Msg(fmt.Sprintf("error getting presigned object %s from minio: %s", films[i].Photo, err.Error()))
+				return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error getting presigned object %s from minio: %s", films[i].Photo, err.Error())})
+			}
+
 			films[i].Photo = url.String()
 		}
 	}

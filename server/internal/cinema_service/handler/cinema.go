@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 )
 
 func (h *Handler) GetAllCinemaConditions(c *fiber.Ctx) error {
@@ -198,6 +199,19 @@ func (h *Handler) GetCinemaByID(c *fiber.Ctx) error {
 		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
 		logEvent.Msg(fmt.Sprintf("error getting cinema by id: %s", err.Error()))
 		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error getting cinema by id: %s", err.Error())})
+	}
+
+	re := regexp.MustCompile("^(https?|ftp):\\/\\/[^\\s/$.?#].[^\\s]*$")
+
+	if !re.MatchString(cinema.Photo) && cinema.Photo != "" {
+		url, err := h.repository.S3.PresignedGetObject(context.Background(), "cinema-media", cinema.Photo, 7*24*time.Hour)
+		if err != nil {
+			logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+			logEvent.Msg(fmt.Sprintf("error getting presigned object %s from minio: %s", cinema.Photo, err.Error()))
+			return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error getting presigned object %s from minio: %s", cinema.Photo, err.Error())})
+		}
+
+		cinema.Photo = url.String()
 	}
 
 	logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Info", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusOK})
