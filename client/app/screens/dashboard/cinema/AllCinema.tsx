@@ -2,7 +2,7 @@ import Layout from "@/components/ui/layout/Layout";
 import MovieItem from "@/components/ui/movie-item/MovieItem";
 import { FC, useEffect, useState } from "react";
 import { IListOfMovies, IMovie } from "shared/interfaces/movie.interface";
-import styles from "../movies/AllMovies.module.scss";
+import styles from "./AllCinema.module.scss";
 import { MovieService } from "services/movie.service";
 import AdminLayout from "@/components/ui/layout/AdminHeader";
 import DashboardLayout from "../../../components/ui/layout/DashboardLayout";
