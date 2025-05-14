@@ -34,6 +34,25 @@ const CinemaItem: FC<{ cinema: ICinemaMain }> = ({ cinema }) => {
         <div className={styles.address}>{cinema.address} </div>
       </div>
 
+      <div className={styles.buttons}>
+        <button className={styles.button}>
+          <Link href="/" style={{ cursor: "pointer" }}>
+            Сеансы
+          </Link>
+        </button>
+
+        <button className={styles.button}>
+          <Link
+            href={`/manage/cinema/halls/${cinema.id}`}
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            Залы
+          </Link>
+        </button>
+      </div>
+
       <div className={styles.icons}>
         {/* <Link href={`/manage/movies/edit/${cinema.id}`} passHref legacyBehavior> */}
         <PiPencil className={styles.firsticon} />

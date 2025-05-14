@@ -44,7 +44,7 @@ const Cinema: FC = () => {
         Cinema
       </div>
       <Link href="/manage/movies/createmovie" className={styles.button}>
-        <Button> Создать фильм </Button>
+        <Button> Создать кинотеатр </Button>
       </Link>
       <div className={styles.items}>
         {cinema.length ? (

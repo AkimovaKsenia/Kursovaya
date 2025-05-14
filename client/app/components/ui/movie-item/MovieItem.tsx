@@ -42,7 +42,27 @@ const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
 
       <div className={styles.content}>
         <div className={styles.heading}>{movie.name}</div>
-        <div className={styles.heading}>{movie.duration_in_min} минут</div>
+        <div className={styles.headingsecond}>
+          Длительность: {movie.duration_in_min} минут
+        </div>
+        <div className={styles.headingsecond}>
+          Киностудия: {movie.film_studio_name}
+        </div>
+        {movie.genres && movie.genres.length > 0 && (
+          <div className={styles.headingsecond}>
+            Жанры: {movie.genres.join(", ")}
+          </div>
+        )}
+        {movie.directors && movie.directors.length > 0 && (
+          <div className={styles.headingsecond}>
+            Продюссеры: {movie.directors.join(", ")}
+          </div>
+        )}
+        {movie.operators && movie.operators.length > 0 && (
+          <div className={styles.headingsecond}>
+            Операторы: {movie.operators.join(", ")}
+          </div>
+        )}
       </div>
 
       <div className={styles.icons}>
