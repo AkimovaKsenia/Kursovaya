@@ -278,12 +278,16 @@ func (h *Handler) UpdateCinema(c *fiber.Ctx) error {
 	if err != nil {
 		f.Photo = cinemaDB.Photo
 	} else {
-		h.logger.Debug().Caller().Msg("call h.repository.S3.RemoveObject")
-		err = h.repository.S3.RemoveObject(context.Background(), "cinema-media", cinemaDB.Photo)
-		if err != nil {
-			logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
-			logEvent.Msg(fmt.Sprintf("error removing file %s from minio: %s", cinemaDB.Photo, err.Error()))
-			return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error removing file %s from minio: %s", cinemaDB.Photo, err.Error())})
+		re := regexp.MustCompile("^(https?|ftp):\\/\\/[^\\s/$.?#].[^\\s]*$")
+
+		if !re.MatchString(cinemaDB.Photo) {
+			h.logger.Debug().Caller().Msg("call h.repository.S3.RemoveObject")
+			err = h.repository.S3.RemoveObject(context.Background(), "cinema-media", cinemaDB.Photo)
+			if err != nil {
+				logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+				logEvent.Msg(fmt.Sprintf("error removing file %s from minio: %s", cinemaDB.Photo, err.Error()))
+				return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error removing file %s from minio: %s", cinemaDB.Photo, err.Error())})
+			}
 		}
 
 		filePath := fmt.Sprintf("./tmp/%s", file.Filename)
