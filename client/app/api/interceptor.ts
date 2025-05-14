@@ -14,7 +14,7 @@ export const axiosClassic = axios.create({
 
 const instance = axios.create({
   baseURL: API_URL,
-  headers: getContentType(),
+  // headers: getContentType(),
 });
 
 instance.interceptors.request.use((config) => {
@@ -23,7 +23,13 @@ instance.interceptors.request.use((config) => {
   if (config.headers && token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-
+  if (
+    config.data &&
+    typeof config.data === "object" &&
+    !(config.data instanceof FormData)
+  ) {
+    config.headers["Content-Type"] = "application/json";
+  }
   return config;
 });
 

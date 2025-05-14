@@ -6,8 +6,13 @@ import styles from "./AllMovies.module.scss";
 import { MovieService } from "services/movie.service";
 import AdminLayout from "@/components/ui/layout/AdminHeader";
 import DashboardLayout from "../../../components/ui/layout/DashboardLayout";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Button from "@/components/ui/layout/Button/Button";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Movies: FC = () => {
+  const router = useRouter();
   const [movies, setMovies] = useState<IMovie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -26,6 +31,7 @@ const Movies: FC = () => {
 
     fetchMovies();
   }, []);
+
   return (
     <DashboardLayout>
       <div
@@ -34,6 +40,9 @@ const Movies: FC = () => {
       >
         MOVIES
       </div>
+      <Link href="/manage/movies/createmovie" className={styles.button}>
+        <Button> Создать фильм </Button>
+      </Link>
       <div className={styles.items}>
         {movies.length ? (
           movies.map((movie) => <MovieItem movie={movie} key={movie.id} />)

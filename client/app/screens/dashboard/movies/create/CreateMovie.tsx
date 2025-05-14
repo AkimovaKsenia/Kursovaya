@@ -21,16 +21,9 @@ import {
   IMovieExportDto,
 } from "shared/interfaces/movie.interface";
 
-const MovieEdit: FC = () => {
+const CreateMovie: FC = () => {
   const router = useRouter();
-  const { id } = router.query;
-  const queryClient = useQueryClient();
-  useEffect(() => {
-    console.log("router.query.id =", id);
-    console.log("router.isReady =", router.isReady);
-  }, [id, router.isReady]);
 
-  const movieId = router.isReady ? Number(id) : undefined;
   const {
     register,
     formState: { errors },
@@ -47,43 +40,17 @@ const MovieEdit: FC = () => {
   const { data: filmStudioData, error: filmStudioError } = useFilmStudio();
   const { data: directorsData, error: directorsError } = useDirectors();
 
-  const { data, isLoading } = useMovieById(movieId);
-
-  // Обработка успешного запроса через useEffect
-  useEffect(() => {
-    console.log("Сработал useEffect, data =", data);
-    if (data) {
-      const castListString = Array.isArray(data.cast_list)
-        ? data.cast_list.join(", ")
-        : "";
-
-      setValue("cast_list", castListString);
-      setValue("name", data.name);
-      setValue("genres", data.genres);
-      setValue("description", data.description);
-      setValue("photo", data.photo);
-      setValue("directors", data.directors);
-      setValue("operators", data.operators);
-      setValue("film_studio_name", data.film_studio_name);
-      // setValue("cast_list", data.cast_list);
-      setValue("duration_in_min", data.duration_in_min);
-    } else {
-      console.log("Данные фильма не получены");
-    }
-  }, [data, setValue]);
-
   const { mutate, isPending } = useMutation({
-    mutationKey: ["update-movie", movieId],
+    mutationKey: ["update-movie"],
     mutationFn: (formData: IMovieExportDto) =>
-      MovieService.updateMovie(Number(movieId), formData),
-    onSuccess: (updatedMovie) => {
-      queryClient.setQueryData(["movie", movieId], updatedMovie);
-      alert("Фильм успешно обновлен!");
+      MovieService.createMovie(formData),
+    onSuccess: (createMovie) => {
+      alert("Фильм успешно создан!");
       router.push("/manage/movies/listmovies");
     },
     onError: (error) => {
-      console.error("Ошибка при обновлении фильма:", error);
-      alert("Произошла ошибка при обновлении фильма");
+      console.error("Ошибка при создании фильма:", error);
+      alert("Произошла ошибка при создании фильма");
     },
   });
 
@@ -182,12 +149,9 @@ const MovieEdit: FC = () => {
       setValue("photo", "", { shouldDirty: true }); // Очистка поля, если файл не выбран
     }
   };
-  // const genreOptions = genresData || [];
-  if (isLoading) return <div>Загрузка...</div>;
 
   return (
     <DashboardLayout>
-      <div>Редактирование фильма с ID: {movieId}</div>
       <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-6 ">
         <MovieForm
           register={register}
@@ -205,4 +169,4 @@ const MovieEdit: FC = () => {
     </DashboardLayout>
   );
 };
-export default MovieEdit;
+export default CreateMovie;
