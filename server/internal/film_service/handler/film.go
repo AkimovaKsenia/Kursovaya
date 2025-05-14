@@ -156,7 +156,7 @@ func (h *Handler) GetAllFilms(c *fiber.Ctx) error {
 	re := regexp.MustCompile("^(https?|ftp):\\/\\/[^\\s/$.?#].[^\\s]*$")
 
 	for i := range films {
-		if !re.MatchString(films[i].Photo) {
+		if !re.MatchString(films[i].Photo) && films[i].Photo != "" {
 			url, err := h.repository.S3.PresignedGetObject(context.Background(), "film-media", films[i].Photo, 7*24*time.Hour)
 			if err != nil {
 				logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
