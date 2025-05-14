@@ -6,6 +6,7 @@ import Image from "next/image";
 import { PiPencil, PiTrash } from "react-icons/pi";
 import { MovieService } from "services/movie.service";
 import { useRouter } from "next/router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
   const router = useRouter();

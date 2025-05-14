@@ -15,7 +15,7 @@ export interface IMovieDto {
   name: string;
   genres: string[]; // или string, если бек принимает как одну строку
   description: string;
-  photo: File | string; // теперь это File, не string
+  photo?: File | string; // теперь это File, не string
   directors: string[];
   operators: string[];
   film_studio_name: string;
