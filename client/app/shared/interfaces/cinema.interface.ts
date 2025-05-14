@@ -16,3 +16,10 @@ export type ICinemaMain = Omit<
 >;
 
 export type IListofCinema = ICinemaMain[];
+
+export interface IHall {
+  capacity: number;
+  id: number;
+  name: string;
+  type: string;
+}

@@ -1,6 +1,10 @@
 import instance from "api/interceptor";
 import axios, { axiosClassic } from "api/interceptor";
-import { ICinemaMain, IListofCinema } from "shared/interfaces/cinema.interface";
+import {
+  ICinemaMain,
+  IHall,
+  IListofCinema,
+} from "shared/interfaces/cinema.interface";
 
 export const CinemaService = {
   async getAllCinema() {
@@ -21,5 +25,8 @@ export const CinemaService = {
       console.error("Ошибка:", error); // Ловим ошибки
       throw error;
     }
+  },
+  async getHallsById(id: number) {
+    return instance.get<IHall[]>(`/auth/cinema/halls/${id}`);
   },
 };

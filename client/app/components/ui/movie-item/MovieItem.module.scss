@@ -42,7 +42,7 @@
   font-size: 13px;
 }
 .icons {
-  gap: 11px;
+  gap: 20px;
   margin-left: auto;
   margin-top: 40px;
   display: flex;
@@ -51,15 +51,14 @@
   filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
     drop-shadow(0 0 6px rgba(46, 185, 249, 0.8));
   text-shadow: 0 0 12px rgba(131, 104, 154, 0.4); // Лёгкое свечение
-  // align-items: start;
 }
 
 .firsticon {
   &:hover {
-    filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
-      drop-shadow(0 0 6px rgba(46, 185, 249, 0.8));
-    transform: scale(1.09); // Увеличение на 10%
+    color: #ffffff; // Изменение цвета при наведении
+    transform: scale(1.1); // Увеличение на 10%
     text-shadow: 0 0 12px rgba(115, 12, 199, 0.4); // Лёгкое свечение
+
     cursor: pointer;
   }
 }
