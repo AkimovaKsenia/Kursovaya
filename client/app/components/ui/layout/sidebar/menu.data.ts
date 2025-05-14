@@ -24,7 +24,7 @@ export const menu: IMenuItem[] = [
     Icon: PiFilmSlateDuotone,
   },
   {
-    link: "/manage/cinema",
+    link: "/manage/cinema/listcinema",
     Icon: PiFilmStrip,
   },
 ];
