@@ -54,9 +54,9 @@ const CinemaItem: FC<{ cinema: ICinemaMain }> = ({ cinema }) => {
       </div>
 
       <div className={styles.icons}>
-        {/* <Link href={`/manage/movies/edit/${cinema.id}`} passHref legacyBehavior> */}
-        <PiPencil className={styles.firsticon} />
-        {/* </Link> */}
+        <Link href={`/manage/cinema/edit/${cinema.id}`} passHref legacyBehavior>
+          <PiPencil className={styles.firsticon} />
+        </Link>
         <PiTrash
           className={styles.firsticon}
           // onClick={() => handleDelete(cinema.id)}
