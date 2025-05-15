@@ -36,12 +36,12 @@ const CreateCinema: FC = () => {
     mutationFn: (formData: ICinemaExportDto) =>
       CinemaService.createCinema(formData),
     onSuccess: (createCinema) => {
-      alert("Фильм успешно создан!");
+      alert("Кинотеатр успешно создан!");
       router.push("/manage/cinema/listcinema");
     },
     onError: (error) => {
-      console.error("Ошибка при создании фильма:", error);
-      alert("Произошла ошибка при создании фильма");
+      console.error("Ошибка при создании кинотеатра:", error);
+      alert("Произошла ошибка при создании кинотеатра");
     },
   });
 

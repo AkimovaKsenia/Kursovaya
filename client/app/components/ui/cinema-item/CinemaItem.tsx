@@ -8,22 +8,23 @@ import { MovieService } from "services/movie.service";
 import { useRouter } from "next/router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ICinemaMain } from "shared/interfaces/cinema.interface";
+import { CinemaService } from "services/cinema.service";
 
 const CinemaItem: FC<{ cinema: ICinemaMain }> = ({ cinema }) => {
   const router = useRouter();
 
-  // const handleDelete = async (id: number) => {
-  //   try {
-  //     console.log("Удаляем фильм с ID:", id);
-  //     await MovieService.deleteMovie(id);
-  //     router.reload();
+  const handleDelete = async (id: number) => {
+    try {
+      console.log("Удаляем кинотеартр с ID:", id);
+      await CinemaService.deleteCinema(id);
+      router.reload();
 
-  //     alert("Фильм удалён");
-  //   } catch (error) {
-  //     console.error("Ошибка при удалении фильма:", error);
-  //     alert("Ошибка при удалении");
-  //   }
-  // };
+      alert("Кинотеатр удалён");
+    } catch (error) {
+      console.error("Ошибка при удалении фильма:", error);
+      alert("Ошибка при удалении");
+    }
+  };
 
   return (
     <div className={styles.main}>
@@ -59,7 +60,7 @@ const CinemaItem: FC<{ cinema: ICinemaMain }> = ({ cinema }) => {
         </Link>
         <PiTrash
           className={styles.firsticon}
-          // onClick={() => handleDelete(cinema.id)}
+          onClick={() => handleDelete(cinema.id)}
         />
       </div>
     </div>
