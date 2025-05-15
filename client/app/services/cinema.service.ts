@@ -116,14 +116,14 @@ export const CinemaService = {
 
       // Файл
       if (body.photo) {
-        formData.append("film_photo", body.photo);
+        formData.append("photo", body.photo);
       }
 
       console.log("📦 Формируем formData для отправки:");
       for (let pair of formData.entries()) {
         console.log(`${pair[0]}:`, pair[1]);
       }
-      const response = await instance.post<string>("/auth/film", formData, {
+      const response = await instance.post<string>("/auth/cinema", formData, {
         headers: {
           Authorization: `Bearer ${Cookies.get("accessToken")}`,
         },
