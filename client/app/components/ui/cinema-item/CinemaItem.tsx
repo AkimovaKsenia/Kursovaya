@@ -29,7 +29,7 @@ const CinemaItem: FC<{ cinema: ICinemaMain }> = ({ cinema }) => {
   return (
     <div className={styles.main}>
       <div className={styles.content}>
-        <Link href={`/movie/${cinema.id}`}>
+        <Link href={`/manage/cinema/${cinema.id}`}>
           <div className={styles.heading}>{cinema.name}</div>
         </Link>
         <div className={styles.address}>{cinema.address} </div>
