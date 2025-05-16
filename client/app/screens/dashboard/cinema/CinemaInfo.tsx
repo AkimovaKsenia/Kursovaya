@@ -62,7 +62,7 @@ const CinemaInfo: FC = () => {
             className="rounded-full"
           /> */}
         </div>
-        <div className="absolute bottom-[2.5rem] left-8 right-8">
+        <div className="absolute bottom-[1.5rem] left-32 right-8">
           <h1 className="text-4xl md:text-6xl font-bold mb-2">{cinema.name}</h1>
           <p className="text-xl">{cinema.address}</p>
         </div>
@@ -70,7 +70,7 @@ const CinemaInfo: FC = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-3 mt-10 relative z-20">
-        <div className="flex flex-col ml-5 gap-8 pt-0">
+        <div className="flex flex-col items-center ml-5 gap-8 pt-0">
           {/* Картинка и блок "О кинотеатре" */}
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-shrink-0 max-h-[600px] overflow-hidden  rounded-xl  ">
