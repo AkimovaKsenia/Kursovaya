@@ -64,18 +64,41 @@ const Home: FC = () => {
             фильмах и кинотеатрах города!
           </h3>
         </div>
-        <Link href="/ChoiceCinema" passHref>
-          <Button
-            className={cn("px-6 py-3 text-lg mt-5 boldText", styles.darkText)}
-          >
-            Кинотеатры
-          </Button>
-        </Link>
+        {user && (
+          <div className="flex items-center space-x-4">
+            <div className="flex space-x-4 mt-6">
+              <Link href="/ChoiceCinema" passHref>
+                <Button
+                  className={cn(
+                    "px-6 py-3 text-lg mt-0 boldText",
+                    styles.darkText
+                  )}
+                >
+                  Кинотеатры
+                </Button>
+              </Link>
+              <Link href="/ChoiceCinema" passHref>
+                <Button
+                  className={cn(
+                    "px-6 py-3 text-lg mt-0 boldText",
+                    styles.darkText
+                  )}
+                >
+                  Фильмы
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
         <div>
-          <button onClick={handleLogout} style={{ cursor: "pointer" }}>
+          <button
+            onClick={handleLogout}
+            style={{ cursor: "pointer" }}
+            className={cn("px-6 py-3 text-lg mt-0 boldText")}
+          >
             Logout
           </button>
-        </div>
+        </div>{" "}
       </div>
       <div className="absolute mt-160 inset-0 bg-gradient-to-t from-black to-transparent" />
       <div className="absolute mt-160 bottom-8 left-8 right-8"></div>

@@ -41,7 +41,7 @@ const CinemaInfo: FC = () => {
       </Head>
 
       {/* Hero Section */}
-      <div className="relative h-110 w-full">
+      <div className="relative h-90 w-full">
         <Image
           src={imageUrl || "/default-cinema.jpg"}
           alt={cinema.name}

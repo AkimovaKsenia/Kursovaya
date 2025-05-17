@@ -57,22 +57,32 @@ const MoviesInfo: FC = () => {
             </div> */}
 
             {/* Информация о фильме */}
+
             <div className={styles.infoSection}>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Жанр:</span>
-                <span>{data.genres}</span>
+
+                {data.genres && data.genres.length > 0 && (
+                  <span> {data.genres.join(", ")}</span>
+                )}
               </div>
               <div className={styles.infoItem}>
-                <span className={styles.infoLabel}>Режиссер:</span>
-                <span>{data.directors}</span>
+                <span className={styles.infoLabel}>Режиссеры:</span>
+                {data.directors && data.directors.length > 0 && (
+                  <span> {data.directors.join(", ")}</span>
+                )}
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Каст Актеров:</span>
-                <span>{data.cast_list}</span>
+                {data.cast_list && data.cast_list.length > 0 && (
+                  <span> {data.cast_list.join(", ")}</span>
+                )}{" "}
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Операторы:</span>
-                <span>{data.operators}</span>
+                {data.operators && data.operators.length > 0 && (
+                  <span> {data.operators.join(", ")}</span>
+                )}{" "}
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Киностудия:</span>

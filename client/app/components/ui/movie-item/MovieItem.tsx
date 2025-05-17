@@ -28,15 +28,17 @@ const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
     <div className={styles.main}>
       <Link href={`/movie/${movie.id}`} className={styles.item}>
         <div className={styles.imageWrapper}>
-          <Image
-            className={styles.poster}
-            src={movie.photo}
-            alt={movie.name}
-            width={600}
-            height={733}
-            style={{ objectFit: "contain" }}
-            // layout="responsive"
-          />
+          {movie.photo && (
+            <div className={styles.posterFrame}>
+              <Image
+                src={movie.photo}
+                alt={movie.name}
+                width={300} // меньше ширина
+                height={450}
+                className={styles.posterImage}
+              />
+            </div>
+          )}
         </div>
       </Link>
 
