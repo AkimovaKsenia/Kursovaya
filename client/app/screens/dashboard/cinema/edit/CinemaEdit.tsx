@@ -175,7 +175,6 @@ const CinemaEdit: FC = () => {
 
   return (
     <DashboardLayout>
-      <div>Редактирование кинотеатра с ID: {cinemaId}</div>
       <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-6 ">
         <CinemaForm
           register={register}

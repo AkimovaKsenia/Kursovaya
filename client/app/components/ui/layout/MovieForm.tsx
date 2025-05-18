@@ -181,7 +181,7 @@ const MovieForm: FC<MovieFormProps> = ({
           type="submit"
           disabled={isPending}
           style={{ cursor: "pointer" }}
-          className={`px-4 py-2 ml-65 mt-6 bg-blue-600 text-white rounded-md hover:bg-blue-700 ${
+          className={`${styles.button} ${
             isPending ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >

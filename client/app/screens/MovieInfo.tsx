@@ -90,7 +90,8 @@ const MoviesInfo: FC = () => {
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Длительность:</span>
-                <span>{data.duration_in_min}</span>
+                {Math.floor(data.duration_in_min / 60)} ч{"  "}
+                {data.duration_in_min % 60} м
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Описание:</span>

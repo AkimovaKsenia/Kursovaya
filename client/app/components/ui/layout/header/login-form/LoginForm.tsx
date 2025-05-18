@@ -1,5 +1,5 @@
 import { useOutside } from "hooks/useOutside";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { IAuthFields } from "./login-form.interface";
 import { useAuth } from "hooks/useAuth";
@@ -13,10 +13,16 @@ import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import { AuthService } from "services/auth.service";
 import cn from "classnames";
+// import { ClipLoader } from "react-spinners";
+import { useRouter } from "next/router";
+import { TailwindLoader } from "@/components/ui/TailwindLoader";
 
 const LoginForm: FC = () => {
   const { ref, setIsShow, isShow } = useOutside(false);
   const [type, setType] = useState<"login" | "register">("login");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
   const {
     register,
     formState: { errors },
@@ -61,10 +67,47 @@ const LoginForm: FC = () => {
     //   });
     // else if (type=='register') registerSync(data)
   };
+
+  // Отслеживание событий маршрутизации
+  useEffect(() => {
+    const handleRouteChange = () => setIsLoading(true);
+    const handleRouteComplete = () => setIsLoading(false);
+    const handleRouteError = () => setIsLoading(false);
+
+    router.events.on("routeChangeStart", handleRouteChange);
+    router.events.on("routeChangeComplete", handleRouteComplete);
+    router.events.on("routeChangeError", handleRouteError);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+      router.events.off("routeChangeComplete", handleRouteComplete);
+      router.events.off("routeChangeError", handleRouteError);
+    };
+  }, [router]);
+  useEffect(() => {
+    router.prefetch("/dashboard");
+  }, []);
   return (
     <div className={styles.wrapper} ref={ref}>
+      {/* Лоадер */}
+      {/* {isLoading && (
+        <div className={styles.loaderOverlay}>
+          <ClipLoader
+            color="#b8b5d0"
+            size={40}
+            cssOverride={{
+              display: "block",
+              margin: "20 20",
+              borderWidth: "4px",
+            }}
+          />
+        </div>
+      )} */}
+      {isLoading && <TailwindLoader />}
       {user ? (
-        <UserAvatar link="/dashboard" title="Перейти в админ" />
+        <div style={{ cursor: "pointer" }}>
+          <UserAvatar link="/dashboard" title="Перейти в админ" />
+        </div>
       ) : (
         <button
           style={{

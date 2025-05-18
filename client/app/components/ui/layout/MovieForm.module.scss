@@ -1,3 +1,25 @@
 .select ::-webkit-scrollbar {
   display: none;
 }
+.button {
+  padding: 0.5rem 1rem; // аналогично px-4 py-2
+  margin-left: 65px; // ml-65
+  margin-top: 1.5rem; // mt-6 (6 * 0.25rem = 1.5rem)
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: white; // text-white
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: #bebbd7;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+
+    color: rgb(255, 255, 255);
+  }
+
+  &.disabled {
+    opacity: 0.5; // opacity-50
+    cursor: not-allowed; // cursor-not-allowed
+  }
+}

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { IMovie } from "../../../shared/interfaces/movie.interface";
 import Link from "next/link";
 import styles from "./MovieItem.module.scss";
@@ -7,25 +7,35 @@ import { PiPencil, PiTrash } from "react-icons/pi";
 import { MovieService } from "services/movie.service";
 import { useRouter } from "next/router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Modal from "../Modal";
 
 const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
   const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async () => {
+    setIsDeleting(true);
     try {
-      console.log("Удаляем фильм с ID:", id);
-      await MovieService.deleteMovie(id);
+      await MovieService.deleteMovie(movie.id);
       router.reload();
-
-      alert("Фильм удалён");
     } catch (error) {
-      console.error("Ошибка при удалении фильма:", error);
       alert("Ошибка при удалении");
+    } finally {
+      setIsDeleting(false);
+      setShowModal(false);
     }
   };
-
   return (
     <div className={styles.main}>
+      <Modal
+        isOpen={showModal}
+        title="Удалить фильм"
+        onClose={() => setShowModal(false)}
+        onConfirm={handleDelete}
+      >
+        <p>Вы уверены, что хотите удалить фильм "{movie.name}"?</p>
+      </Modal>
       <Link href={`/movie/${movie.id}`} className={styles.item}>
         <div className={styles.imageWrapper}>
           {movie.photo && (
@@ -45,7 +55,8 @@ const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
       <div className={styles.content}>
         <div className={styles.heading}>{movie.name}</div>
         <div className={styles.headingsecond}>
-          Длительность: {movie.duration_in_min} минут
+          Длительность: {Math.floor(movie.duration_in_min / 60)} ч{"  "}
+          {movie.duration_in_min % 60} м
         </div>
         <div className={styles.headingsecond}>
           Киностудия: {movie.film_studio_name}
@@ -73,7 +84,7 @@ const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
         </Link>
         <PiTrash
           className={styles.firsticon}
-          onClick={() => handleDelete(movie.id)}
+          onClick={() => setShowModal(true)}
         />
       </div>
     </div>

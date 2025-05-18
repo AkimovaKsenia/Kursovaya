@@ -52,7 +52,7 @@ const Home: FC = () => {
       <div
         ref={contentRef}
         style={{
-          backgroundBlendMode: "overlay", // накладывает цвет на изображение
+          backgroundBlendMode: "overlay",
         }}
         className="flex flex-col items-center mr-210 justify-center min-h-[60vh] space-y-2 mt-21"
       >
