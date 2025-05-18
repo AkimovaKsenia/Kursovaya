@@ -1,0 +1,58 @@
+import { FC } from "react";
+import { IMovie } from "../../../shared/interfaces/movie.interface";
+import Link from "next/link";
+import styles from "./HallItem.module.scss";
+import Image from "next/image";
+import { PiPencil, PiTrash } from "react-icons/pi";
+import { MovieService } from "services/movie.service";
+import { useRouter } from "next/router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ICinemaMain, IHall } from "shared/interfaces/cinema.interface";
+
+const HallItem: FC<{ halls: IHall }> = ({ halls }) => {
+  const router = useRouter();
+
+  // const handleDelete = async (id: number) => {
+  //   try {
+  //     console.log("Удаляем фильм с ID:", id);
+  //     await MovieService.deleteMovie(id);
+  //     router.reload();
+
+  //     alert("Фильм удалён");
+  //   } catch (error) {
+  //     console.error("Ошибка при удалении фильма:", error);
+  //     alert("Ошибка при удалении");
+  //   }
+  // };
+
+  return (
+    <div className={styles.main}>
+      <div className={styles.content}>
+        <div className={styles.heading}>{halls.name}</div>
+        <div className={styles.hallInfo}>
+          <span className={styles.hallType}>{halls.type}</span>
+          <span className={styles.hallCapacity}>{halls.capacity} мест</span>
+        </div>
+      </div>
+
+      {/* <div className={styles.buttons}>
+        <button className={styles.button}>
+          <Link href="/" style={{ cursor: "pointer" }}>
+            Сеансы
+          </Link>
+        </button>
+      </div> */}
+
+      <div className={styles.icons}>
+        {/* <Link href={`/manage/movies/edit/${cinema.id}`} passHref legacyBehavior> */}
+        <PiPencil className={styles.firsticon} />
+        {/* </Link> */}
+        <PiTrash
+          className={styles.firsticon}
+          // onClick={() => handleDelete(cinema.id)}
+        />
+      </div>
+    </div>
+  );
+};
+export default HallItem;

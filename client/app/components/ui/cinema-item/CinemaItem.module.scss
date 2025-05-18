@@ -1,0 +1,74 @@
+.main {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  //   border-bottom: 1px solid #d4d2d2; // Опционально: разделительная линия
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: start;
+  gap: 0px;
+}
+
+.heading {
+  font-family: "CormorantSC", bold;
+  color: black;
+  margin-top: 40px;
+  font-size: 26px;
+}
+.address {
+  font-family: "CormorantSC", bold;
+  color: rgb(57, 56, 56);
+  margin-top: 0px;
+  font-size: 15px;
+}
+.button {
+  padding: 4px 15px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background: #bebbd7;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+
+    color: rgb(255, 255, 255);
+    transform: scale(1.09); // Увеличение на 10%
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6); // Лёгкое свечение
+  }
+}
+
+.buttons {
+  color: #ffffff;
+  gap: 35px;
+  display: flex;
+  margin-left: auto;
+  margin-top: 44px;
+  cursor: pointer;
+  font-family: "CormorantSC", bold;
+  font-size: 16px;
+  //   filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
+  //     drop-shadow(0 0 6px rgba(46, 185, 249, 0.4));
+  //   text-shadow: 0 0 12px rgba(131, 104, 154, 0.4); // Лёгкое свечение
+}
+.icons {
+  cursor: pointer;
+  gap: 30px;
+  margin-left: auto;
+  margin-top: 40px;
+  display: flex;
+  font-size: 25px;
+  color: #f5f4f4;
+  filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
+    drop-shadow(0 0 6px rgba(46, 185, 249, 0.8));
+  text-shadow: 0 0 12px rgba(131, 104, 154, 0.4); // Лёгкое свечение
+
+  .firsticon {
+    &:hover {
+      transform: scale(1.09); // Увеличение на 10%
+    }
+  }
+}

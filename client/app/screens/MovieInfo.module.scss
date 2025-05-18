@@ -1,0 +1,128 @@
+.main {
+  padding: 0.2rem;
+  min-height: 100vh;
+  background: radial-gradient(circle at center, #1a1a1e 0%, #0f0f12 100%);
+}
+
+.neonTitle {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+  color: rgb(0, 0, 0);
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 10px #c4bef5, 0 0 10px #c4bef5;
+  animation: neonGlow 0.5s ease-in-out infinite alternate;
+}
+
+.infoSection {
+  flex: 1;
+  display: grid;
+  gap: 1.5rem;
+}
+.glassContainer {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(30, 30, 35, 0.7);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.posterWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.posterFrame {
+  max-width: 500px;
+  flex-shrink: 0;
+}
+
+.posterImage {
+  //   width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+
+.infoSection {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  color: #fff;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.infoLabel {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: rgb(216, 213, 246);
+  min-width: 100px;
+}
+
+.infoValue {
+  font-size: 1.1rem;
+  background: rgba(185, 156, 216, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  border-left: 2px solid #c4bef5;
+}
+
+.loading,
+.notFound {
+  color: #fff;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.5rem;
+}
+
+@keyframes neonGlow {
+  from {
+    text-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 15px #c4bef5, 0 0 25px #c4bef5;
+  }
+  to {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #c4bef5, 0 0 35px #c4bef5;
+  }
+}
+
+.contentWrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap; // на случай мобильных
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.navButton {
+  background-color: #0ff;
+  color: #000;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background-color: #00cccc;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

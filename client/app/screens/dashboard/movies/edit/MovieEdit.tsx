@@ -52,7 +52,9 @@ const MovieEdit: FC = () => {
   // Обработка успешного запроса через useEffect
   useEffect(() => {
     console.log("Сработал useEffect, data =", data);
+
     if (data) {
+      console.log(data.photo);
       const castListString = Array.isArray(data.cast_list)
         ? data.cast_list.join(", ")
         : "";
@@ -61,7 +63,7 @@ const MovieEdit: FC = () => {
       setValue("name", data.name);
       setValue("genres", data.genres);
       setValue("description", data.description);
-      setValue("photo", data.photo);
+      // setValue("photo", data.photo);
       setValue("directors", data.directors);
       setValue("operators", data.operators);
       setValue("film_studio_name", data.film_studio_name);
@@ -187,7 +189,6 @@ const MovieEdit: FC = () => {
 
   return (
     <DashboardLayout>
-      <div>Редактирование фильма с ID: {movieId}</div>
       <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-6 ">
         <MovieForm
           register={register}

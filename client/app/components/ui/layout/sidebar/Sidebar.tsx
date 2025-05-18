@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import styles from "./Sidebar.module.scss";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,11 +7,30 @@ import cn from "classnames";
 import { PiFilmReelLight } from "react-icons/pi";
 
 interface SidebarProps {
-  className?: string; // Явно указываем, что компонент принимает className
+  className?: string;
 }
 
 const Sidebar: FC<SidebarProps> = ({ className }) => {
   const { asPath } = useRouter();
+  const router = useRouter();
+
+  useEffect(() => {
+    router.prefetch("/manage/movies/listmovies");
+    router.prefetch("/manage/cinema/listcinema");
+  }, []);
+
+  const isActive = (link: string) => {
+    if (asPath === link) return true;
+
+    if (link === "/manage/movies/listmovies") {
+      return asPath.startsWith("/manage/movies");
+    }
+    if (link === "/manage/cinema/listcinema") {
+      return asPath.startsWith("/manage/cinema");
+    }
+
+    return false;
+  };
   return (
     <aside className={styles.sidebar}>
       {/* <Link href="/" className={styles.logo}>
@@ -24,7 +43,7 @@ const Sidebar: FC<SidebarProps> = ({ className }) => {
               <li
                 key={item.link}
                 className={cn(styles.item, {
-                  [styles.active]: item.link == asPath,
+                  [styles.active]: isActive(item.link),
                 })}
               >
                 <Link href={item.link}>

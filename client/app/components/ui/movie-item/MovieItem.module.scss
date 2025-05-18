@@ -9,6 +9,7 @@
   flex-direction: column;
   align-items: start;
   gap: 0px;
+  max-width: 480px;
 }
 .item {
   display: block; // или inline-block, если нужно
@@ -29,30 +30,35 @@
 }
 .heading {
   font-family: "CormorantSC", bold;
-  color: black;
+  color: rgb(18, 17, 17);
   margin-top: 40px;
   font-size: 24px;
+  margin-bottom: 8px;
+}
+.headingsecond {
+  font-family: "CormorantSC", bold;
+  color: rgb(40, 39, 39);
+  margin-top: 2px;
+  font-size: 13px;
 }
 .icons {
-  gap: 11px;
+  gap: 20px;
   margin-left: auto;
   margin-top: 40px;
   display: flex;
   font-size: 27px;
-  color: #ffffff; // Изменение цвета при наведении
+  color: #f5f4f4;
   filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
     drop-shadow(0 0 6px rgba(46, 185, 249, 0.8));
   text-shadow: 0 0 12px rgba(131, 104, 154, 0.4); // Лёгкое свечение
-  // align-items: start;
 }
 
 .firsticon {
   &:hover {
-    color: #baa3cb; // Изменение цвета при наведении
-    filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
-      drop-shadow(0 0 6px rgba(46, 185, 249, 0.8));
-    transform: scale(1.09); // Увеличение на 10%
+    color: #ffffff; // Изменение цвета при наведении
+    transform: scale(1.1); // Увеличение на 10%
     text-shadow: 0 0 12px rgba(115, 12, 199, 0.4); // Лёгкое свечение
+
     cursor: pointer;
   }
 }

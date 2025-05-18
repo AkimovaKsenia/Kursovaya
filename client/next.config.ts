@@ -31,6 +31,21 @@ const nextConfig: NextConfig = {
         port: "9000",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "afimall.ru",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "gum.ru",
+        pathname: "/local/templates/gum_main/images/**",
+      },
+      {
+        protocol: "https", // или "http" для незащищённых URL
+        hostname: "**", // ** означает "любой домен"
+        pathname: "**", // ** означает "любой путь"
+      },
     ],
   },
   async rewrites() {
