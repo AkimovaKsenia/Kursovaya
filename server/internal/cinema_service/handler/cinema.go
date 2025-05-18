@@ -309,6 +309,7 @@ func (h *Handler) UpdateCinema(c *fiber.Ctx) error {
 		h.logger.Debug().Caller().Msg("save file")
 		c.SaveFile(file, filePath)
 		fileName := util.GenerateRandomFileName(filepath.Ext(file.Filename))
+		f.Photo = fileName
 
 		h.logger.Debug().Caller().Msg("call h.repository.S3.FPutObject")
 		err = h.repository.S3.FPutObject(context.Background(), "cinema-media", fileName, filePath, file.Header.Get("Content-Type"))
