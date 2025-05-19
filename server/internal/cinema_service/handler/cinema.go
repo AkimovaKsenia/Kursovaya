@@ -150,6 +150,47 @@ func (h *Handler) CreateCinema(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(entities.ID{ID: id})
 }
 
+func (h *Handler) CreateCinemaHall(c *fiber.Ctx) error {
+	h.logger.Debug().Caller().Msg("body parse")
+	var f entities.CinemaHall
+	if err := c.BodyParser(&f); err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(err.Error())
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: err.Error()})
+	}
+
+	if f.Name == "" {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg("empty field 'name'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "empty field 'name'"})
+	}
+
+	if f.Capacity <= 0 {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Int("id", f.Capacity).Msg("invalid field 'capacity'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "invalid field 'capacity'"})
+	}
+
+	if f.TypeID <= 0 {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Int("id", f.TypeID).Msg("invalid field 'type_id'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "invalid field 'type_id'"})
+	}
+
+	h.logger.Debug().Msg("call h.repository.DB.CreateCinemaHall")
+	id, err := h.repository.DB.CreateCinemaHall(&f)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(),
+			Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error updating cinema hall: %s", err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": fmt.Sprintf("error updating cinema hall: %s", err.Error())})
+	}
+
+	logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Info", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusOK})
+	logEvent.Msg(fmt.Sprintf("successful updating cinema hall with id=%v", id))
+	return c.Status(fiber.StatusOK).JSON(entities.ID{ID: id})
+}
+
 func (h *Handler) GetAllCinemasAddressName(c *fiber.Ctx) error {
 	h.logger.Debug().Msg("calling h.repository.DB.GetAllCinemasAddressName")
 	cinemasAddressName, err := h.repository.DB.GetAllCinemasAddressName()
@@ -341,12 +382,59 @@ func (h *Handler) UpdateCinema(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(entities.ID{ID: f.ID})
 }
 
+func (h *Handler) UpdateCinemaHall(c *fiber.Ctx) error {
+	h.logger.Debug().Caller().Msg("body parse")
+	var f entities.CinemaHall
+	if err := c.BodyParser(&f); err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(err.Error())
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: err.Error()})
+	}
+
+	if f.ID < 1 {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Int("id", f.ID).Msg("invalid field 'id'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "invalid field 'id'"})
+	}
+
+	if f.Name == "" {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg("empty field 'name'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "empty field 'name'"})
+	}
+
+	if f.Capacity <= 0 {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Int("id", f.Capacity).Msg("invalid field 'capacity'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "invalid field 'capacity'"})
+	}
+
+	if f.TypeID <= 0 {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Int("id", f.TypeID).Msg("invalid field 'type_id'")
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "invalid field 'type_id'"})
+	}
+
+	h.logger.Debug().Msg("call h.repository.DB.UpdateCinemaHall")
+	err := h.repository.DB.UpdateCinemaHall(&f)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(),
+			Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error updating cinema hall: %s", err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": fmt.Sprintf("error updating cinema hall: %s", err.Error())})
+	}
+
+	logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Info", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusOK})
+	logEvent.Msg(fmt.Sprintf("successful updating cinema hall with id=%v", f.ID))
+	return c.Status(fiber.StatusOK).JSON(entities.ID{ID: f.ID})
+}
+
 func (h *Handler) DeleteCinema(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
 		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
 		logEvent.Msg(fmt.Sprintf("invalid cinema ID: %v", err))
-		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "Invalid film ID"})
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "Invalid cinema ID"})
 	}
 
 	h.logger.Debug().Msg("call h.repository.DB.GetCinemaByID")
@@ -381,7 +469,30 @@ func (h *Handler) DeleteCinema(c *fiber.Ctx) error {
 		}
 
 		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: status})
-		logEvent.Msg(fmt.Sprintf("error deleting film: %v", err))
+		logEvent.Msg(fmt.Sprintf("error deleting cinema: %v", err))
+		return c.Status(status).JSON(entities.Error{Error: err.Error()})
+	}
+
+	return c.JSON(entities.ID{ID: id})
+}
+
+func (h *Handler) DeleteCinemaHall(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("invalid cinema  hall ID: %v", err))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "Invalid cinema hall ID"})
+	}
+
+	h.logger.Debug().Msg("call h.repository.DB.DeleteCinemaHall")
+	if err := h.repository.DB.DeleteCinemaHall(id); err != nil {
+		status := fiber.StatusInternalServerError
+		if strings.Contains(err.Error(), "not found") {
+			status = fiber.StatusNotFound
+		}
+
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: status})
+		logEvent.Msg(fmt.Sprintf("error deleting cinema  hall: %v", err))
 		return c.Status(status).JSON(entities.Error{Error: err.Error()})
 	}
 

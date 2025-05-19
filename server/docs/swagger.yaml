@@ -30,6 +30,17 @@ definitions:
       name:
         type: string
     type: object
+  entities.CreateCinemaHall:
+    properties:
+      capacity:
+        type: integer
+      cinema_id:
+        type: integer
+      name:
+        type: string
+      type_id:
+        type: integer
+    type: object
   entities.CreateUser:
     properties:
       email:
@@ -154,6 +165,17 @@ definitions:
       fio:
         type: string
       id:
+        type: integer
+    type: object
+  entities.UpdateCinemaHall:
+    properties:
+      capacity:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      type_id:
         type: integer
     type: object
 info:
@@ -448,7 +470,7 @@ paths:
       - ApiKeyAuth: []
       summary: Получение всех типов зала кинотеатра
       tags:
-      - Cinema
+      - CinemaHall
   /auth/cinema/halls/{id}:
     get:
       consumes:
@@ -484,7 +506,7 @@ paths:
       - ApiKeyAuth: []
       summary: Получение всех залов кинотеатра по его ID
       tags:
-      - Cinema
+      - CinemaHall
   /auth/cinema/id/{id}:
     get:
       consumes:
@@ -519,6 +541,117 @@ paths:
       summary: Получение полной информации о кинотеатре по его ID
       tags:
       - Cinema
+  /auth/cinema_hall:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные кинозала
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entities.CreateCinemaHall'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Кинозал успешно создан
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "401":
+          description: Пользователь не авторизован
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "403":
+          description: Недостаточно прав для запроса
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Создание кинозала
+      tags:
+      - CinemaHall
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные кинозала
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entities.UpdateCinemaHall'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Кинозал успешно создан
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "401":
+          description: Пользователь не авторизован
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "403":
+          description: Недостаточно прав для запроса
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Обновление кинозала
+      tags:
+      - CinemaHall
+  /auth/cinema_hall/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID кинозала
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Кинозал успешно удален
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "404":
+          description: Кинозал не найден
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Удаление кинозала
+      tags:
+      - CinemaHall
   /auth/directors:
     get:
       consumes:

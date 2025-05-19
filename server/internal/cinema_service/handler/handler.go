@@ -43,11 +43,14 @@ func (h *Handler) InitRouter() {
 	f.Get("/cinema/hall/types", h.GetAllCinemaHallTypes)
 
 	f.Post("/cinema", h.CreateCinema)
+	f.Post("/cinema_hall", h.CreateCinemaHall)
 	f.Get("/cinema/address_name", h.GetAllCinemasAddressName)
 	f.Get("/cinema/halls/:id", h.GetAllCinemaHallsByID)
 	f.Get("/cinema/id/:id", h.GetCinemaByID)
 	f.Put("/cinema", h.UpdateCinema)
+	f.Put("/cinema_hall", h.UpdateCinemaHall)
 	f.Delete("/cinema/:id", h.DeleteCinema)
+	f.Delete("/cinema_hall/:id", h.DeleteCinemaHall)
 
 	h.logger.Info().Msg(fmt.Sprintf("start cinema service on port %s", h.conf.Application.CinemaServicePort))
 	f.Listen(fmt.Sprintf(":%s", h.conf.Application.CinemaServicePort))

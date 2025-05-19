@@ -205,6 +205,30 @@ func (db *DB) UpdateCinema(c *entities.Cinema) error {
 	return nil
 }
 
+func (db *DB) UpdateCinemaHall(hall *entities.CinemaHall) error {
+	result, err := db.DB.Exec(`
+        UPDATE cinema_halls SET
+            name = $1,
+            capacity = $2,
+            type_id = $3
+        WHERE id = $4
+    `, hall.Name, hall.Capacity, hall.TypeID, hall.ID)
+
+	if err != nil {
+		return fmt.Errorf("error updating cinema hall: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("error checking rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return fmt.Errorf("cinema hall with id %d not found", hall.ID)
+	}
+
+	return nil
+}
+
 func (db *DB) DeleteCinema(id int) error {
 	result, err := db.DB.Exec(`
         DELETE FROM cinemas 
@@ -221,6 +245,27 @@ func (db *DB) DeleteCinema(id int) error {
 	}
 	if rowsAffected == 0 {
 		return fmt.Errorf("cinema with id %d not found", id)
+	}
+
+	return nil
+}
+
+func (db *DB) DeleteCinemaHall(id int) error {
+	result, err := db.DB.Exec(`
+        DELETE FROM cinema_halls 
+        WHERE id = $1
+    `, id)
+
+	if err != nil {
+		return fmt.Errorf("error deleting cinema hall: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("error checking rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return fmt.Errorf("cinema hall with id %d not found", id)
 	}
 
 	return nil

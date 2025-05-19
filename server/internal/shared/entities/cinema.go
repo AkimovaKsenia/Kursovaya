@@ -63,6 +63,20 @@ type CinemaHall struct {
 	CinemaID int    `json:"cinema_id" db:"cinema_id"`
 }
 
+type CreateCinemaHall struct {
+	Name     string `json:"name" db:"name"`
+	Capacity int    `json:"capacity" db:"capacity"`
+	TypeID   int    `json:"type_id" db:"type_id"`
+	CinemaID int    `json:"cinema_id" db:"cinema_id"`
+}
+
+type UpdateCinemaHall struct {
+	ID       int    `json:"id" db:"id"`
+	Name     string `json:"name" db:"name"`
+	Capacity int    `json:"capacity" db:"capacity"`
+	TypeID   int    `json:"type_id" db:"type_id"`
+}
+
 type GetCinemaHall struct {
 	ID       int    `json:"id" db:"id"`
 	Name     string `json:"name" db:"name"`

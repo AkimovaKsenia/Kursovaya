@@ -377,7 +377,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Cinema"
+                    "CinemaHall"
                 ],
                 "summary": "Получение всех типов зала кинотеатра",
                 "responses": {
@@ -416,7 +416,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Cinema"
+                    "CinemaHall"
                 ],
                 "summary": "Получение всех залов кинотеатра по его ID",
                 "parameters": [
@@ -554,6 +554,182 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Кинотеатр не найден",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/cinema_hall": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CinemaHall"
+                ],
+                "summary": "Обновление кинозала",
+                "parameters": [
+                    {
+                        "description": "Данные кинозала",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.UpdateCinemaHall"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Кинозал успешно создан",
+                        "schema": {
+                            "$ref": "#/definitions/entities.ID"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректный запрос",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Пользователь не авторизован",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Недостаточно прав для запроса",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CinemaHall"
+                ],
+                "summary": "Создание кинозала",
+                "parameters": [
+                    {
+                        "description": "Данные кинозала",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entities.CreateCinemaHall"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Кинозал успешно создан",
+                        "schema": {
+                            "$ref": "#/definitions/entities.ID"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректный запрос",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Пользователь не авторизован",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Недостаточно прав для запроса",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/cinema_hall/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CinemaHall"
+                ],
+                "summary": "Удаление кинозала",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID кинозала",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Кинозал успешно удален",
+                        "schema": {
+                            "$ref": "#/definitions/entities.ID"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректный запрос",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Кинозал не найден",
                         "schema": {
                             "$ref": "#/definitions/entities.Error"
                         }
@@ -1270,6 +1446,23 @@ const docTemplate = `{
                 }
             }
         },
+        "entities.CreateCinemaHall": {
+            "type": "object",
+            "properties": {
+                "capacity": {
+                    "type": "integer"
+                },
+                "cinema_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "entities.CreateUser": {
             "type": "object",
             "properties": {
@@ -1461,6 +1654,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entities.UpdateCinemaHall": {
+            "type": "object",
+            "properties": {
+                "capacity": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "type_id": {
                     "type": "integer"
                 }
             }
