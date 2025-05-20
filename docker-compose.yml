@@ -1,6 +1,7 @@
 name: kursovaya
 services:
   api-gateway:
+    container_name: kursovaya_api-gateway
     build:
       context: server
       dockerfile: ./cmd/api-gateway/Dockerfile
@@ -12,8 +13,11 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    networks:
+      - app
 
   film_service:
+    container_name: kursovaya_film_service
     build:
       context: server
       dockerfile: ./cmd/film_service/Dockerfile
@@ -25,8 +29,11 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    networks:
+      - app
 
   cinema_service:
+    container_name: kursovaya_cinema_service
     build:
       context: server
       dockerfile: ./cmd/cinema_service/Dockerfile
@@ -38,8 +45,11 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    networks:
+      - app
 
   frontend:
+    container_name: kursovaya_frontend
     build:
       context: client
       dockerfile: ./Dockerfile
@@ -48,10 +58,12 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    networks:
+      - app
 
   minio:
     image: quay.io/minio/minio
-    container_name: minio-kino
+    container_name: kursovaya_minio
     ports:
       - "127.0.0.1:10420:9000"
       - "127.0.0.1:10421:9001"
@@ -61,10 +73,12 @@ services:
       - .env
     command: server /data --console-address ":9001"
     restart: unless-stopped
+    networks:
+      - app
 
   postgres:
     image: postgres:16.8-alpine3.21
-    container_name: postgres-kino
+    container_name: kursovaya_postgres
     volumes:
       - ./.data/postgres:/var/lib/postgresql/data
     ports:
@@ -78,3 +92,9 @@ services:
       retries: 5
       start_period: 10s
     restart: unless-stopped
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
