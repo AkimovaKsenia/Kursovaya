@@ -39,6 +39,16 @@ services:
     env_file:
       - .env
 
+  frontend:
+    build:
+      context: client
+      dockerfile: ./Dockerfile
+    ports:
+      - "127.0.0.1:3000:3000"
+    restart: unless-stopped
+    env_file:
+      - .env
+
   minio:
     image: quay.io/minio/minio
     container_name: minio-kino
