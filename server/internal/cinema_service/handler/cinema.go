@@ -209,12 +209,12 @@ func (h *Handler) GetAllCinemaHallsByID(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
 		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
-		logEvent.Msg(fmt.Sprintf("invalid film ID: %v", err))
-		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "Invalid film ID"})
+		logEvent.Msg(fmt.Sprintf("invalid cinema ID: %v", err))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "Invalid cinema ID"})
 	}
 
 	h.logger.Debug().Msg("calling h.repository.DB.GetAllCinemaHallsByID")
-	cinemaHallTypes, err := h.repository.DB.GetAllCinemaHallsByID(id)
+	cinemaHalls, err := h.repository.DB.GetAllCinemaHallsByID(id)
 	if err != nil {
 		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
 		logEvent.Msg(fmt.Sprintf("error getting all cinema halls by id: %s", err.Error()))
@@ -223,7 +223,28 @@ func (h *Handler) GetAllCinemaHallsByID(c *fiber.Ctx) error {
 
 	logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Info", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusOK})
 	logEvent.Msg("successful getting all cinema halls by id")
-	return c.Status(fiber.StatusOK).JSON(cinemaHallTypes)
+	return c.Status(fiber.StatusOK).JSON(cinemaHalls)
+}
+
+func (h *Handler) GetCinemaHallByID(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("invalid cinema hall ID: %v", err))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "Invalid cinema hall ID"})
+	}
+
+	h.logger.Debug().Msg("calling h.repository.DB.GetCinemaHallByID")
+	cinemaHall, err := h.repository.DB.GetCinemaHallByID(id)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error getting cinema hall by id: %s", err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error getting cinema hall by id: %s", err.Error())})
+	}
+
+	logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Info", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusOK})
+	logEvent.Msg("successful getting cinema hall by id")
+	return c.Status(fiber.StatusOK).JSON(cinemaHall)
 }
 
 func (h *Handler) GetCinemaByID(c *fiber.Ctx) error {

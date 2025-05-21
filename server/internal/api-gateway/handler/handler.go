@@ -77,6 +77,7 @@ func (h *Handler) InitRouter() {
 			authGroup.Post("/cinema_hall", h.CreateCinemaHall)
 			authGroup.Get("/cinema/address_name", h.GetAllCinemasAddressName)
 			authGroup.Get("/cinema/halls/:id", h.GetAllCinemaHallsByID)
+			authGroup.Get("/cinema/halls/hall_id/:id", h.GetCinemaHallByID)
 			authGroup.Get("/cinema/id/:id", h.GetCinemaByID)
 			authGroup.Put("/cinema", h.UpdateCinema)
 			authGroup.Put("/cinema_hall", h.UpdateCinemaHall)

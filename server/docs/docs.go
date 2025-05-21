@@ -402,6 +402,60 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/cinema/halls/hall_id/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CinemaHall"
+                ],
+                "summary": "Получение зала по его ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID кинозала",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Залы кинотеатра успешно получены",
+                        "schema": {
+                            "$ref": "#/definitions/entities.GetCinemaHall"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректный запрос",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Зал не найден",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/cinema/halls/{id}": {
             "get": {
                 "security": [

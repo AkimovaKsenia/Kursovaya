@@ -215,6 +215,32 @@ func (h *Handler) GetAllCinemaHallsByID(c *fiber.Ctx) error {
 	return c.Send(responseBody)
 }
 
+// GetCinemaHallByID
+// @Tags         CinemaHall
+// @Summary      Получение зала по его ID
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "ID кинозала"
+// @Success      200  {object}  entities.GetCinemaHall  "Залы кинотеатра успешно получены"
+// @Failure      400  {object}  entities.Error  "Некорректный запрос"
+// @Failure      404  {object}  entities.Error  "Зал не найден"
+// @Failure      500  {object}  entities.Error  "Ошибка на стороне сервера"
+// @Router       /auth/cinema/halls/hall_id/{id} [get]
+// @Security     ApiKeyAuth
+func (h *Handler) GetCinemaHallByID(c *fiber.Ctx) error {
+	requestURL := fmt.Sprintf("%s/%s", h.conf.Application.CinemaServiceHost, strings.TrimPrefix(c.OriginalURL(), "/auth/"))
+	c.Locals("request_url", requestURL)
+	h.logger.Debug().Msg("call h.Redirect")
+	responseBody, err := h.Redirect(c)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusInternalServerError})
+		logEvent.Msg(fmt.Sprintf("error sending request to cinema service: %s", err.Error()))
+		return c.Status(fiber.StatusInternalServerError).JSON(entities.Error{Error: fmt.Sprintf("error sending request to film service: %s", err.Error())})
+	}
+
+	return c.Send(responseBody)
+}
+
 // GetCinemaByID
 // @Tags         Cinema
 // @Summary      Получение полной информации о кинотеатре по его ID

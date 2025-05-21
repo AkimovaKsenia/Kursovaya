@@ -46,6 +46,7 @@ func (h *Handler) InitRouter() {
 	f.Post("/cinema_hall", h.CreateCinemaHall)
 	f.Get("/cinema/address_name", h.GetAllCinemasAddressName)
 	f.Get("/cinema/halls/:id", h.GetAllCinemaHallsByID)
+	f.Get("/cinema/halls/hall_id/:id", h.GetCinemaHallByID)
 	f.Get("/cinema/id/:id", h.GetCinemaByID)
 	f.Put("/cinema", h.UpdateCinema)
 	f.Put("/cinema_hall", h.UpdateCinemaHall)

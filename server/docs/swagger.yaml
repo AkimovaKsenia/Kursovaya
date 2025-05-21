@@ -507,6 +507,40 @@ paths:
       summary: Получение всех залов кинотеатра по его ID
       tags:
       - CinemaHall
+  /auth/cinema/halls/hall_id/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID кинозала
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Залы кинотеатра успешно получены
+          schema:
+            $ref: '#/definitions/entities.GetCinemaHall'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "404":
+          description: Зал не найден
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение зала по его ID
+      tags:
+      - CinemaHall
   /auth/cinema/id/{id}:
     get:
       consumes:

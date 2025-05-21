@@ -2,9 +2,7 @@ name: kursovaya
 services:
   api-gateway:
     container_name: cinema_mastery_api-gateway
-    build:
-      context: server
-      dockerfile: ./cmd/api-gateway/Dockerfile
+    image: gewinn2/cinema_mastery_api-gateway:latest
     ports:
       - ${API_GATEWAY_PORT}:${API_GATEWAY_PORT}
     depends_on:
@@ -18,9 +16,7 @@ services:
 
   film_service:
     container_name: cinema_mastery_film_service
-    build:
-      context: server
-      dockerfile: ./cmd/film_service/Dockerfile
+    image: gewinn2/cinema_mastery_film_service:latest
     ports:
       - ${FILM_SERVICE_PORT}:${FILM_SERVICE_PORT}
     depends_on:
@@ -34,9 +30,7 @@ services:
 
   cinema_service:
     container_name: cinema_mastery_cinema_service
-    build:
-      context: server
-      dockerfile: ./cmd/cinema_service/Dockerfile
+    image: gewinn2/cinema_mastery_cinema_service:latest
     ports:
       - ${CINEMA_SERVICE_PORT}:${CINEMA_SERVICE_PORT}
     depends_on:
@@ -50,9 +44,7 @@ services:
 
   frontend:
     container_name: cinema_mastery_frontend
-    build:
-      context: client
-      dockerfile: ./Dockerfile
+    image: gewinn2/cinema_mastery_frontend:latest
     ports:
       - "127.0.0.1:3000:3000"
     restart: unless-stopped

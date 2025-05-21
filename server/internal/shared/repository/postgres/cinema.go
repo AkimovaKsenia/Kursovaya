@@ -152,6 +152,25 @@ func (db *DB) GetAllCinemaHallsByID(cinemaID int) ([]entities.GetCinemaHall, err
 	return halls, nil
 }
 
+func (db *DB) GetCinemaHallByID(id int) (*entities.GetCinemaHall, error) {
+	var hall entities.GetCinemaHall
+	err := db.DB.Get(&hall, `
+        SELECT 
+            ch.id, 
+            ch.name, 
+            ch.capacity, 
+            cht.name as type
+        FROM cinema_halls ch
+        LEFT JOIN cinema_hall_types cht ON ch.type_id = cht.id
+        WHERE ch.id = $1
+        ORDER BY ch.name
+    `, id)
+	if err != nil {
+		return nil, fmt.Errorf("error getting cinema halls: %w", err)
+	}
+	return &hall, nil
+}
+
 func (db *DB) GetCinemaByID(id int) (*entities.GetCinema, error) {
 	var cinema entities.GetCinema
 	err := db.DB.Get(&cinema, `
