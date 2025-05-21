@@ -13,7 +13,6 @@ import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
 import { AuthService } from "services/auth.service";
 import cn from "classnames";
-// import { ClipLoader } from "react-spinners";
 import { useRouter } from "next/router";
 import { TailwindLoader } from "@/components/ui/TailwindLoader";
 
@@ -89,20 +88,6 @@ const LoginForm: FC = () => {
   }, []);
   return (
     <div className={styles.wrapper} ref={ref}>
-      {/* Лоадер */}
-      {/* {isLoading && (
-        <div className={styles.loaderOverlay}>
-          <ClipLoader
-            color="#b8b5d0"
-            size={40}
-            cssOverride={{
-              display: "block",
-              margin: "20 20",
-              borderWidth: "4px",
-            }}
-          />
-        </div>
-      )} */}
       {isLoading && <TailwindLoader />}
       {user ? (
         <div style={{ cursor: "pointer" }}>

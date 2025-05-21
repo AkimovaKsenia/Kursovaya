@@ -5,9 +5,12 @@ import {
   ICinemaExportDto,
   ICinemaMain,
   IHall,
+  IHallDto,
+  IHallExportDto,
   IListOfCategory,
   IListofCinema,
   IListOfCondition,
+  IListOfTypes,
 } from "shared/interfaces/cinema.interface";
 import Cookies from "js-cookie";
 
@@ -130,11 +133,85 @@ export const CinemaService = {
       });
       return response;
     } catch (error) {
-      console.error("FilmStudio fetch error:", error);
+      console.error("cinema fetch error:", error);
       throw error;
     }
   },
   async deleteCinema(id: number) {
     return instance.delete<string>(`/auth/cinema/${id}`);
+  },
+
+  async getHallById(id: number) {
+    return instance.get<IHallDto>(`/auth/cinema/halls/hall_id/${id}`);
+  },
+  async getTypes() {
+    try {
+      const response = await instance.get<IListOfTypes>(
+        "/auth/cinema/hall/types",
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      console.error("types fetch error:", error);
+      throw error;
+    }
+  },
+  async updateHall(id: number, body: IHallExportDto) {
+    try {
+      // Создаем объект с данными в формате JSON
+      const requestData = {
+        id,
+        name: body.name,
+        type_id: body.type_id,
+        capacity: Number(body.capacity), // Явное преобразование
+      };
+
+      console.log("📦 Отправляемые данные:", requestData);
+
+      const response = await instance.put<string>(
+        "/auth/cinema_hall",
+        requestData, // Отправляем как JSON
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+            "Content-Type": "application/json", // Явно указываем тип контента
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async createHall(body: IHallExportDto) {
+    try {
+      const formData = new FormData();
+
+      formData.append("name", body.name);
+      formData.append("type_id", body.type_id.toString());
+      formData.append("capacity", body.capacity.toString());
+
+      console.log("📦 Формируем formData для отправки:");
+      for (let pair of formData.entries()) {
+        console.log(`${pair[0]}:`, pair[1]);
+      }
+      const response = await instance.post<string>(
+        "/auth/cinema_hall",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          },
+        }
+      );
+      return response;
+    } catch (error) {
+      console.error("hall fetch error:", error);
+      throw error;
+    }
   },
 };

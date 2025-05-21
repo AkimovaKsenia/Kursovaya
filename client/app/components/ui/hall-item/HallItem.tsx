@@ -44,9 +44,16 @@ const HallItem: FC<{ halls: IHall }> = ({ halls }) => {
       </div> */}
 
       <div className={styles.icons}>
-        {/* <Link href={`/manage/movies/edit/${cinema.id}`} passHref legacyBehavior> */}
-        <PiPencil className={styles.firsticon} />
-        {/* </Link> */}
+        <Link
+          href={`/manage/cinema/halls/edit/${halls.id}`}
+          passHref
+          legacyBehavior
+        >
+          <PiPencil
+            className={styles.firsticon}
+            onClick={() => router.push(`/manage/cinema/halls/edit/${halls.id}`)}
+          />
+        </Link>
         <PiTrash
           className={styles.firsticon}
           // onClick={() => handleDelete(cinema.id)}

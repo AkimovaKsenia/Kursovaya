@@ -46,6 +46,27 @@ export interface IHall {
   type: string;
 }
 
+export interface IHallDto {
+  capacity: number;
+  id: number;
+  name: string;
+  type: string;
+}
+
+export interface IHallExportDto {
+  capacity: number;
+  name: string;
+  type_id: number;
+}
+
+// export type IListOfHall = IHall[];
+export interface IType {
+  id: number;
+  name: string;
+}
+
+export type IListOfTypes = IType[];
+
 export interface ICategory {
   id: number;
   name: string;

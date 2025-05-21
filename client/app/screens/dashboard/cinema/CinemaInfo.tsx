@@ -126,28 +126,7 @@ const CinemaInfo: FC = () => {
             </div>
           </div>
 
-          <div className="bg-gray-900 rounded-lg overflow-hidden max-w-2xl -mt-0">
-            <h2 className="text-xl font-semibold p-4 border-b border-gray-700">
-              Расположение
-            </h2>
-            <div className="h-64 w-full">
-              <iframe
-                width="100%"
-                height="100%"
-                src={`https://maps.yandex.ru/?text=${encodeURIComponent(
-                  cinema.address
-                )}`}
-                title="Карта расположения кинотеатра"
-                className="border-0"
-              />
-            </div>
-            <div className="p-4">
-              <p className="text-gray-400">{cinema.address}</p>
-              <button className="mt-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
-                Построить маршрут
-              </button>
-            </div>
-          </div>
+          <div className="bg-gray-900 rounded-lg overflow-hidden max-w-2xl min-h-xl"></div>
         </div>
       </div>
     </div>
