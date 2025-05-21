@@ -15,6 +15,8 @@ import {
 
 const CreateHall: FC = () => {
   const router = useRouter();
+  const { id } = router.query;
+  const cinemaId = router.isReady ? Number(id) : undefined;
 
   const {
     register,
@@ -26,13 +28,16 @@ const CreateHall: FC = () => {
   } = useForm<IHallDto>({
     mode: "onChange",
   });
-
+  useEffect(() => {
+    console.log("router.query.id =", id);
+    console.log("router.isReady =", router.isReady);
+  }, [id, router.isReady]);
   const { data: typesData, error: typesError } = useTypes();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ["create-hall"],
+    mutationKey: ["create-hall", cinemaId],
     mutationFn: (formData: IHallExportDto) =>
-      CinemaService.createHall(formData),
+      CinemaService.createHall(Number(cinemaId), formData),
     onSuccess: (createHall) => {
       alert("Зал успешно создан!");
       router.push("/manage/cinema/listcinema");

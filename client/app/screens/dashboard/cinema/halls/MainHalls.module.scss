@@ -13,6 +13,23 @@
   text-align: center;
   font-family: "CormorantSC", bold;
 }
+.link {
+  margin-left: 790px;
+}
 .button {
   margin-left: 790px;
+  padding: 9px 13px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    cursor: pointer;
+    background: #bebbd7;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+
+    color: rgb(255, 255, 255);
+    transform: scale(1.06); // Увеличение на 10%
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6); // Лёгкое свечение
+  }
 }

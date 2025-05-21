@@ -187,30 +187,30 @@ export const CinemaService = {
       throw error;
     }
   },
-  async createHall(body: IHallExportDto) {
+  async createHall(cinemaId: number, body: IHallExportDto) {
     try {
-      const formData = new FormData();
+      // Создаем объект с данными в формате JSON
+      const requestData = {
+        cinema_id: cinemaId,
+        name: body.name,
+        type_id: body.type_id,
+        capacity: Number(body.capacity), // Явное преобразование
+      };
 
-      formData.append("name", body.name);
-      formData.append("type_id", body.type_id.toString());
-      formData.append("capacity", body.capacity.toString());
+      console.log("📦 Отправляемые данные:", requestData);
 
-      console.log("📦 Формируем formData для отправки:");
-      for (let pair of formData.entries()) {
-        console.log(`${pair[0]}:`, pair[1]);
-      }
       const response = await instance.post<string>(
         "/auth/cinema_hall",
-        formData,
+        requestData, // Отправляем как JSON
         {
           headers: {
             Authorization: `Bearer ${Cookies.get("accessToken")}`,
+            "Content-Type": "application/json", // Явно указываем тип контента
           },
         }
       );
       return response;
     } catch (error) {
-      console.error("hall fetch error:", error);
       throw error;
     }
   },
