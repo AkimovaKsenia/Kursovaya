@@ -123,6 +123,8 @@ definitions:
         type: string
       email:
         type: string
+      id:
+        type: integer
       name:
         type: string
       phone:
@@ -139,6 +141,19 @@ definitions:
       name:
         type: string
       type:
+        type: string
+    type: object
+  entities.GetUser:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      role:
+        type: string
+      surname:
         type: string
     type: object
   entities.ID:
@@ -166,6 +181,13 @@ definitions:
         type: string
       id:
         type: integer
+    type: object
+  entities.Role:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
     type: object
   entities.UpdateCinemaHall:
     properties:
@@ -397,6 +419,28 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Получение всех названий и адресов кинотеатров
+      tags:
+      - Cinema
+  /auth/cinema/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список всех кинотеатров
+          schema:
+            items:
+              $ref: '#/definitions/entities.GetCinema'
+            type: array
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение списка всех кинотеатров
       tags:
       - Cinema
   /auth/cinema/categories:
@@ -1080,7 +1124,67 @@ paths:
       - ApiKeyAuth: []
       summary: Создание нового пользователя
       tags:
-      - Auth
+      - User
+  /auth/user:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Пользователи получены
+          schema:
+            items:
+              $ref: '#/definitions/entities.GetUser'
+            type: array
+        "400":
+          description: Некорректные данные для входа
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "403":
+          description: Недостаточно прав
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех пользователей
+      tags:
+      - User
+  /auth/user/role:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Роли получены
+          schema:
+            items:
+              $ref: '#/definitions/entities.Role'
+            type: array
+        "400":
+          description: Некорректные данные для входа
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "403":
+          description: Недостаточно прав
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение всех ролей
+      tags:
+      - User
   /login:
     post:
       consumes:

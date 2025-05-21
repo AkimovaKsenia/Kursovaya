@@ -34,6 +34,7 @@ type CreateCinema struct {
 }
 
 type GetCinema struct {
+	ID          int    `json:"id" db:"id" form:"id"`
 	Name        string `json:"name" db:"name"`
 	Description string `json:"description" db:"description"`
 	Photo       string `json:"photo" db:"photo"`

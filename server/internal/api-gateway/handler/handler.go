@@ -79,12 +79,19 @@ func (h *Handler) InitRouter() {
 			authGroup.Get("/cinema/halls/:id", h.GetAllCinemaHallsByID)
 			authGroup.Get("/cinema/halls/hall_id/:id", h.GetCinemaHallByID)
 			authGroup.Get("/cinema/id/:id", h.GetCinemaByID)
+			authGroup.Get("/cinema/all", h.GetAllCinemas)
 			authGroup.Put("/cinema", h.UpdateCinema)
 			authGroup.Put("/cinema_hall", h.UpdateCinemaHall)
 			authGroup.Delete("/cinema/:id", h.DeleteCinema)
 			authGroup.Delete("/cinema_hall/:id", h.DeleteCinemaHall)
 		}
 
+		// USER
+		{
+			authGroup.Get("/user/role", h.GetUserRoles)
+			authGroup.Get("/user", h.GetUsers)
+			authGroup.Post("/register", h.Register)
+		}
 	}
 
 	h.logger.Info().Msg(fmt.Sprintf("start api-gateway on port %s", h.conf.Application.ApiGatewayPort))

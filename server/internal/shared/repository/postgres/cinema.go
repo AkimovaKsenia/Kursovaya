@@ -194,6 +194,30 @@ func (db *DB) GetCinemaByID(id int) (*entities.GetCinema, error) {
 	return &cinema, nil
 }
 
+func (db *DB) GetAllCinemas() ([]entities.GetCinema, error) {
+	var cinemas []entities.GetCinema
+	err := db.DB.Select(&cinemas, `
+        SELECT 
+            c.id,
+            c.name,
+            c.description,
+            c.photo,
+            c.address,
+            c.email,
+            c.phone,
+            cc.name as condition,
+            ccat.name as category
+        FROM cinemas c
+        LEFT JOIN cinema_conditions cc ON c.condition_id = cc.id
+        LEFT JOIN cinema_categories ccat ON c.category_id = ccat.id
+        ORDER BY c.id
+    `)
+	if err != nil {
+		return nil, fmt.Errorf("error getting all cinemas: %w", err)
+	}
+	return cinemas, nil
+}
+
 func (db *DB) UpdateCinema(c *entities.Cinema) error {
 	result, err := db.DB.Exec(`
         UPDATE cinemas SET
