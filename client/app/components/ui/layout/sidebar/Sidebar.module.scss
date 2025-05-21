@@ -36,6 +36,10 @@
         color: #acabb0;
         font-size: 27px;
         margin-top: 25px;
+        &.dashboardItem {
+          font-size: 29px; /* Эквивалент text-xl */
+          // line-height: 1.75rem;
+        }
 
         &.active {
           font-size: 30px;

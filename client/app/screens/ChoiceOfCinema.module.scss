@@ -11,7 +11,7 @@
 .catalog {
   font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   color: white;
   text-align: center;
   font-family: "CormorantSC", bold;
@@ -36,4 +36,10 @@
     transform: scale(1.06); // Увеличение на 10%
     text-shadow: 0 0 12px rgba(255, 255, 255, 0.6); // Лёгкое свечение
   }
+}
+.heading {
+  background: linear-gradient(90deg, #ffffff, #b7b1e8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }

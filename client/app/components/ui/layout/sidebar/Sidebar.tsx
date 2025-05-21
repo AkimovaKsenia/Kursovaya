@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { menu } from "./menu.data";
 import cn from "classnames";
-import { PiFilmReelLight } from "react-icons/pi";
 
 interface SidebarProps {
   className?: string;
@@ -44,6 +43,7 @@ const Sidebar: FC<SidebarProps> = ({ className }) => {
                 key={item.link}
                 className={cn(styles.item, {
                   [styles.active]: isActive(item.link),
+                  [styles.dashboardItem]: item.link === "/dashboard",
                 })}
               >
                 <Link href={item.link}>

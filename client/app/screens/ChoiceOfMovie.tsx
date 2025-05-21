@@ -34,69 +34,67 @@ const Choice: FC = () => {
 
   return (
     <div className="bg-black">
-      {/* Заголовок (оставлен как в оригинале) */}
       <div
-        style={{ background: "rgba(129, 125, 219, 0.2)" }}
+        style={{
+          borderBottom: "1px solid rgba(255, 255, 255, 0.3)",
+          background: "rgba(255, 255, 255, 0.1)",
+          minHeight: "50px",
+        }}
         className={styles.catalog}
       >
         Фильмы
       </div>
 
-      {/* Сетка фильмов */}
-      <div className=" mt-15 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 px-6 pt-6">
-        {movies.length ? (
-          movies.map((movie) => (
-            <Link
-              href={`/movie/${movie.id}`}
-              key={movie.id}
-              passHref
-              className="group"
-            >
-              <div className="relative h-full min-h-[400px] rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-105">
-                {/* Фоновое изображение фильма */}
-                <div className="absolute inset-0">
-                  <Image
-                    src={movie.photo || "/default-movie.jpg"} // Заглушка, если нет фото
-                    alt={movie.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="brightness-75"
-                  />
-                </div>
-
-                {/* Градиент для текста */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-
-                {/* Информация о фильме */}
-                <div className="relative z-10 h-full flex flex-col justify-end p-4">
-                  <h3 className="text-xl font-bold text-white mb-1 line-clamp-2">
-                    {movie.name}
-                  </h3>
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    {movie.genres && movie.genres.length > 0 && (
-                      <span> {movie.genres.join(", ")}</span>
-                    )}
+      <div className="mx-auto max-w-[1400px] px-10 py-8 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          {movies.length ? (
+            movies.map((movie) => (
+              <Link
+                href={`/movie/${movie.id}`}
+                key={movie.id}
+                passHref
+                className="group"
+              >
+                <div className="relative w-[240px] aspect-[2/3] rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-105">
+                  {/* Фоновое изображение */}
+                  <div className="absolute inset-0">
+                    <Image
+                      src={movie.photo || "/default-movie.jpg"}
+                      alt={movie.name}
+                      layout="fill"
+                      objectFit="cover"
+                      className="brightness-75"
+                    />
                   </div>
-                  <div className="flex items-center justify-between text-sm text-gray-300"></div>
-                </div>
 
-                {/* Эффект при наведении */}
-                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <button className="px-4 py-2 bg-purple-600 rounded-full text-white font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    Подробнее
-                  </button>
+                  {/* Градиент */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+
+                  {/* Контент */}
+                  <div className="relative z-10 h-full flex flex-col justify-end p-3">
+                    <h3 className="text-md font-bold text-white mb-1 line-clamp-2">
+                      {movie.name}
+                    </h3>
+                    <div className="text-sm text-gray-300 line-clamp-1">
+                      {movie.genres?.join(", ")}
+                    </div>
+                  </div>
+
+                  {/* Наведение */}
+                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity scale-105 duration-300 flex items-center justify-center">
+                    <button className="px-3 py-1.5 bg-purple-600 rounded-full text-white text-sm font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      Подробнее
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))
-        ) : (
-          <div className="col-span-full text-center py-16">
-            <div className="text-white text-xl">Фильмы не найдены</div>
-            <div className="text-gray-400 mt-2">
-              Попробуйте обновить страницу
+              </Link>
+            ))
+          ) : (
+            <div className="col-span-full text-center text-white py-10">
+              Фильмы не найдены
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

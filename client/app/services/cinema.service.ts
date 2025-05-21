@@ -11,6 +11,7 @@ import {
   IListofCinema,
   IListOfCondition,
   IListOfTypes,
+  ListOfCinema,
 } from "shared/interfaces/cinema.interface";
 import Cookies from "js-cookie";
 
@@ -139,6 +140,20 @@ export const CinemaService = {
   },
   async deleteCinema(id: number) {
     return instance.delete<string>(`/auth/cinema/${id}`);
+  },
+  async getListOfCinema() {
+    try {
+      const response = await instance.get<ListOfCinema>("/auth/cinema/all", {
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      console.log("Ответ получен!"); // Доходит ли сюда?
+      return response;
+    } catch (error) {
+      console.error("Ошибка:", error); // Ловим ошибки
+      throw error;
+    }
   },
 
   async getHallById(id: number) {

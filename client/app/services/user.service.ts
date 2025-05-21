@@ -2,6 +2,7 @@ import { axiosClassic } from "api/interceptor";
 import {
   IAuthResponse,
   IListOfRoles,
+  IListOfUsers,
   IUserExportDto,
 } from "shared/interfaces/user.interface";
 import { removeTokenFromStorage, saveToStorage } from "./auth.helper";
@@ -46,6 +47,23 @@ export const UserService = {
       return response;
     } catch (error) {
       console.error("roles fetch error:", error);
+      throw error;
+    }
+  },
+  async getAllUsers() {
+    const fullUrl = instance.defaults.baseURL + "/auth/user";
+    console.log("Полный URL (вручную):", fullUrl); // Что получилось?
+
+    try {
+      const response = await instance.get<IListOfUsers>("/auth/user", {
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      console.log("Ответ получен!"); // Доходит ли сюда?
+      return response;
+    } catch (error) {
+      console.error("Ошибка:", error); // Ловим ошибки
       throw error;
     }
   },
