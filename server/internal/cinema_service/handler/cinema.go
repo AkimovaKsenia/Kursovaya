@@ -281,6 +281,33 @@ func (h *Handler) GetCinemaByID(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(cinema)
 }
 
+func (h *Handler) GetAllCinemas(c *fiber.Ctx) error {
+	h.logger.Debug().Msg("calling h.repository.DB.GetAllCinemas")
+	cinemas, err := h.repository.DB.GetAllCinemas()
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusInternalServerError})
+		logEvent.Msg(fmt.Sprintf("error getting all cinemas: %s", err.Error()))
+		return c.Status(fiber.StatusInternalServerError).JSON(entities.Error{Error: fmt.Sprintf("error getting all cinemas: %s", err.Error())})
+	}
+
+	re := regexp.MustCompile("^(https?|ftp):\\/\\/[^\\s/$.?#].[^\\s]*$")
+	for i := range cinemas {
+		if !re.MatchString(cinemas[i].Photo) && cinemas[i].Photo != "" {
+			url, err := h.repository.S3.PresignedGetObject(context.Background(), "cinema-media", cinemas[i].Photo, 7*24*time.Hour)
+			if err != nil {
+				logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusInternalServerError})
+				logEvent.Msg(fmt.Sprintf("error getting presigned object %s from minio: %s", cinemas[i].Photo, err.Error()))
+				return c.Status(fiber.StatusInternalServerError).JSON(entities.Error{Error: fmt.Sprintf("error getting presigned object %s from minio: %s", cinemas[i].Photo, err.Error())})
+			}
+			cinemas[i].Photo = url.String()
+		}
+	}
+
+	logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Info", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusOK})
+	logEvent.Msg("successful getting all cinemas")
+	return c.Status(fiber.StatusOK).JSON(cinemas)
+}
+
 func (h *Handler) UpdateCinema(c *fiber.Ctx) error {
 	h.logger.Debug().Caller().Msg("body parse")
 	var f entities.Cinema

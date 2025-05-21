@@ -123,6 +123,8 @@ definitions:
         type: string
       email:
         type: string
+      id:
+        type: integer
       name:
         type: string
       phone:
@@ -417,6 +419,28 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Получение всех названий и адресов кинотеатров
+      tags:
+      - Cinema
+  /auth/cinema/all:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список всех кинотеатров
+          schema:
+            items:
+              $ref: '#/definitions/entities.GetCinema'
+            type: array
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Получение списка всех кинотеатров
       tags:
       - Cinema
   /auth/cinema/categories:

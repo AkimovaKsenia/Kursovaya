@@ -48,6 +48,7 @@ func (h *Handler) InitRouter() {
 	f.Get("/cinema/halls/:id", h.GetAllCinemaHallsByID)
 	f.Get("/cinema/halls/hall_id/:id", h.GetCinemaHallByID)
 	f.Get("/cinema/id/:id", h.GetCinemaByID)
+	f.Get("/cinema/all", h.GetAllCinemas)
 	f.Put("/cinema", h.UpdateCinema)
 	f.Put("/cinema_hall", h.UpdateCinemaHall)
 	f.Delete("/cinema/:id", h.DeleteCinema)
