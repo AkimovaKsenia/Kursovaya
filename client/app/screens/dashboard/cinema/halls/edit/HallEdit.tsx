@@ -58,7 +58,7 @@ const HallEdit: FC = () => {
       CinemaService.updateHall(Number(hallId), formData),
     onSuccess: () => {
       alert("Зал успешно обновлен!");
-      router.push("/manage/cinema/listcinema");
+      router.back();
     },
     onError: (error) => {
       console.error("Ошибка при обновлении зала:", error);

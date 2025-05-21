@@ -11,6 +11,11 @@ export interface IMovie {
   cast_list: string[];
 }
 
+// export type IMovieMain = Omit<
+//   IMovie,
+//    "category" | "condition" | "description" | "email" | "phone"
+// >;
+
 export interface IMovieDto {
   name: string;
   genres: string[]; // или string, если бек принимает как одну строку

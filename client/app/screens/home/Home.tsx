@@ -77,7 +77,7 @@ const Home: FC = () => {
                   Кинотеатры
                 </Button>
               </Link>
-              <Link href="/ChoiceCinema" passHref>
+              <Link href="/ChoiceMovie" passHref>
                 <Button
                   className={cn(
                     "px-6 py-3 text-lg mt-0 boldText",

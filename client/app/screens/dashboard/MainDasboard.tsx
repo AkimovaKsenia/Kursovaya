@@ -15,9 +15,15 @@ const Dashboard: FC = () => {
         <div className={styles.main}>
           {user ? (
             <div>
-              <h1 style={{ color: "#FFFFFF" }}>Dashboard</h1>
               <h2 style={{ color: "#FFFFFF" }}>Привет!</h2>
+
               <p>Добро пожаловать в вашу панель управления.</p>
+              <Link href={`/manage/user/create/createuser`}>
+                <button className={styles.firstButton}>
+                  {" "}
+                  Создать нового пользователя{" "}
+                </button>
+              </Link>
               <div className="w-full flex justify-center">
                 <MainStatistic />
               </div>

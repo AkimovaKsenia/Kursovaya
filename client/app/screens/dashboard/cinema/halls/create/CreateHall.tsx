@@ -40,7 +40,7 @@ const CreateHall: FC = () => {
       CinemaService.createHall(Number(cinemaId), formData),
     onSuccess: (createHall) => {
       alert("Зал успешно создан!");
-      router.push("/manage/cinema/listcinema");
+      router.push(`/manage/cinema/halls/${cinemaId}`);
     },
     onError: (error) => {
       console.error("Ошибка при создании зала:", error);
