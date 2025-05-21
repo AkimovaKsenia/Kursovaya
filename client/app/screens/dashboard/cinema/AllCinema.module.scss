@@ -1,10 +1,11 @@
 .items {
-  //   display: grid;
-  grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
-  align-items: end; // Выравнивание по нижнему краю
-  gap: 1.5rem;
-  //   padding: 6px;
+  display: grid; // Раскомментируйте это!
+
+  grid-template-rows: auto; // Измените на auto
+  gap: 0.5rem;
   padding-left: 6px;
+  margin-top: 55px;
+  position: relative; // Для корректного margin
 }
 
 .catalog {
@@ -16,10 +17,11 @@
   font-family: "CormorantSC", bold;
 }
 .link {
-  margin-left: 790px;
 }
 .button {
-  margin-left: 790px;
+  position: absolute; // Абсолютное позиционирование
+
+  margin-left: 778px;
   padding: 9px 13px;
   background: rgba(255, 255, 255, 0.4);
   border-radius: 4px;

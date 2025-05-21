@@ -8,6 +8,7 @@ import { MovieService } from "services/movie.service";
 import { useRouter } from "next/router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Modal from "../Modal";
+import cn from "classnames";
 
 const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
   const router = useRouter();
@@ -45,7 +46,7 @@ const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
                 alt={movie.name}
                 width={300} // меньше ширина
                 height={450}
-                className={styles.posterImage}
+                className={cn(styles.posterImage, "rounded-lg")}
               />
             </div>
           )}

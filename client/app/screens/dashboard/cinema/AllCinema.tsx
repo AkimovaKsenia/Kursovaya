@@ -43,7 +43,7 @@ const Cinema: FC = () => {
       >
         Cinema
       </div>
-      <Link href="/manage/cinema/createcinema">
+      <Link href="/manage/cinema/createcinema" className={styles.link}>
         <button className={styles.button}> Создать кинотеатр </button>
       </Link>
 
