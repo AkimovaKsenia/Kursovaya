@@ -1,6 +1,7 @@
 import { axiosClassic } from "api/interceptor";
 import {
   IAuthResponse,
+  IListOfRoles,
   IUserExportDto,
 } from "shared/interfaces/user.interface";
 import { removeTokenFromStorage, saveToStorage } from "./auth.helper";
@@ -32,6 +33,19 @@ export const UserService = {
       );
       return response;
     } catch (error) {
+      throw error;
+    }
+  },
+  async getRoles() {
+    try {
+      const response = await instance.get<IListOfRoles>("/auth/user/role", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+      });
+      return response;
+    } catch (error) {
+      console.error("roles fetch error:", error);
       throw error;
     }
   },
