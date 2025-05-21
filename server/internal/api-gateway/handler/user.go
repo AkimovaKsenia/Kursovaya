@@ -194,5 +194,5 @@ func (h *Handler) GetUserRoles(c *fiber.Ctx) error {
 	logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Info", Method: c.Method(),
 		Url: c.OriginalURL(), Status: fiber.StatusOK})
 	logEvent.Msg("success")
-	return c.Status(fiber.StatusNotFound).JSON(roles)
+	return c.Status(fiber.StatusOK).JSON(roles)
 }
