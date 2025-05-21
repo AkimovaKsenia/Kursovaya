@@ -25,8 +25,8 @@ func (db *DB) CreateUser(u *entities.User) (int, error) {
 	return id, nil
 }
 
-func (db *DB) GetUserByEmail(email string) (*entities.GetUser, error) {
-	user := entities.GetUser{}
+func (db *DB) GetUserByEmail(email string) (*entities.GetUserEmail, error) {
+	user := entities.GetUserEmail{}
 	query := `SELECT users.id, users.name, users.surname, roles.name AS role, users.email, users.password
 		FROM users
 		JOIN public.roles ON users.role_id = roles.id
@@ -53,4 +53,25 @@ func (db *DB) GetUserRoleById(userID int) (*entities.UserRole, error) {
 		return nil, err
 	}
 	return &us, nil
+}
+
+func (db *DB) GetAllUsers() ([]entities.GetUser, error) {
+	var users []entities.GetUser
+	query := `SELECT 
+                users.id, 
+                users.name, 
+                users.surname, 
+                CASE 
+                    WHEN roles.name = 'worker' THEN 'Работник'
+                    WHEN roles.name = 'admin' THEN 'Администратор'
+                    ELSE roles.name
+                END AS role,
+                users.email
+              FROM users
+              JOIN public.roles ON users.role_id = roles.id`
+	err := db.DB.Select(&users, query)
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
 }

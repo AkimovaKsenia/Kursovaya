@@ -48,19 +48,6 @@ services:
     networks:
       - app
 
-  frontend:
-    container_name: cinema_mastery_frontend
-    build:
-      context: client
-      dockerfile: ./Dockerfile
-    ports:
-      - "127.0.0.1:3000:3000"
-    restart: unless-stopped
-    env_file:
-      - .env
-    networks:
-      - app
-
   minio:
     image: quay.io/minio/minio
     container_name: kursovaya_minio

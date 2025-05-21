@@ -85,6 +85,12 @@ func (h *Handler) InitRouter() {
 			authGroup.Delete("/cinema_hall/:id", h.DeleteCinemaHall)
 		}
 
+		// USER
+		{
+			authGroup.Get("/user/role", h.GetUserRoles)
+			authGroup.Get("/user", h.GetUsers)
+			authGroup.Post("/register", h.Register)
+		}
 	}
 
 	h.logger.Info().Msg(fmt.Sprintf("start api-gateway on port %s", h.conf.Application.ApiGatewayPort))

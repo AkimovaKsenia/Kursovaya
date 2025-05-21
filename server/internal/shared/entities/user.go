@@ -10,6 +10,14 @@ type User struct {
 }
 
 type GetUser struct {
+	ID      int    `json:"id" db:"id"`
+	Name    string `json:"name" db:"name"`
+	Surname string `json:"surname" db:"surname"`
+	Email   string `json:"email" db:"email"`
+	Role    string `json:"role" db:"role"`
+}
+
+type GetUserEmail struct {
 	ID       int    `json:"id" db:"id"`
 	Name     string `json:"name" db:"name"`
 	Surname  string `json:"surname" db:"surname"`

@@ -1363,7 +1363,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Auth"
+                    "User"
                 ],
                 "summary": "Создание нового пользователя",
                 "parameters": [
@@ -1382,6 +1382,102 @@ const docTemplate = `{
                         "description": "Пользователь создан",
                         "schema": {
                             "$ref": "#/definitions/entities.ID"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные данные для входа",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Недостаточно прав",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/user": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Получение всех пользователей",
+                "responses": {
+                    "200": {
+                        "description": "Пользователи получены",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entities.GetUser"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные данные для входа",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Недостаточно прав",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка на стороне сервера",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/user/role": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Получение всех ролей",
+                "responses": {
+                    "200": {
+                        "description": "Роли получены",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entities.Role"
+                            }
                         }
                     },
                     "400": {
@@ -1671,6 +1767,26 @@ const docTemplate = `{
                 }
             }
         },
+        "entities.GetUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                }
+            }
+        },
         "entities.ID": {
             "type": "object",
             "properties": {
@@ -1709,6 +1825,17 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                }
+            }
+        },
+        "entities.Role": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
