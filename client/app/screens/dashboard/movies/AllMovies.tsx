@@ -43,6 +43,7 @@ const Movies: FC = () => {
       <Link href="/manage/movies/createmovie">
         <button className={styles.button}> Создать фильм </button>
       </Link>
+
       <div className={styles.items}>
         {movies.length ? (
           movies.map((movie) => <MovieItem movie={movie} key={movie.id} />)

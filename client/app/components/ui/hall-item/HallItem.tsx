@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { IMovie } from "../../../shared/interfaces/movie.interface";
 import Link from "next/link";
 import styles from "./HallItem.module.scss";
@@ -8,9 +8,13 @@ import { MovieService } from "services/movie.service";
 import { useRouter } from "next/router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ICinemaMain, IHall } from "shared/interfaces/cinema.interface";
+import Modal from "../Modal";
+import { CinemaService } from "services/cinema.service";
 
 const HallItem: FC<{ halls: IHall }> = ({ halls }) => {
   const router = useRouter();
+  const [showModal, setShowModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // const handleDelete = async (id: number) => {
   //   try {
@@ -24,9 +28,27 @@ const HallItem: FC<{ halls: IHall }> = ({ halls }) => {
   //     alert("Ошибка при удалении");
   //   }
   // };
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await CinemaService.deleteHall(halls.id);
+      router.reload();
+    } catch (error) {
+      alert("Ошибка при удалении");
+    } finally {
+      setIsDeleting(false);
+      setShowModal(false);
+    }
+  };
 
   return (
     <div className={styles.main}>
+      <Modal
+        isOpen={showModal}
+        title="Удалить зал?"
+        onClose={() => setShowModal(false)}
+        onConfirm={handleDelete}
+      ></Modal>
       <div className={styles.content}>
         <div className={styles.heading}>{halls.name}</div>
         <div className={styles.hallInfo}>
@@ -44,12 +66,19 @@ const HallItem: FC<{ halls: IHall }> = ({ halls }) => {
       </div> */}
 
       <div className={styles.icons}>
-        {/* <Link href={`/manage/movies/edit/${cinema.id}`} passHref legacyBehavior> */}
-        <PiPencil className={styles.firsticon} />
-        {/* </Link> */}
+        <Link
+          href={`/manage/cinema/halls/edit/${halls.id}`}
+          passHref
+          legacyBehavior
+        >
+          <PiPencil
+            className={styles.firsticon}
+            onClick={() => router.push(`/manage/cinema/halls/edit/${halls.id}`)}
+          />
+        </Link>
         <PiTrash
           className={styles.firsticon}
-          // onClick={() => handleDelete(cinema.id)}
+          onClick={() => setShowModal(true)}
         />
       </div>
     </div>

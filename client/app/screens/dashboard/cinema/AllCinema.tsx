@@ -46,6 +46,7 @@ const Cinema: FC = () => {
       <Link href="/manage/cinema/createcinema">
         <button className={styles.button}> Создать кинотеатр </button>
       </Link>
+
       <div className={styles.items}>
         {cinema.length ? (
           cinema.map((cinema) => <CinemaItem cinema={cinema} key={cinema.id} />)
