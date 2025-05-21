@@ -33,7 +33,7 @@ const Choice: FC = () => {
   if (isLoading) return <div>Загрузка...</div>;
 
   return (
-    <div className="bg-black pb-12">
+    <div className="bg-black">
       {/* Заголовок (оставлен как в оригинале) */}
       <div
         style={{ background: "rgba(129, 125, 219, 0.2)" }}
@@ -43,7 +43,7 @@ const Choice: FC = () => {
       </div>
 
       {/* Сетка фильмов */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 px-6 pt-6">
+      <div className=" mt-15 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 px-6 pt-6">
         {movies.length ? (
           movies.map((movie) => (
             <Link
