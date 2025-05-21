@@ -21,6 +21,9 @@ const Sidebar: FC<SidebarProps> = ({ className }) => {
   const isActive = (link: string) => {
     if (asPath === link) return true;
 
+    if (link === "/dashboard") {
+      return asPath.startsWith("/manage/user");
+    }
     if (link === "/manage/movies/listmovies") {
       return asPath.startsWith("/manage/movies");
     }

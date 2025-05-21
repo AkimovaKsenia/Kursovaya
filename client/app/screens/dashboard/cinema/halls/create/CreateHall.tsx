@@ -91,7 +91,7 @@ const CreateHall: FC = () => {
 
   return (
     <DashboardLayout>
-      <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-6 ">
+      <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-25 ">
         <HallForm
           register={register}
           errors={errors}
