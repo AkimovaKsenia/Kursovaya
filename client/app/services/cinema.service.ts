@@ -214,4 +214,7 @@ export const CinemaService = {
       throw error;
     }
   },
+  async deleteHall(id: number) {
+    return instance.delete<string>(`/auth/cinema_hall/${id}`);
+  },
 };
