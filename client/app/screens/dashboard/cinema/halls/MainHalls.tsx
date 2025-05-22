@@ -9,9 +9,12 @@ import { IHall } from "shared/interfaces/cinema.interface";
 import styles from "./MainHalls.module.scss";
 import HallItem from "@/components/ui/hall-item/HallItem";
 import Link from "next/link";
+import { useAuth } from "hooks/useAuth";
+import ErrorAuth from "@/components/ui/ErrorAuth";
 
 const MainHall: FC = () => {
   const router = useRouter();
+  const { user, setUser } = useAuth();
   const [halls, setHalls] = useState<IHall[]>([]); // Всегда массив
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -56,28 +59,33 @@ const MainHall: FC = () => {
 
   return (
     <DashboardLayout>
-      <div
-        style={{ background: "rgba(129, 125, 219, 0.8)" }}
-        className={styles.catalog}
-      >
-        Залы
-      </div>
-      <Link href={`/manage/cinema/halls/create/${cinemaId}`}>
-        <button className={styles.button}> Создать зал </button>
-      </Link>
-
-      {error ? (
-        <div className={styles.error}>{error}</div>
-      ) : (
-        <>
-          <div className={styles.items}>
-            {halls.length === 0 ? (
-              <div className={styles.empty}>Залы не найдены</div>
-            ) : (
-              halls.map((hall) => <HallItem key={hall.id} halls={hall} />)
-            )}
+      {user ? (
+        <div>
+          <div
+            style={{ background: "rgba(129, 125, 219, 0.8)" }}
+            className={styles.catalog}
+          >
+            Залы
           </div>
-        </>
+          <Link href={`/manage/cinema/halls/create/${cinemaId}`}>
+            <button className={styles.button}> Создать зал </button>
+          </Link>
+          {error ? (
+            <div className={styles.error}>{error}</div>
+          ) : (
+            <>
+              <div className={styles.items}>
+                {halls.length === 0 ? (
+                  <div className={styles.empty}>Залы не найдены</div>
+                ) : (
+                  halls.map((hall) => <HallItem key={hall.id} halls={hall} />)
+                )}
+              </div>
+            </>
+          )}{" "}
+        </div>
+      ) : (
+        <ErrorAuth />
       )}
     </DashboardLayout>
   );

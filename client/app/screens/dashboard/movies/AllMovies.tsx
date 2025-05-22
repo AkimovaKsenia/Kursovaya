@@ -10,9 +10,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Button from "@/components/ui/layout/Button/Button";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useAuth } from "hooks/useAuth";
+import ErrorAuth from "@/components/ui/ErrorAuth";
 
 const Movies: FC = () => {
   const router = useRouter();
+  const { user, setUser } = useAuth(); // Получаем данные пользователя из контекста
   const [movies, setMovies] = useState<IMovie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -34,23 +37,29 @@ const Movies: FC = () => {
 
   return (
     <DashboardLayout>
-      <div
-        style={{ background: "rgba(129, 125, 219, 0.8)" }}
-        className={styles.catalog}
-      >
-        MOVIES
-      </div>
-      <Link href="/manage/movies/createmovie">
-        <button className={styles.button}> Создать фильм </button>
-      </Link>
+      {user ? (
+        <div>
+          <div
+            style={{ background: "rgba(129, 125, 219, 0.8)" }}
+            className={styles.catalog}
+          >
+            MOVIES
+          </div>
+          <Link href="/manage/movies/createmovie">
+            <button className={styles.button}> Создать фильм </button>
+          </Link>
 
-      <div className={styles.items}>
-        {movies.length ? (
-          movies.map((movie) => <MovieItem movie={movie} key={movie.id} />)
-        ) : (
-          <div>Movies not found</div>
-        )}
-      </div>
+          <div className={styles.items}>
+            {movies.length ? (
+              movies.map((movie) => <MovieItem movie={movie} key={movie.id} />)
+            ) : (
+              <div>Movies not found</div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <ErrorAuth />
+      )}
     </DashboardLayout>
   );
 };

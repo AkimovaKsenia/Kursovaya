@@ -17,6 +17,7 @@ import styles from "../layout/MovieForm.module.scss";
 import FileUploader from "../layout/FileUploader";
 import {} from "shared/interfaces/cinema.interface";
 import { IListOfRoles, IUserDto } from "shared/interfaces/user.interface";
+import { validEmail } from "../layout/header/login-form/login-auth.constants";
 
 interface UserFormProps {
   register: UseFormRegister<IUserDto>;
@@ -46,7 +47,7 @@ const UserForm: FC<UserFormProps> = ({
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
         />
         {errors.name && (
-          <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+          <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
         )}
       </div>
       <div>
@@ -57,24 +58,48 @@ const UserForm: FC<UserFormProps> = ({
           {...register("surname", { required: "Обязательное поле" })}
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
         />
+        {errors.surname && (
+          <p className="text-red-500 text-xs mt-1">{errors.surname.message}</p>
+        )}
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Email:
         </label>
         <input
-          {...register("email", { required: "Обязательное поле" })}
-          className="w-115 px-3 py-2 border border-gray-300 rounded-md"
+          {...register("email", {
+            required: "Обязательное поле",
+            pattern: {
+              value: validEmail,
+              message: "Введите корректный email",
+            },
+          })}
+          className={cn(
+            "w-115 px-3 py-2 border rounded-md",
+            errors.email ? "border-red-500" : "border-gray-300"
+          )}
         />
+        {errors.email && (
+          <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+        )}
       </div>
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Пароль:
         </label>
         <input
-          {...register("password", { required: "Обязательное поле" })}
+          {...register("password", {
+            required: "Обязательное поле",
+            minLength: {
+              value: 4,
+              message: "Минимальная длина пароля - 6 символов",
+            },
+          })}
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
         />
+        {errors.password && (
+          <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
+        )}
       </div>
 
       <div>
@@ -82,7 +107,7 @@ const UserForm: FC<UserFormProps> = ({
           Роль:
         </label>
         <select
-          {...register("role", { required: "Выберите категорию" })}
+          {...register("role", { required: "Выберите роль" })}
           className={cn(
             "form-select w-full text-m px-3 py-2 border border-gray-300 rounded-md",
             styles.select
@@ -95,6 +120,9 @@ const UserForm: FC<UserFormProps> = ({
             </option>
           ))}
         </select>
+        {errors.role && (
+          <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>
+        )}
       </div>
 
       <div className="pt-4">

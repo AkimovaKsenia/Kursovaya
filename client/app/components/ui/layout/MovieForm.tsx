@@ -52,7 +52,7 @@ const MovieForm: FC<MovieFormProps> = ({
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
         />
         {errors.name && (
-          <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+          <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
         )}
       </div>
 
@@ -76,7 +76,7 @@ const MovieForm: FC<MovieFormProps> = ({
           ))}
         </select>
         {errors.genres && (
-          <p className="text-red-500 text-sm mt-1">{errors.genres.message}</p>
+          <p className="text-red-500 text-xs mt-1">{errors.genres.message}</p>
         )}
       </div>
 
@@ -85,7 +85,7 @@ const MovieForm: FC<MovieFormProps> = ({
           Режиссер:
         </label>
         <select
-          {...register("directors", { required: "Выберите директоров" })}
+          {...register("directors", { required: "Выберите режиссера" })}
           className={cn(
             "form-select w-full text-m px-3 py-2 border border-gray-300 rounded-md",
             styles.select
@@ -99,6 +99,11 @@ const MovieForm: FC<MovieFormProps> = ({
             </option>
           ))}
         </select>
+        {errors.directors && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.directors?.message}
+          </p>
+        )}
       </div>
 
       <div>
@@ -120,6 +125,11 @@ const MovieForm: FC<MovieFormProps> = ({
             </option>
           ))}
         </select>
+        {errors.operators && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.operators?.message}
+          </p>
+        )}
       </div>
 
       <div>
@@ -127,10 +137,15 @@ const MovieForm: FC<MovieFormProps> = ({
           Список актеров:
         </label>
         <textarea
-          {...register("cast_list")}
+          {...register("cast_list", { required: "Введите список актеров" })}
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
           rows={3}
         />
+        {errors.cast_list && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.cast_list.message}
+          </p>
+        )}
       </div>
 
       <div>
@@ -138,10 +153,17 @@ const MovieForm: FC<MovieFormProps> = ({
           Длительность:
         </label>
         <textarea
-          {...register("duration_in_min")}
+          {...register("duration_in_min", {
+            required: "Выберите длительность фильма",
+          })}
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
           rows={1}
         />
+        {errors.duration_in_min && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.duration_in_min.message}
+          </p>
+        )}
       </div>
 
       <div>
@@ -162,6 +184,11 @@ const MovieForm: FC<MovieFormProps> = ({
             </option>
           ))}
         </select>
+        {errors.film_studio_name && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.film_studio_name.message}
+          </p>
+        )}
       </div>
 
       <div>
@@ -169,10 +196,15 @@ const MovieForm: FC<MovieFormProps> = ({
           Описание:
         </label>
         <textarea
-          {...register("description")}
+          {...register("description", { required: "Обязательное поле" })}
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
           rows={5}
         />
+        {errors.description && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.description.message}
+          </p>
+        )}
       </div>
 
       <FileUploader onFilesUploaded={handleFileUpload} />

@@ -57,7 +57,7 @@ const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
         <div className={styles.heading}>{movie.name}</div>
         <div className={styles.headingsecond}>
           Длительность: {Math.floor(movie.duration_in_min / 60)} ч{"  "}
-          {movie.duration_in_min % 60} м
+          {movie.duration_in_min % 60} мин
         </div>
         <div className={styles.headingsecond}>
           Киностудия: {movie.film_studio_name}

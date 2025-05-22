@@ -1,7 +1,9 @@
+import ErrorAuth from "@/components/ui/ErrorAuth";
 import CinemaForm from "@/components/ui/forms/CinemaForm";
 import UserForm from "@/components/ui/forms/UserForm";
 import DashboardLayout from "@/components/ui/layout/DashboardLayout";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "hooks/useAuth";
 
 import { useRole } from "hooks/useRole";
 import { useRouter } from "next/router";
@@ -16,6 +18,7 @@ import {
 
 const CreateUser: FC = () => {
   const router = useRouter();
+  const { user, setUser } = useAuth();
 
   const {
     register,
@@ -87,16 +90,20 @@ const CreateUser: FC = () => {
 
   return (
     <DashboardLayout>
-      <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-9 ">
-        <UserForm
-          register={register}
-          errors={errors}
-          handleSubmit={handleSubmit}
-          onSubmit={onSubmit}
-          isPending={isPending}
-          rolesData={rolesData}
-        />
-      </div>
+      {user ? (
+        <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-9 ">
+          <UserForm
+            register={register}
+            errors={errors}
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+            isPending={isPending}
+            rolesData={rolesData}
+          />
+        </div>
+      ) : (
+        <ErrorAuth />
+      )}
     </DashboardLayout>
   );
 };

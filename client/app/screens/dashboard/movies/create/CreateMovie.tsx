@@ -1,7 +1,9 @@
+import ErrorAuth from "@/components/ui/ErrorAuth";
 import DashboardLayout from "@/components/ui/layout/DashboardLayout";
 import FileUploader from "@/components/ui/layout/FileUploader";
 import MovieForm from "@/components/ui/layout/MovieForm";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "hooks/useAuth";
 import { useDirectors } from "hooks/useDirectors";
 import { useFilmStudio } from "hooks/UseFilmStudio";
 import { useGenres } from "hooks/UseGenres";
@@ -23,6 +25,7 @@ import {
 
 const CreateMovie: FC = () => {
   const router = useRouter();
+  const { user, setUser } = useAuth();
 
   const {
     register,
@@ -152,20 +155,24 @@ const CreateMovie: FC = () => {
 
   return (
     <DashboardLayout>
-      <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-6 ">
-        <MovieForm
-          register={register}
-          errors={errors}
-          handleSubmit={handleSubmit}
-          onSubmit={onSubmit}
-          isPending={isPending}
-          genresData={genresData}
-          operatorsData={operatorsData}
-          filmStudioData={filmStudioData}
-          directorsData={directorsData}
-          handleFileUpload={handleFileUpload}
-        />
-      </div>
+      {user ? (
+        <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-6 ">
+          <MovieForm
+            register={register}
+            errors={errors}
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+            isPending={isPending}
+            genresData={genresData}
+            operatorsData={operatorsData}
+            filmStudioData={filmStudioData}
+            directorsData={directorsData}
+            handleFileUpload={handleFileUpload}
+          />
+        </div>
+      ) : (
+        <ErrorAuth />
+      )}
     </DashboardLayout>
   );
 };
