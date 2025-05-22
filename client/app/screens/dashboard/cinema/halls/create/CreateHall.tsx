@@ -1,7 +1,9 @@
+import ErrorAuth from "@/components/ui/ErrorAuth";
 import CinemaForm from "@/components/ui/forms/CinemaForm";
 import HallForm from "@/components/ui/forms/HallForm";
 import DashboardLayout from "@/components/ui/layout/DashboardLayout";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "hooks/useAuth";
 import { useTypes } from "hooks/useTypes";
 import { useRouter } from "next/router";
 import { FC, useEffect } from "react";
@@ -14,6 +16,8 @@ import {
 } from "shared/interfaces/cinema.interface";
 
 const CreateHall: FC = () => {
+  const { user, setUser } = useAuth();
+
   const router = useRouter();
   const { id } = router.query;
   const cinemaId = router.isReady ? Number(id) : undefined;
@@ -91,16 +95,20 @@ const CreateHall: FC = () => {
 
   return (
     <DashboardLayout>
-      <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-25 ">
-        <HallForm
-          register={register}
-          errors={errors}
-          handleSubmit={handleSubmit}
-          onSubmit={onSubmit}
-          isPending={isPending}
-          typesData={typesData}
-        />
-      </div>
+      {user ? (
+        <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-25 ">
+          <HallForm
+            register={register}
+            errors={errors}
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+            isPending={isPending}
+            typesData={typesData}
+          />
+        </div>
+      ) : (
+        <ErrorAuth />
+      )}
     </DashboardLayout>
   );
 };

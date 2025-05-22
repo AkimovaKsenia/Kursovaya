@@ -9,9 +9,10 @@ import DashboardLayout from "../../components/ui/layout/DashboardLayout";
 import { IListOfUsers } from "shared/interfaces/user.interface";
 import { UserService } from "services/user.service";
 import UserItem from "@/components/ui/user-item/UserItem";
+import ErrorAuth from "@/components/ui/ErrorAuth";
 
 const Dashboard: FC = () => {
-  const { user, setUser } = useAuth(); // Получаем данные пользователя из контекста
+  const { user, setUser } = useAuth();
   const [users, setUsers] = useState<IListOfUsers>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -50,22 +51,12 @@ const Dashboard: FC = () => {
             {users.length ? (
               users.map((user) => <UserItem user={user} key={user.id} />)
             ) : (
-              <div>Movies not found</div>
+              <div>not found</div>
             )}
           </div>
         </div>
       ) : (
-        <>
-          <p style={{ color: "#FFFFFF", marginTop: "15px" }}>
-            Пожалуйста, войдите в систему, чтобы продолжить.
-          </p>
-          <Link href="/">
-            <button className={styles.button}>
-              <FaSignOutAlt style={{ marginRight: "8px" }} />
-              Вернуться на главную
-            </button>
-          </Link>
-        </>
+        <ErrorAuth />
       )}
     </DashboardLayout>
   );

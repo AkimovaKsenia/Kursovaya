@@ -13,8 +13,12 @@ import { useRouter } from "next/router";
 import { CinemaService } from "services/cinema.service";
 import { ICinema, ICinemaMain } from "shared/interfaces/cinema.interface";
 import CinemaItem from "@/components/ui/cinema-item/CinemaItem";
+import { useAuth } from "hooks/useAuth";
+import { FaSignOutAlt } from "react-icons/fa";
+import ErrorAuth from "@/components/ui/ErrorAuth";
 
 const Cinema: FC = () => {
+  const { user, setUser } = useAuth(); // Получаем данные пользователя из контекста
   const router = useRouter();
   const [cinema, setCinema] = useState<ICinemaMain[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -41,23 +45,31 @@ const Cinema: FC = () => {
 
   return (
     <DashboardLayout>
-      <div
-        style={{ background: "rgba(129, 125, 219, 0.8)" }}
-        className={styles.catalog}
-      >
-        Cinema
-      </div>
-      <Link href="/manage/cinema/createcinema" className={styles.link}>
-        <button className={styles.button}> Создать кинотеатр </button>
-      </Link>
+      {user ? (
+        <div>
+          <div
+            style={{ background: "rgba(129, 125, 219, 0.8)" }}
+            className={styles.catalog}
+          >
+            Cinema
+          </div>
+          <Link href="/manage/cinema/createcinema" className={styles.link}>
+            <button className={styles.button}> Создать кинотеатр </button>
+          </Link>
 
-      <div className={styles.items}>
-        {cinema.length ? (
-          cinema.map((cinema) => <CinemaItem cinema={cinema} key={cinema.id} />)
-        ) : (
-          <div>Movies not found</div>
-        )}
-      </div>
+          <div className={styles.items}>
+            {cinema.length ? (
+              cinema.map((cinema) => (
+                <CinemaItem cinema={cinema} key={cinema.id} />
+              ))
+            ) : (
+              <div>Cinema not found</div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <ErrorAuth />
+      )}
     </DashboardLayout>
   );
 };

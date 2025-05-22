@@ -9,10 +9,6 @@ const UserItem: FC<{ user: IUserMain }> = ({ user }) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    router.prefetch(`/manage/cinema/edit/${user.id}`);
-  }, []);
-
   return (
     <div className={styles.wrapper}>
       {/* <Modal
@@ -35,7 +31,7 @@ const UserItem: FC<{ user: IUserMain }> = ({ user }) => {
           <PiPencil className={styles.firsticon} />
           <PiTrash
             className={styles.firsticon}
-            onClick={() => setShowModal(true)}
+            // onClick={() => setShowModal(true)}
           />
         </div>
       </div>

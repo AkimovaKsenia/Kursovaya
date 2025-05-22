@@ -1,6 +1,8 @@
+import ErrorAuth from "@/components/ui/ErrorAuth";
 import CinemaForm from "@/components/ui/forms/CinemaForm";
 import DashboardLayout from "@/components/ui/layout/DashboardLayout";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "hooks/useAuth";
 import { useCategory } from "hooks/useCategory";
 import { useCondition } from "hooks/useCondition";
 import { useRouter } from "next/router";
@@ -16,6 +18,7 @@ import {
 
 const CreateCinema: FC = () => {
   const router = useRouter();
+  const { user, setUser } = useAuth();
 
   const {
     register,
@@ -128,18 +131,22 @@ const CreateCinema: FC = () => {
 
   return (
     <DashboardLayout>
-      <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-6 ">
-        <CinemaForm
-          register={register}
-          errors={errors}
-          handleSubmit={handleSubmit}
-          onSubmit={onSubmit}
-          isPending={isPending}
-          categoryData={categoryData}
-          conditionData={conditionData}
-          handleFileUpload={handleFileUpload}
-        />
-      </div>
+      {user ? (
+        <div className=" flex flex-col items-center justify-start max-w-xl mx-auto p-6 bg-none rounded-lg shadow mt-6 ">
+          <CinemaForm
+            register={register}
+            errors={errors}
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+            isPending={isPending}
+            categoryData={categoryData}
+            conditionData={conditionData}
+            handleFileUpload={handleFileUpload}
+          />
+        </div>
+      ) : (
+        <ErrorAuth />
+      )}
     </DashboardLayout>
   );
 };
