@@ -8,7 +8,7 @@
   padding: 20px;
   font-family: "Arial", sans-serif;
   background-color: #a7a7b6;
-  color: #ffffff; // Светлый текст
+  color: #ffffff;
   box-sizing: border-box;
   overflow: auto;
   box-shadow: 2px 2px 17px rgba(129, 125, 219, 0.6);
@@ -37,20 +37,20 @@
   justify-content: center;
   height: calc(100vh - 52.8px);
   padding: 20px;
-  box-sizing: border-box; // 1. Добавляем для корректного расчета размеров
+  box-sizing: border-box;
   overflow-x: hidden;
 }
 
 .button {
   margin-top: 15px;
   padding: 10px 15px;
-  background-color: #bb86fc; // Цвет кнопки для темной темы
-  color: #121212; // Темный текст на кнопке
+  background-color: #bb86fc;
+  color: #121212;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
-  border-radius: 5px; // Скругление углов
+  border-radius: 5px;
 }
 
 .firstButton {
@@ -69,18 +69,18 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 
     color: rgb(255, 255, 255);
-    transform: scale(1.06); // Увеличение на 10%
-    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6); // Лёгкое свечение
+    transform: scale(1.06);
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
   }
 }
 .items {
-  display: grid; // Раскомментируйте это!
+  display: grid;
 
-  grid-template-rows: auto; // Измените на auto
+  grid-template-rows: auto;
   gap: 0rem;
   padding-left: 6px;
   margin-top: 100px;
-  position: relative; // Для корректного margin
+  position: relative;
 }
 
 .heading {

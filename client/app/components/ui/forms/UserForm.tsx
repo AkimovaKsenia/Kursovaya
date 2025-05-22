@@ -4,13 +4,6 @@ import {
   UseFormHandleSubmit,
   Control,
 } from "react-hook-form";
-import {
-  IListOfDirector,
-  IListOfFilmStudio,
-  IListOfGenres,
-  IListOfOperators,
-  IMovieDto,
-} from "shared/interfaces/movie.interface";
 import { FC } from "react";
 import cn from "classnames";
 import styles from "../layout/MovieForm.module.scss";

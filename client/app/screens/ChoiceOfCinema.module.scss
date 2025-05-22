@@ -1,11 +1,11 @@
 .items {
-  display: grid; // Раскомментируйте это!
+  display: grid;
 
-  grid-template-rows: auto; // Измените на auto
+  grid-template-rows: auto;
   gap: 0.5rem;
   padding-left: 6px;
   margin-top: 65px;
-  position: relative; // Для корректного margin
+  position: relative;
 }
 
 .catalog {
@@ -19,7 +19,7 @@
 .link {
 }
 .button {
-  position: absolute; // Абсолютное позиционирование
+  position: absolute;
   margin-left: 778px;
   padding: 9px 13px;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -33,8 +33,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 
     color: rgb(255, 255, 255);
-    transform: scale(1.06); // Увеличение на 10%
-    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6); // Лёгкое свечение
+    transform: scale(1.06);
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
   }
 }
 .heading {

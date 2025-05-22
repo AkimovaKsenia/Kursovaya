@@ -1,5 +1,4 @@
 import ErrorAuth from "@/components/ui/ErrorAuth";
-import CinemaForm from "@/components/ui/forms/CinemaForm";
 import UserForm from "@/components/ui/forms/UserForm";
 import DashboardLayout from "@/components/ui/layout/DashboardLayout";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

@@ -8,7 +8,7 @@
   padding: 20px;
   font-family: "Arial", sans-serif;
   background-color: #b8b5d0;
-  color: #ffffff; // Светлый текст
+  color: #ffffff;
   box-sizing: border-box;
   overflow: auto;
   box-shadow: 2px 2px 17px rgba(129, 125, 219, 0.6);
@@ -19,6 +19,6 @@
   justify-content: center;
   height: calc(100vh - 52.8px);
   padding: 20px;
-  box-sizing: border-box; // 1. Добавляем для корректного расчета размеров
+  box-sizing: border-box;
   overflow-x: hidden;
 }

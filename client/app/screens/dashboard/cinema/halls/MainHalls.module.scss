@@ -1,6 +1,6 @@
 .items {
   grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
-  align-items: end; // Выравнивание по нижнему краю
+  align-items: end;
   gap: 1.5rem;
   padding-left: 6px;
 }
@@ -20,7 +20,8 @@
   margin-left: 825px;
   padding: 9px 13px;
   margin-bottom: 15px;
-  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
@@ -30,7 +31,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 
     color: rgb(255, 255, 255);
-    transform: scale(1.06); // Увеличение на 10%
-    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6); // Лёгкое свечение
+    transform: scale(1.04);
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
   }
 }

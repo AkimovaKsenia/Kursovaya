@@ -28,10 +28,10 @@ export const CinemaService = {
           },
         }
       );
-      console.log("Ответ получен!"); // Доходит ли сюда?
+      console.log("Ответ получен!");
       return response;
     } catch (error) {
-      console.error("Ошибка:", error); // Ловим ошибки
+      console.error("Ошибка:", error);
       throw error;
     }
   },
@@ -148,10 +148,10 @@ export const CinemaService = {
           Accept: "application/json",
         },
       });
-      console.log("Ответ получен!"); // Доходит ли сюда?
+      console.log("Ответ получен!");
       return response;
     } catch (error) {
-      console.error("Ошибка:", error); // Ловим ошибки
+      console.error("Ошибка:", error);
       throw error;
     }
   },
@@ -177,23 +177,22 @@ export const CinemaService = {
   },
   async updateHall(id: number, body: IHallExportDto) {
     try {
-      // Создаем объект с данными в формате JSON
       const requestData = {
         id,
         name: body.name,
         type_id: body.type_id,
-        capacity: Number(body.capacity), // Явное преобразование
+        capacity: Number(body.capacity),
       };
 
       console.log("📦 Отправляемые данные:", requestData);
 
       const response = await instance.put<string>(
         "/auth/cinema_hall",
-        requestData, // Отправляем как JSON
+        requestData,
         {
           headers: {
             Authorization: `Bearer ${Cookies.get("accessToken")}`,
-            "Content-Type": "application/json", // Явно указываем тип контента
+            "Content-Type": "application/json",
           },
         }
       );
@@ -204,23 +203,22 @@ export const CinemaService = {
   },
   async createHall(cinemaId: number, body: IHallExportDto) {
     try {
-      // Создаем объект с данными в формате JSON
       const requestData = {
         cinema_id: cinemaId,
         name: body.name,
         type_id: body.type_id,
-        capacity: Number(body.capacity), // Явное преобразование
+        capacity: Number(body.capacity),
       };
 
       console.log("📦 Отправляемые данные:", requestData);
 
       const response = await instance.post<string>(
         "/auth/cinema_hall",
-        requestData, // Отправляем как JSON
+        requestData,
         {
           headers: {
             Authorization: `Bearer ${Cookies.get("accessToken")}`,
-            "Content-Type": "application/json", // Явно указываем тип контента
+            "Content-Type": "application/json",
           },
         }
       );

@@ -23,18 +23,16 @@ const MoviesInfo: FC = () => {
   return (
     <Layout title={`${data.name}`} backgroundColor="#0f0f12">
       <div className={styles.main}>
-        {/* Неоновый заголовок */}
         <h1 className={styles.neonTitle}>{data.name}</h1>
 
         <div className={styles.glassContainer}>
           <div className={styles.contentWrapper}>
-            {/* Постер */}
             {data.photo && (
               <div className={styles.posterFrame}>
                 <Image
                   src={data.photo}
                   alt={data.name}
-                  width={300} // меньше ширина
+                  width={300}
                   height={450}
                   className={styles.posterImage}
                 />
@@ -55,8 +53,6 @@ const MoviesInfo: FC = () => {
                 Вперёд →
               </button>
             </div> */}
-
-            {/* Информация о фильме */}
 
             <div className={styles.infoSection}>
               <div className={styles.infoItem}>

@@ -44,7 +44,7 @@ const MovieItem: FC<{ movie: IMovie }> = ({ movie }) => {
               <Image
                 src={movie.photo}
                 alt={movie.name}
-                width={300} // меньше ширина
+                width={300}
                 height={450}
                 className={cn(styles.posterImage, "rounded-lg")}
               />

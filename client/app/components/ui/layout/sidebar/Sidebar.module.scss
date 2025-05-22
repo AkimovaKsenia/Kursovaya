@@ -9,11 +9,11 @@
   width: 50px;
   min-width: 50px;
   margin-left: 218px;
-  background-image: url("/Vector.png"); /* Путь к изображению */
-  background-size: cover; /* Растягиваем изображение на весь блок */
-  background-position: center; /* Центрируем изображение */
-  background-repeat: no-repeat; /* Запрещаем повторение */
-  overflow: hidden; /* важно для корректного отображения */
+  background-image: url("/Vector.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
 
   > div {
     position: absolute;
@@ -37,7 +37,7 @@
         font-size: 27px;
         margin-top: 25px;
         &.dashboardItem {
-          font-size: 29px; /* Эквивалент text-xl */
+          font-size: 29px;
           // line-height: 1.75rem;
         }
 
@@ -46,15 +46,15 @@
           color: #c4a6e3;
           filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.6))
             drop-shadow(0 0 6px rgba(46, 185, 249, 0.9));
-          text-shadow: 0 0 10px rgba(221, 221, 221, 0.3); // Свечение для активной иконки
+          text-shadow: 0 0 10px rgba(221, 221, 221, 0.3);
         }
 
         &:hover {
-          color: #baa3cb; // Изменение цвета при наведении
+          color: #baa3cb;
           filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
             drop-shadow(0 0 6px rgba(46, 185, 249, 0.8));
-          transform: scale(1.09); // Увеличение на 10%
-          text-shadow: 0 0 12px rgba(115, 12, 199, 0.4); // Лёгкое свечение
+          transform: scale(1.09);
+          text-shadow: 0 0 12px rgba(115, 12, 199, 0.4);
         }
 
         > svg {

@@ -19,7 +19,7 @@ const Dashboard: FC = () => {
   useEffect(() => {
     const fetchCinema = async () => {
       try {
-        const { data } = await UserService.getAllUsers(); // использует токен из куки
+        const { data } = await UserService.getAllUsers();
         setUsers(data);
       } catch (error) {
         console.error("Ошибка при загрузке фильмов", error);

@@ -19,8 +19,8 @@ const Home: FC = () => {
     AuthService.logout();
     setUser(null);
   };
-  console.log("Rendering Home page, user:", user); // Логируем состояние пользователя
-  console.log("Rendering Home page"); // Добавьте лог
+  console.log("Rendering Home page, user:", user);
+  console.log("Rendering Home page");
 
   useEffect(() => {
     if (animationRef.current) {
@@ -41,7 +41,7 @@ const Home: FC = () => {
         animationRef.current.revert();
       }
     };
-  }, [router.pathname]); // Зависимость от пути
+  }, [router.pathname]);
 
   return (
     <Layout

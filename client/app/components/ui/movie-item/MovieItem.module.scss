@@ -12,7 +12,7 @@
   max-width: 480px;
 }
 .item {
-  display: block; // или inline-block, если нужно
+  display: block;
   position: relative;
   width: 20%;
 }
@@ -50,14 +50,14 @@
   color: #f5f4f4;
   filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
     drop-shadow(0 0 6px rgba(46, 185, 249, 0.8));
-  text-shadow: 0 0 12px rgba(131, 104, 154, 0.4); // Лёгкое свечение
+  text-shadow: 0 0 12px rgba(131, 104, 154, 0.4);
 }
 
 .firsticon {
   &:hover {
-    color: #ffffff; // Изменение цвета при наведении
-    transform: scale(1.1); // Увеличение на 10%
-    text-shadow: 0 0 12px rgba(115, 12, 199, 0.4); // Лёгкое свечение
+    color: #ffffff;
+    transform: scale(1.1);
+    text-shadow: 0 0 12px rgba(115, 12, 199, 0.4);
 
     cursor: pointer;
   }

@@ -52,25 +52,11 @@
 }
 .button {
   &:hover {
-    color: #ffffff; // Изменение цвета при наведении
-    transform: scale(1.12); // Увеличение на 10%
-    text-shadow: 0 0 12px rgba(138, 25, 229, 0.6); // Лёгкое свечение
+    color: #ffffff;
+    transform: scale(1.12);
+    text-shadow: 0 0 12px rgba(138, 25, 229, 0.6);
   }
 }
-
-// .buttons {
-//   color: #f5f4f4;
-//   gap: 30px;
-//   display: flex;
-//   margin-left: auto;
-//   margin-top: 44px;
-//   cursor: pointer;
-//   font-family: "CormorantSC", bold;
-//   font-size: 16px;
-//   filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
-//     drop-shadow(0 0 6px rgba(46, 185, 249, 0.4));
-//   text-shadow: 0 0 12px rgba(131, 104, 154, 0.4); // Лёгкое свечение
-// }
 
 .icons {
   display: flex;
@@ -78,7 +64,7 @@
   color: #f5f4f4;
   filter: drop-shadow(0 0 2px rgba(163, 0, 255, 0.4))
     drop-shadow(0 0 6px rgba(46, 185, 249, 0.8));
-  text-shadow: 0 0 12px rgba(131, 104, 154, 0.4); // Лёгкое свечение
+  text-shadow: 0 0 12px rgba(131, 104, 154, 0.4);
 }
 
 .firsticon {
@@ -87,8 +73,8 @@
   cursor: pointer;
   transition: all 0.2s ease;
   &:hover {
-    color: #ffffff; // Изменение цвета при наведении
-    text-shadow: 0 0 12px rgba(115, 12, 199, 0.4); // Лёгкое свечение
+    color: #ffffff;
+    text-shadow: 0 0 12px rgba(115, 12, 199, 0.4);
     cursor: pointer;
     transform: scale(1.07);
   }

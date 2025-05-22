@@ -15,14 +15,14 @@ import ErrorAuth from "@/components/ui/ErrorAuth";
 
 const Movies: FC = () => {
   const router = useRouter();
-  const { user, setUser } = useAuth(); // Получаем данные пользователя из контекста
+  const { user, setUser } = useAuth();
   const [movies, setMovies] = useState<IMovie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const { data } = await MovieService.getAll(); // использует токен из куки
+        const { data } = await MovieService.getAll();
         setMovies(data);
       } catch (error) {
         console.error("Ошибка при загрузке фильмов", error);

@@ -1,8 +1,6 @@
 import { FC, useEffect, useState } from "react";
-import { IMovie } from "../../../shared/interfaces/movie.interface";
 import Link from "next/link";
 import styles from "./CinemaItem.module.scss";
-import Image from "next/image";
 import { PiPencil, PiTrash } from "react-icons/pi";
 import { MovieService } from "services/movie.service";
 import { useRouter } from "next/router";
@@ -15,19 +13,6 @@ const CinemaItem: FC<{ cinema: ICinemaMain }> = ({ cinema }) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-
-  // const handleDelete = async (id: number) => {
-  //   try {
-  //     console.log("Удаляем кинотеартр с ID:", id);
-  //     await CinemaService.deleteCinema(id);
-  //     router.reload();
-
-  //     alert("Кинотеатр удалён");
-  //   } catch (error) {
-  //     console.error("Ошибка при удалении фильма:", error);
-  //     alert("Ошибка при удалении");
-  //   }
-  // };
   const handleDelete = async () => {
     setIsDeleting(true);
     try {

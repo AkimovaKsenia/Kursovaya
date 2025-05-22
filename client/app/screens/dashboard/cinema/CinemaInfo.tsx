@@ -21,7 +21,6 @@ const CinemaInfo: FC = () => {
       const url = URL.createObjectURL(cinema.photo);
       setImageUrl(url);
 
-      // Очистка при размонтировании
       return () => URL.revokeObjectURL(url);
     } else if (typeof cinema?.photo === "string") {
       setImageUrl(cinema.photo);
@@ -40,7 +39,6 @@ const CinemaInfo: FC = () => {
         />
       </Head>
 
-      {/* Hero Section */}
       <div className="relative h-90 w-full">
         <Image
           src={imageUrl || "/default-cinema.jpg"}
@@ -52,7 +50,6 @@ const CinemaInfo: FC = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
 
-        {/* Эллипс (фоновой декоративный элемент) */}
         <div className="absolute mt-105 ml-30 z-0 pointer-events-none w-[100] h-[500px]">
           {/* <Image
             src="/Ellipse3.png"
@@ -68,10 +65,8 @@ const CinemaInfo: FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="container mx-auto px-4 py-3 mt-10 relative z-20">
         <div className="flex flex-col items-center ml-5 gap-8 pt-0">
-          {/* Картинка и блок "О кинотеатре" */}
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-shrink-0 max-h-[600px] overflow-hidden  rounded-xl  ">
               <Image

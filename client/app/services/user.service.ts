@@ -24,11 +24,11 @@ export const UserService = {
 
       const response = await instance.post<string>(
         "/auth/register",
-        requestData, // Отправляем как JSON
+        requestData,
         {
           headers: {
             Authorization: `Bearer ${Cookies.get("accessToken")}`,
-            "Content-Type": "application/json", // Явно указываем тип контента
+            "Content-Type": "application/json",
           },
         }
       );
@@ -52,7 +52,7 @@ export const UserService = {
   },
   async getAllUsers() {
     const fullUrl = instance.defaults.baseURL + "/auth/user";
-    console.log("Полный URL (вручную):", fullUrl); // Что получилось?
+    console.log("Полный URL (вручную):", fullUrl);
 
     try {
       const response = await instance.get<IListOfUsers>("/auth/user", {
@@ -60,10 +60,10 @@ export const UserService = {
           Accept: "application/json",
         },
       });
-      console.log("Ответ получен!"); // Доходит ли сюда?
+      console.log("Ответ получен!");
       return response;
     } catch (error) {
-      console.error("Ошибка:", error); // Ловим ошибки
+      console.error("Ошибка:", error);
       throw error;
     }
   },

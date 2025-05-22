@@ -17,7 +17,7 @@ export const MovieService = {
   },
   async getAll() {
     const fullUrl = instance.defaults.baseURL + "/auth/film";
-    console.log("Полный URL (вручную):", fullUrl); // Что получилось?
+    console.log("Полный URL (вручную):", fullUrl);
 
     try {
       const response = await instance.get<IMovie[]>("/auth/film", {
@@ -25,10 +25,10 @@ export const MovieService = {
           Accept: "application/json",
         },
       });
-      console.log("Ответ получен!"); // Доходит ли сюда?
+      console.log("Ответ получен!");
       return response;
     } catch (error) {
-      console.error("Ошибка:", error); // Ловим ошибки
+      console.error("Ошибка:", error);
       throw error;
     }
   },

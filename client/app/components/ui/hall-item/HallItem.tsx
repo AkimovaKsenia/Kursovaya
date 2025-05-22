@@ -16,18 +16,6 @@ const HallItem: FC<{ halls: IHall }> = ({ halls }) => {
   const [showModal, setShowModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // const handleDelete = async (id: number) => {
-  //   try {
-  //     console.log("Удаляем фильм с ID:", id);
-  //     await MovieService.deleteMovie(id);
-  //     router.reload();
-
-  //     alert("Фильм удалён");
-  //   } catch (error) {
-  //     console.error("Ошибка при удалении фильма:", error);
-  //     alert("Ошибка при удалении");
-  //   }
-  // };
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
@@ -56,14 +44,6 @@ const HallItem: FC<{ halls: IHall }> = ({ halls }) => {
           <span className={styles.hallCapacity}>{halls.capacity} мест</span>
         </div>
       </div>
-
-      {/* <div className={styles.buttons}>
-        <button className={styles.button}>
-          <Link href="/" style={{ cursor: "pointer" }}>
-            Сеансы
-          </Link>
-        </button>
-      </div> */}
 
       <div className={styles.icons}>
         <Link

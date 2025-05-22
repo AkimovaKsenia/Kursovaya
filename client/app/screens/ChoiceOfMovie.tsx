@@ -56,7 +56,6 @@ const Choice: FC = () => {
                 className="group"
               >
                 <div className="relative w-[240px] aspect-[2/3] rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-105">
-                  {/* Фоновое изображение */}
                   <div className="absolute inset-0">
                     <Image
                       src={movie.photo || "/default-movie.jpg"}
@@ -67,10 +66,8 @@ const Choice: FC = () => {
                     />
                   </div>
 
-                  {/* Градиент */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
 
-                  {/* Контент */}
                   <div className="relative z-10 h-full flex flex-col justify-end p-3">
                     <h3 className="text-md font-bold text-white mb-1 line-clamp-2">
                       {movie.name}
@@ -80,7 +77,6 @@ const Choice: FC = () => {
                     </div>
                   </div>
 
-                  {/* Наведение */}
                   <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity scale-105 duration-300 flex items-center justify-center">
                     <button className="px-3 py-1.5 bg-purple-600 rounded-full text-white text-sm font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                       Подробнее

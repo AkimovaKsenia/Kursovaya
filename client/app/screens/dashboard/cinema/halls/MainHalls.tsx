@@ -1,10 +1,8 @@
-import Button from "@/components/ui/layout/Button/Button";
 import DashboardLayout from "@/components/ui/layout/DashboardLayout";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CinemaService } from "services/cinema.service";
-import { MovieService } from "services/movie.service";
 import { IHall } from "shared/interfaces/cinema.interface";
 import styles from "./MainHalls.module.scss";
 import HallItem from "@/components/ui/hall-item/HallItem";
@@ -15,7 +13,7 @@ import ErrorAuth from "@/components/ui/ErrorAuth";
 const MainHall: FC = () => {
   const router = useRouter();
   const { user, setUser } = useAuth();
-  const [halls, setHalls] = useState<IHall[]>([]); // Всегда массив
+  const [halls, setHalls] = useState<IHall[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const cinemaId = Number(router.query.id);
@@ -27,7 +25,6 @@ const MainHall: FC = () => {
       try {
         const cinemaId = Number(router.query.id);
 
-        // Если ID отсутствует или невалиден, просто возвращаем пустой список
         if (!router.query.id || isNaN(cinemaId)) {
           setHalls([]);
           return;

@@ -4,13 +4,6 @@ import {
   UseFormHandleSubmit,
   Control,
 } from "react-hook-form";
-import {
-  IListOfDirector,
-  IListOfFilmStudio,
-  IListOfGenres,
-  IListOfOperators,
-  IMovieDto,
-} from "shared/interfaces/movie.interface";
 import { FC } from "react";
 import cn from "classnames";
 import styles from "../layout/MovieForm.module.scss";
@@ -30,8 +23,6 @@ interface CinemaFormProps {
   isPending: boolean;
   categoryData: IListOfCategory | undefined;
   conditionData: IListOfCondition | undefined;
-  //   filmStudioData: IListOfFilmStudio | undefined;
-  //   directorsData: IListOfDirector | undefined;
   handleFileUpload: (files: File[]) => void;
 }
 
@@ -43,8 +34,6 @@ const CinemaForm: FC<CinemaFormProps> = ({
   isPending,
   categoryData,
   conditionData,
-  //   filmStudioData,
-  //   directorsData,
   handleFileUpload,
 }) => {
   return (

@@ -14,7 +14,7 @@ export const AuthContext = createContext({} as IContext);
 
 const AuthProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
   const [user, setUser] = useState<TypeUserState>(null);
-  const { pathname } = useRouter(); //Содержит текущий путь
+  const { pathname } = useRouter();
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -35,7 +35,7 @@ const AuthProvider: FC<PropsWithChildren<unknown>> = ({ children }) => {
     const token = Cookies.get("token");
     if (!token) {
       AuthService.logout();
-      setUser(null); // Сбрасываем состояние пользователя
+      setUser(null);
     }
   }, [pathname]);
 

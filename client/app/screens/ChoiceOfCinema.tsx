@@ -79,7 +79,6 @@ const Choice: FC = () => {
           cinemas.map((cinema) => (
             <Link href={`/manage/cinema/${cinema.id}`} key={cinema.id} passHref>
               <div className="group relative z-10 h-full flex flex-col justify-between p-6 bg-gray-600 rounded-lg bg-opacity-70 text-white min-h-63 ">
-                {/* Основной контент карточки */}
                 <div>
                   <h3 className={cn("text-2xl font-bold mb-2", styles.heading)}>
                     {cinema.name}
@@ -87,7 +86,7 @@ const Choice: FC = () => {
                   <p className="text-gray-300 mb-2">{cinema.address}</p>
                   <p className="text-gray-300">{cinema.phone}</p>
                 </div>
-                {/* Дополнительная информация (как в вашем примере) */}
+
                 <div className="mt-4 flex justify-between items-center">
                   <span className="bg-purple-600 text-white px-3 py-1 rounded-full text-sm">
                     {cinema.category}
@@ -97,7 +96,6 @@ const Choice: FC = () => {
                   </span>
                 </div>
 
-                {/* Фоновое изображение, появляющееся при наведении */}
                 <div className="absolute inset-0 overflow-hidden opacity-0 group-hover:opacity-20 transition-opacity duration-300">
                   <Image
                     src={cinema.photo || "/choicePhoto.jpg"}

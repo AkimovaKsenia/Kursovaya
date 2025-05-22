@@ -48,7 +48,7 @@ const LoginForm: FC = () => {
         console.log("✅ Пользователь вошёл", data);
       } else {
         console.warn("⚠️ Нет данных о пользователе");
-        setUser(null); // Очистка состояния пользователя, если данных нет
+        setUser(null);
       }
     },
     onError: (error: any) => {
@@ -67,7 +67,6 @@ const LoginForm: FC = () => {
     // else if (type=='register') registerSync(data)
   };
 
-  // Отслеживание событий маршрутизации
   useEffect(() => {
     const handleRouteChange = () => setIsLoading(true);
     const handleRouteComplete = () => setIsLoading(false);
