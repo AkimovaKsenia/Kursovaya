@@ -17,6 +17,16 @@ export interface IUserDto {
   surname: string;
 }
 
+export interface IUserMain {
+  id: number;
+  name: string;
+  surname: string; // Добавляем фамилию
+  email: string;
+  role: string; // Добавляем роль
+}
+
+export type IListOfUsers = IUserMain[];
+
 export interface IUserExportDto {
   email: string;
   password: string;

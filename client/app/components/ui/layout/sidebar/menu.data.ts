@@ -3,6 +3,8 @@ import {
   PiChartBarDuotone,
   PiFilmSlateDuotone,
   PiFilmStrip,
+  PiUserCirclePlusLight,
+  PiUserCirclePlus,
 } from "react-icons/pi";
 import { IconType } from "react-icons";
 export interface IMenuItem {
@@ -17,7 +19,7 @@ export const menu: IMenuItem[] = [
   },
   {
     link: "/dashboard",
-    Icon: PiChartBarDuotone,
+    Icon: PiUserCirclePlus,
   },
   {
     link: "/manage/movies/listmovies",

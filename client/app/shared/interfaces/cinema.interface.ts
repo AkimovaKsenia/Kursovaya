@@ -39,6 +39,8 @@ export interface ICinemaExportDto {
 
 export type IListofCinema = ICinemaMain[];
 
+export type ListOfCinema = ICinema[];
+
 export interface IHall {
   capacity: number;
   id: number;

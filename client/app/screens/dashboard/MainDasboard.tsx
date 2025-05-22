@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { FaSignOutAlt } from "react-icons/fa"; // Иконка выхода
 import AdminLayout from "@/components/ui/layout/AdminHeader";
 import { useAuth } from "hooks/useAuth";
@@ -6,44 +6,68 @@ import Link from "next/link";
 import MainStatistic from "./MainStatistics";
 import styles from "./MainDashboard.module.scss";
 import DashboardLayout from "../../components/ui/layout/DashboardLayout";
+import { IListOfUsers } from "shared/interfaces/user.interface";
+import { UserService } from "services/user.service";
+import UserItem from "@/components/ui/user-item/UserItem";
 
 const Dashboard: FC = () => {
   const { user, setUser } = useAuth(); // Получаем данные пользователя из контекста
-  return (
-    <AdminLayout title="Dashboard" backgroundColor="#1F1F1F">
-      <div className={styles.container}>
-        <div className={styles.main}>
-          {user ? (
-            <div>
-              <h2 style={{ color: "#FFFFFF" }}>Привет!</h2>
+  const [users, setUsers] = useState<IListOfUsers>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-              <p>Добро пожаловать в вашу панель управления.</p>
-              <Link href={`/manage/user/create/createuser`}>
-                <button className={styles.firstButton}>
-                  {" "}
-                  Создать нового пользователя{" "}
-                </button>
-              </Link>
-              <div className="w-full flex justify-center">
+  useEffect(() => {
+    const fetchCinema = async () => {
+      try {
+        const { data } = await UserService.getAllUsers(); // использует токен из куки
+        setUsers(data);
+      } catch (error) {
+        console.error("Ошибка при загрузке фильмов", error);
+        setUsers([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCinema();
+  }, []);
+  return (
+    <DashboardLayout>
+      {user ? (
+        <div>
+          <h1 className={styles.heading}>
+            Добро пожаловать в вашу панель управления
+          </h1>
+          <Link href={`/manage/user/create/createuser`}>
+            <button className={styles.firstButton}>
+              {" "}
+              Создать нового пользователя{" "}
+            </button>
+          </Link>
+          {/* <div className="w-full flex justify-center">
                 <MainStatistic />
-              </div>
-            </div>
-          ) : (
-            <>
-              <p style={{ color: "#FFFFFF", marginTop: "15px" }}>
-                Пожалуйста, войдите в систему, чтобы продолжить.
-              </p>
-              <Link href="/">
-                <button className={styles.button}>
-                  <FaSignOutAlt style={{ marginRight: "8px" }} />
-                  Вернуться на главную
-                </button>
-              </Link>
-            </>
-          )}
+              </div> */}
+          <div className={styles.items}>
+            {users.length ? (
+              users.map((user) => <UserItem user={user} key={user.id} />)
+            ) : (
+              <div>Movies not found</div>
+            )}
+          </div>
         </div>
-      </div>
-    </AdminLayout>
+      ) : (
+        <>
+          <p style={{ color: "#FFFFFF", marginTop: "15px" }}>
+            Пожалуйста, войдите в систему, чтобы продолжить.
+          </p>
+          <Link href="/">
+            <button className={styles.button}>
+              <FaSignOutAlt style={{ marginRight: "8px" }} />
+              Вернуться на главную
+            </button>
+          </Link>
+        </>
+      )}
+    </DashboardLayout>
   );
 };
 

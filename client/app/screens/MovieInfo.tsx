@@ -63,35 +63,46 @@ const MoviesInfo: FC = () => {
                 <span className={styles.infoLabel}>Жанр:</span>
 
                 {data.genres && data.genres.length > 0 && (
-                  <span> {data.genres.join(", ")}</span>
+                  <span className={styles.info}> {data.genres.join(", ")}</span>
                 )}
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Режиссеры:</span>
                 {data.directors && data.directors.length > 0 && (
-                  <span> {data.directors.join(", ")}</span>
+                  <span className={styles.info}>
+                    {" "}
+                    {data.directors.join(", ")}
+                  </span>
                 )}
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Каст Актеров:</span>
                 {data.cast_list && data.cast_list.length > 0 && (
-                  <span> {data.cast_list.join(", ")}</span>
+                  <span className={styles.info}>
+                    {" "}
+                    {data.cast_list.join(", ")}
+                  </span>
                 )}{" "}
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Операторы:</span>
                 {data.operators && data.operators.length > 0 && (
-                  <span> {data.operators.join(", ")}</span>
+                  <span className={styles.info}>
+                    {" "}
+                    {data.operators.join(", ")}
+                  </span>
                 )}{" "}
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Киностудия:</span>
-                <span>{data.film_studio_name}</span>
+                <span className={styles.info}>{data.film_studio_name}</span>
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Длительность:</span>
-                {Math.floor(data.duration_in_min / 60)} ч{"  "}
-                {data.duration_in_min % 60} м
+                <span className={styles.info}>
+                  {Math.floor(data.duration_in_min / 60)} ч{"  "}
+                  {data.duration_in_min % 60} мин{" "}
+                </span>
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoLabel}>Описание:</span>

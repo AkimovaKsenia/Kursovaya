@@ -8,7 +8,7 @@
 .neonTitle {
   font-size: 3rem;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.3rem;
   margin-top: 1rem;
   background: linear-gradient(90deg, #ffffff, #c4bef5);
   -webkit-background-clip: text;
@@ -39,7 +39,7 @@
 .posterWrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 2rem;
+  // margin-bottom: 2rem;
 }
 
 .posterFrame {
@@ -75,13 +75,18 @@
 }
 
 .infoValue {
-  font-size: 1.1rem;
+  font-size: 1rem;
   background: rgba(185, 156, 216, 0.1);
   padding: 0.5rem 1rem;
   border-radius: 0.3rem;
   border-left: 2px solid #c4bef5;
 }
-
+.info {
+  font-size: 1rem;
+  font-weight: 100;
+  color: rgb(255, 255, 255);
+  min-width: 100px;
+}
 .loading,
 .notFound {
   color: #fff;
