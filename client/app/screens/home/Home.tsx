@@ -96,7 +96,7 @@ const Home: FC = () => {
             style={{ cursor: "pointer" }}
             className={cn("px-6 py-3 text-lg mt-0 boldText")}
           >
-            Logout
+            Выйти
           </button>
         </div>{" "}
       </div>

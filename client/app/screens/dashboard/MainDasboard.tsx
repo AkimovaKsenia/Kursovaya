@@ -31,6 +31,7 @@ const Dashboard: FC = () => {
 
     fetchCinema();
   }, []);
+
   return (
     <DashboardLayout>
       {user ? (

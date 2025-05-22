@@ -56,7 +56,7 @@ const Choice: FC = () => {
       style={
         {
           // backgroundImage:
-          //   "url('https://static.karofilm.ru/v3k/uploads/filemanager/bg/bg_2.png')",
+          //   "url('https://i.pinimg.com/736x/33/53/97/335397688d991327387f2b7b0640289d.jpg')",
           // backgroundSize: "cover",
           // backgroundPosition: "center",
           // backgroundRepeat: "no-repeat",

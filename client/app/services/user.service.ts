@@ -67,4 +67,7 @@ export const UserService = {
       throw error;
     }
   },
+  async deleteUser(id: number) {
+    return instance.delete<string>(`/auth/user/${id}`);
+  },
 };

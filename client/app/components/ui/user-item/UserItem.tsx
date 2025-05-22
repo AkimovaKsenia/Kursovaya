@@ -4,19 +4,33 @@ import { PiPencil, PiTrash } from "react-icons/pi";
 import { IUserMain } from "shared/interfaces/user.interface";
 import styles from "./UserItem.module.scss";
 import Modal from "../Modal";
+import { UserService } from "services/user.service";
 
 const UserItem: FC<{ user: IUserMain }> = ({ user }) => {
   const router = useRouter();
+  const [isDeleting, setIsDeleting] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await UserService.deleteUser(user.id);
+      router.reload();
+    } catch (error) {
+      alert("Ошибка при удалении");
+    } finally {
+      setIsDeleting(false);
+      setShowModal(false);
+    }
+  };
   return (
     <div className={styles.wrapper}>
-      {/* <Modal
+      <Modal
         isOpen={showModal}
-        title="Удалить кинотеатр?"
+        title="Удалить пользователя?"
         onClose={() => setShowModal(false)}
         onConfirm={handleDelete}
-      /> */}
+      />
 
       <div className={styles.card}>
         <div className={styles.content}>
@@ -31,7 +45,7 @@ const UserItem: FC<{ user: IUserMain }> = ({ user }) => {
           <PiPencil className={styles.firsticon} />
           <PiTrash
             className={styles.firsticon}
-            // onClick={() => setShowModal(true)}
+            onClick={() => setShowModal(true)}
           />
         </div>
       </div>

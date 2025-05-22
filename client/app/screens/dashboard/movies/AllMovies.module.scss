@@ -14,6 +14,17 @@
   font-family: "CormorantSC", bold;
 }
 
+.text {
+  font-size: 3rem;
+  margin-top: -10px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #ffffff, #d8d3fa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: "CormorantSC", bold;
+}
+
 .button {
   margin-left: 790px;
   padding: 9px 13px;

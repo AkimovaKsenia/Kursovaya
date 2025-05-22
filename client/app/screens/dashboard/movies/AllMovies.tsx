@@ -43,7 +43,7 @@ const Movies: FC = () => {
             style={{ background: "rgba(129, 125, 219, 0.8)" }}
             className={styles.catalog}
           >
-            MOVIES
+            Фильмы
           </div>
           <Link href="/manage/movies/createmovie">
             <button className={styles.button}> Создать фильм </button>
