@@ -41,6 +41,7 @@ const CinemaItem: FC<{ cinema: ICinemaMain }> = ({ cinema }) => {
     }
   };
   useEffect(() => {
+    router.prefetch(`/manage/cinema/halls/${cinema.id}`);
     router.prefetch(`/manage/cinema/edit/${cinema.id}`);
   }, []);
 

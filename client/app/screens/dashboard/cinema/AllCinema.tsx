@@ -35,6 +35,10 @@ const Cinema: FC = () => {
     fetchCinema();
   }, []);
 
+  useEffect(() => {
+    router.prefetch("/manage/cinema/createcinema");
+  }, []);
+
   return (
     <DashboardLayout>
       <div

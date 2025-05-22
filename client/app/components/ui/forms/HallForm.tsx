@@ -37,7 +37,7 @@ const HallForm: FC<HallFormProps> = ({
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
         />
         {errors.name && (
-          <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+          <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
         )}
       </div>
 
@@ -46,7 +46,7 @@ const HallForm: FC<HallFormProps> = ({
           Тип:
         </label>
         <select
-          {...register("type", { required: "Выберите категорию" })}
+          {...register("type", { required: "Выберите тип зала" })}
           className={cn(
             "form-select w-full text-m px-3 py-2 border border-gray-300 rounded-md",
             styles.select
@@ -59,6 +59,9 @@ const HallForm: FC<HallFormProps> = ({
             </option>
           ))}
         </select>
+        {errors.type && (
+          <p className="text-red-500 text-xs mt-1">{errors.type.message}</p>
+        )}
       </div>
 
       <div>
@@ -69,6 +72,9 @@ const HallForm: FC<HallFormProps> = ({
           {...register("capacity", { required: "Обязательное поле" })}
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
         />
+        {errors.capacity && (
+          <p className="text-red-500 text-xs mt-1">{errors.capacity.message}</p>
+        )}
       </div>
 
       <div className="pt-4">

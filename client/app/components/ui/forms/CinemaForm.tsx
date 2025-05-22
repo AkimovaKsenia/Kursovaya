@@ -20,6 +20,7 @@ import {
   IListOfCategory,
   IListOfCondition,
 } from "shared/interfaces/cinema.interface";
+import { validEmail } from "../layout/header/login-form/login-auth.constants";
 
 interface CinemaFormProps {
   register: UseFormRegister<ICinemaDto>;
@@ -57,7 +58,7 @@ const CinemaForm: FC<CinemaFormProps> = ({
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
         />
         {errors.name && (
-          <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+          <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
         )}
       </div>
 
@@ -70,12 +71,12 @@ const CinemaForm: FC<CinemaFormProps> = ({
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
         />
         {errors.address && (
-          <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>
+          <p className="text-red-500 text-xs mt-1">{errors.address.message}</p>
         )}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-xs font-medium text-gray-700 mb-1">
           Категория:
         </label>
         <select
@@ -92,6 +93,9 @@ const CinemaForm: FC<CinemaFormProps> = ({
             </option>
           ))}
         </select>
+        {errors.category && (
+          <p className="text-red-500 text-xs mt-1">{errors.category.message}</p>
+        )}
       </div>
 
       <div>
@@ -99,7 +103,9 @@ const CinemaForm: FC<CinemaFormProps> = ({
           Вместимость:
         </label>
         <select
-          {...register("condition", { required: "Выберите категорию" })}
+          {...register("condition", {
+            required: "Введите вместимость кинотеатра",
+          })}
           className={cn(
             "form-select w-full text-m px-3 py-2 border border-gray-300 rounded-md",
             styles.select
@@ -112,6 +118,11 @@ const CinemaForm: FC<CinemaFormProps> = ({
             </option>
           ))}
         </select>
+        {errors.condition && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.condition.message}
+          </p>
+        )}
       </div>
 
       <div>
@@ -119,9 +130,18 @@ const CinemaForm: FC<CinemaFormProps> = ({
           Email:
         </label>
         <input
-          {...register("email", { required: "Обязательное поле" })}
+          {...register("email", {
+            required: "Обязательное поле",
+            pattern: {
+              value: validEmail,
+              message: "Введите корректный email",
+            },
+          })}
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
         />
+        {errors.email && (
+          <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+        )}
       </div>
 
       <div>
@@ -132,6 +152,9 @@ const CinemaForm: FC<CinemaFormProps> = ({
           {...register("phone", { required: "Обязательное поле" })}
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
         />
+        {errors.phone && (
+          <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>
+        )}
       </div>
 
       <div>
@@ -139,10 +162,15 @@ const CinemaForm: FC<CinemaFormProps> = ({
           Описание:
         </label>
         <textarea
-          {...register("description")}
+          {...register("description", { required: "Обязательное поле" })}
           className="w-115 px-3 py-2 border border-gray-300 rounded-md"
           rows={5}
         />
+        {errors.description && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.description.message}
+          </p>
+        )}
       </div>
 
       <FileUploader onFilesUploaded={handleFileUpload} />
