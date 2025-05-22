@@ -196,3 +196,50 @@ func (h *Handler) GetUserRoles(c *fiber.Ctx) error {
 	logEvent.Msg("success")
 	return c.Status(fiber.StatusOK).JSON(roles)
 }
+
+// DeleteUser
+// @Tags         User
+// @Summary      Удаление пользователя
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "ID пользователь"
+// @Success      200 {object} entities.ID "Пользователь удален"
+// @Failure      400 {object} entities.Error "Некорректные данные для входа"
+// @Failure      403 {object} entities.Error "Недостаточно прав"
+// @Failure      500 {object} entities.Error "Ошибка на стороне сервера"
+// @Router       /auth/user/{id} [delete]
+// @Security ApiKeyAuth
+func (h *Handler) DeleteUser(c *fiber.Ctx) error {
+	userId := c.Locals("id").(int)
+	uRole, err := h.repository.DB.GetUserRoleById(userId)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error getting user role: %s", err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error getting user role: %s", err.Error())})
+	}
+
+	if uRole.Role != "admin" {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusForbidden})
+		logEvent.Str("user_role", uRole.Role).Msg("there are not enough rights for this action")
+		return c.Status(fiber.StatusForbidden).JSON(entities.Error{Error: "there are not enough rights for this action"})
+	}
+
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("invalid film ID: %v", err))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: "Invalid film ID"})
+	}
+
+	h.logger.Debug().Msg("calling h.repository.DB.DeleteUser")
+	err = h.repository.DB.DeleteUser(id)
+	if err != nil {
+		logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Error", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusBadRequest})
+		logEvent.Msg(fmt.Sprintf("error deleting user: %s", err.Error()))
+		return c.Status(fiber.StatusBadRequest).JSON(entities.Error{Error: fmt.Sprintf("error deleting user: %s", err.Error())})
+	}
+
+	logEvent := log.CreateLog(h.logger, log.LogsField{Level: "Info", Method: c.Method(), Url: c.OriginalURL(), Status: fiber.StatusOK})
+	logEvent.Msg("successful deleting user")
+	return c.Status(fiber.StatusOK).JSON(entities.ID{ID: id})
+}

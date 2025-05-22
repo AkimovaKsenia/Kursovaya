@@ -91,6 +91,7 @@ func (h *Handler) InitRouter() {
 			authGroup.Get("/user/role", h.GetUserRoles)
 			authGroup.Get("/user", h.GetUsers)
 			authGroup.Post("/register", h.Register)
+			authGroup.Delete("/user/:id", h.DeleteUser)
 		}
 	}
 

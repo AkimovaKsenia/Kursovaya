@@ -75,3 +75,24 @@ func (db *DB) GetAllUsers() ([]entities.GetUser, error) {
 	}
 	return users, nil
 }
+
+func (db *DB) DeleteUser(id int) error {
+	result, err := db.DB.Exec(`
+        DELETE FROM users 
+        WHERE id = $1
+    `, id)
+
+	if err != nil {
+		return fmt.Errorf("error deleting user: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("error checking rows affected: %w", err)
+	}
+	if rowsAffected == 0 {
+		return fmt.Errorf("user with id %d not found", id)
+	}
+
+	return nil
+}

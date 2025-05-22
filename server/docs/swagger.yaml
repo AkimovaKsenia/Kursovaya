@@ -1155,6 +1155,40 @@ paths:
       summary: Получение всех пользователей
       tags:
       - User
+  /auth/user/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID пользователь
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Пользователь удален
+          schema:
+            $ref: '#/definitions/entities.ID'
+        "400":
+          description: Некорректные данные для входа
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "403":
+          description: Недостаточно прав
+          schema:
+            $ref: '#/definitions/entities.Error'
+        "500":
+          description: Ошибка на стороне сервера
+          schema:
+            $ref: '#/definitions/entities.Error'
+      security:
+      - ApiKeyAuth: []
+      summary: Удаление пользователя
+      tags:
+      - User
   /auth/user/role:
     get:
       consumes:
