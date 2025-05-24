@@ -45,7 +45,7 @@ const Movies: FC = () => {
           >
             Фильмы
           </div>
-          <Link href="/manage/movies/createmovie">
+          <Link href="/manage/movies/createmovie" className={styles.link}>
             <button className={styles.button}> Создать фильм </button>
           </Link>
 
