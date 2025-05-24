@@ -30,7 +30,7 @@ const CinemaInfo: FC = () => {
   if (!cinema) return <div>Кинотеатр не найден</div>;
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-black text-white min-h-screen overflow-hidden">
       <Head>
         <title>{cinema.name} | Кинотеатр</title>
         <meta
@@ -39,7 +39,7 @@ const CinemaInfo: FC = () => {
         />
       </Head>
 
-      <div className="relative h-90 w-full">
+      <div className="relative h-90 w-full bg-black">
         <Image
           src={imageUrl || "/default-cinema.jpg"}
           alt={cinema.name}
@@ -50,22 +50,13 @@ const CinemaInfo: FC = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
 
-        <div className="absolute mt-105 ml-30 z-0 pointer-events-none w-[100] h-[500px]">
-          {/* <Image
-            src="/Ellipse3.png"
-            alt="Cinema ellipse"
-            width={800}
-            height={700}
-            className="rounded-full"
-          /> */}
-        </div>
         <div className="absolute bottom-[1.5rem] left-32 right-8">
           <h1 className="text-4xl md:text-6xl font-bold mb-2">{cinema.name}</h1>
           <p className="text-xl">{cinema.address}</p>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-3 mt-10 relative z-20">
+      <div className="container bg-black mx-auto px-4 py-3 mt-10 relative z-20">
         <div className="flex flex-col items-center ml-5 gap-8 pt-0">
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex-shrink-0 max-h-[600px] overflow-hidden  rounded-xl  ">
